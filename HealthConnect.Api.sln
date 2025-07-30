@@ -1,9 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Api", "HealthConnect.Api\HealthConnect.Api.csproj", "{C141278E-2FAC-4137-83C9-FBC9701DCA79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Domain", "HealthConnect.Domain\HealthConnect.Domain.csproj", "{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Application", "HealthConnect.Application\HealthConnect.Application.csproj", "{7FE49BD2-5090-40E5-9210-AC974F70DB8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructure", "HealthConnect.Infrastructure\HealthConnect.Infrastructure.csproj", "{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E42EB4F-9CCC-440E-978A-0F737B1C0FE3}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +26,18 @@ Global
 		{C141278E-2FAC-4137-83C9-FBC9701DCA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C141278E-2FAC-4137-83C9-FBC9701DCA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C141278E-2FAC-4137-83C9-FBC9701DCA79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
