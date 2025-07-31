@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HealthConnect.Application\HealthConnect.Application.csproj" />
     <ProjectReference Include="..\HealthConnect.Domain\HealthConnect.Domain.csproj" />
   </ItemGroup>
 
