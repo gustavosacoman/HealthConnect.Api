@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -26,6 +28,8 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 

@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Application", "HealthConnect.Application\HealthConnect.Application.csproj", "{7FE49BD2-5090-40E5-9210-AC974F70DB8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructure", "HealthConnect.Infrastructure\HealthConnect.Infrastructure.csproj", "{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6} = {7D15FAE6-77CF-4FF0-B919-3001511F3CC6}
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A} = {7FE49BD2-5090-40E5-9210-AC974F70DB8A}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E42EB4F-9CCC-440E-978A-0F737B1C0FE3}"
 	ProjectSection(SolutionItems) = preProject
