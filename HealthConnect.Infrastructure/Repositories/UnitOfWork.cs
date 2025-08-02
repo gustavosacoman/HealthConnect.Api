@@ -20,10 +20,9 @@ public class UnitOfWork : IUnitOfWork
         return await _appDbContext.SaveChangesAsync();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        _appDbContext.Dispose();
-        GC.SuppressFinalize(this);
+        await _appDbContext.DisposeAsync();
     }
 
 }
