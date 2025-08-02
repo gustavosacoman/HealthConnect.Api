@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthConnect.Application.Interfaces;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork : IAsyncDisposable
 {
     Task<int> SaveChangesAsync();
 }
