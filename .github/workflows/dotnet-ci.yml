@@ -1,19 +1,14 @@
-
-name: .NET CI
-
+name: .NET CI/CD
 
 on:
   push:
-    branches: [ "main" ] 
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -29,17 +24,15 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
-    - name: Test
+    - name: Test with Code Coverage
       run: dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage"
 
     - name: Install ReportGenerator
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
     - name: Generate Coverage Report & Quality Gate
-      run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html_Dark;MarkdownSummary -tag:${{ github.sha }} -thresholds:70
+      run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:"Html_Dark;MarkdownSummary" -tag:${{ github.sha }} -thresholds:70
 
-
-       # --- ADICIONE ESTES PASSOS AO FINAL DO JOB build-and-test ---
     - name: Publish API
       run: dotnet publish ./HealthConnect.Api/HealthConnect.Api.csproj --configuration Release --output ./publish
 
@@ -49,11 +42,10 @@ jobs:
         name: dotnet-api
         path: ./publish
 
-
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-test 
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' 
 
     steps:
     - name: Download artifact from build job
@@ -64,6 +56,6 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: 'SEU-NOME-DE-APP-AQUI'
+        app-name: 'healthconnect-api'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
