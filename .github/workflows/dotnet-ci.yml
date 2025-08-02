@@ -30,4 +30,15 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+    - name: Install ReportGenerator
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+    - name: Generate Coverage Report & Quality Gate
+      run: |
+        reportgenerator
+        -reports:"**/coverage.cobertura.xml"
+        -targetdir:"coveragereport"
+        -reporttypes:Html_Dark
+        -thresholds:70
