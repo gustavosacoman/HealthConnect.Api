@@ -8,7 +8,7 @@ namespace HealthConnect.Domain.Interfaces;
 
 public interface IAuditable
 {
-    DateTime CreateAt { get; set; }
+    DateTime CreatedAt { get; set; }
 
-    DateTime UpdateAt { get; set; }
+    DateTime UpdatedAt { get; set; }
 }
