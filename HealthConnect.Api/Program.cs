@@ -1,17 +1,18 @@
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
+using HealthConnect.Api;
 using HealthConnect.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services
+    .AddPresentation()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UsePresentation();
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }
