@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthConnect.Domain.Models;
 
-public class User : IAuditable
+public class User : IAuditable, ISoftDeletable
 {
     public Guid Id { get; set; }
 
@@ -16,6 +16,8 @@ public class User : IAuditable
     public string Email { get; set; }
 
     public string CPF { get; set; }
+
+    public string Phone { get; set; }
 
     public string HashedPassword { get; set; }
 
@@ -26,4 +28,6 @@ public class User : IAuditable
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
 }
