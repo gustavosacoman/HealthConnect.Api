@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using HealthConnect.Application.Interfaces;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace HealthConnect.Infrastructure.Configurations;
 
-public static class CryptoHelper
+public class CryptoHelper : IPasswordHasher
 {
-    public static string GenerateSalt()
+    public string GenerateSalt()
     {
         byte[] salt = new byte[128 / 8];
         using (var rng = RandomNumberGenerator.Create())
@@ -26,7 +27,7 @@ public static class CryptoHelper
         return Convert.ToBase64String(salt);
     }
 
-    public static string HashPassword(string password, string salt)
+    public string HashPassword(string password, string salt)
     {
         if (string.IsNullOrEmpty(password))
         {
