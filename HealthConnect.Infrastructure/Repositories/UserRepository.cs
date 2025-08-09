@@ -1,5 +1,6 @@
 ﻿using HealthConnect.Application.Interfaces;
 using HealthConnect.Domain.Models;
+using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

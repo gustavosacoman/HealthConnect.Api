@@ -1,4 +1,5 @@
 ﻿using HealthConnect.Domain.Models;
+using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthConnect.Infrastructure.Tests;
