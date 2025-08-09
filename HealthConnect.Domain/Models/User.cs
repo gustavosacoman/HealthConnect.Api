@@ -17,9 +17,9 @@ public class User : IAuditable
 
     public string CPF { get; set; }
 
-    public string hashedPassword { get; set; }
+    public string HashedPassword { get; set; }
 
-    public string salt { get; set; }
+    public string Salt { get; set; }
 
     public DateOnly BirthDate { get; set; }
 
