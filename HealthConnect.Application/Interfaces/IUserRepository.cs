@@ -9,6 +9,6 @@ public interface IUserRepository
 
     public Task<User?> GetUserByEmail(string Email);
 
-    public Task AddUser(User User);
+    public Task CreateUser(User User);
 
 }
