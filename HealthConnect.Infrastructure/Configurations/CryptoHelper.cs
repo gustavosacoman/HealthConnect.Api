@@ -51,7 +51,7 @@ public class CryptoHelper : IPasswordHasher
         return Convert.ToBase64String(hash);
     }
 
-    public static bool VerifyPassword(string password, string storedHash, string storedSalt)
+    public bool VerifyPassword(string password, string storedHash, string storedSalt)
     {
         var hashedPassword = HashPassword(password, storedSalt);
         return hashedPassword == storedHash;
