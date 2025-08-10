@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HealthConnect.Application.Services;
 
-public class UserService
+public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
@@ -110,7 +110,6 @@ public class UserService
         user.Name = data.Name ?? user.Name;
         user.Email = data.Email ?? user.Email;
         user.CPF = data.CPF ?? user.CPF;
-        user.BirthDate = data.BirthDate ?? user.BirthDate;
 
         if (!string.IsNullOrWhiteSpace(data.Password))
         {
