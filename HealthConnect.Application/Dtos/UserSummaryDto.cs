@@ -14,6 +14,8 @@ public record UserSummaryDto
 
     public string Email { get; }
 
+    public string Phone { get; }
+
     public string CPF { get; }
 
     public DateOnly BirthDate { get; }
