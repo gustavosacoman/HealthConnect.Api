@@ -23,7 +23,18 @@ public class UnitOfWorkTests
 
         await using var unitOfWork = new Repositories.UnitOfWork(dbContext);
 
-        var newUser = new User { Email = "test@example.com" };
+        var newUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test User",
+            Email = "teste.user@gmail.com",
+            CPF = "12345678901",
+            Phone = "123456789",
+            HashedPassword = "password123",
+            Salt = "randomSalt",
+            BirthDate = new DateOnly(1990, 1, 1),
+
+        };
 
         dbContext.Users.Add(newUser);
 
@@ -31,7 +42,7 @@ public class UnitOfWorkTests
 
         await using var assertDbContext = new AppDbContext(dbContextOptions);
 
-        var savedUser = await assertDbContext.Users.FirstOrDefaultAsync(u => u.Email == "test@example.com");
+        var savedUser = await assertDbContext.Users.FirstOrDefaultAsync(u => u.Email == "teste.user@gmail.com");
 
         Assert.NotNull(savedUser);
         Assert.Equal(newUser.Email, savedUser.Email);
