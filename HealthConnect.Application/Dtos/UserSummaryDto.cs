@@ -8,16 +8,16 @@ namespace HealthConnect.Application.Dtos;
 
 public record UserSummaryDto
 {
-    public Guid Id { get; }
+    public Guid Id { get; init; }
 
-    public string Name { get; }
+    public string Name { get; init; }
 
-    public string Email { get; }
+    public string Email { get; init; }
 
-    public string Phone { get; }
+    public string Phone { get; init; }
 
-    public string CPF { get; }
+    public string CPF { get; init; }
 
-    public DateOnly BirthDate { get; }
+    public DateOnly BirthDate { get; init; }
 
 }
