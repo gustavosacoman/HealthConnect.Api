@@ -73,6 +73,11 @@ public class UserService : IUserService
             throw new ArgumentException("User data is incomplete.");
         }
 
+        if (await _userRepository.GetUserByEmail(data.Email) != null)
+        {
+            throw new InvalidOperationException($"User with email {data.Email} already exists.");
+        }
+
         var salt = _passwordHasher.GenerateSalt();
 
         var user = new User
@@ -108,8 +113,7 @@ public class UserService : IUserService
             ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
 
         user.Name = data.Name ?? user.Name;
-        user.Email = data.Email ?? user.Email;
-        user.CPF = data.CPF ?? user.CPF;
+        user.Phone = data.Phone ?? user.Phone;
 
         if (!string.IsNullOrWhiteSpace(data.Password))
         {
