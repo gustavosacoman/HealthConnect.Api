@@ -32,6 +32,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(11);
 
+        builder.HasIndex(u => u.CPF)
+            .IsUnique();
+
         builder.Property(u => u.Phone)
             .HasMaxLength(15);
 
