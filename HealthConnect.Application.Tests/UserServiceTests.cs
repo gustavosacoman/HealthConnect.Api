@@ -80,4 +80,90 @@ public class UserServiceTests
         Assert.NotNull(result);
         Assert.Equal(command.Name, result.Name);
     }
+
+    [Fact]
+    public async Task CreateUser_ShouldThrowInvalidOperationException_WhenEmailAlreadyExist()
+    {
+        var command = new UserRegistrationDto 
+        {
+            Name = "userTest",
+            Email = "teste.user@gmail.com",
+            Phone = "123456789",
+            Password = "Password@123",
+            CPF = "1345678910",
+            BirthDate = new DateOnly(1990, 1, 1)
+        }
+
+        _userRepositoryMock.Setup(r => r.GetUserByEmail(command.Email))
+            .ReturnsAsync(new User());
+
+        await Assert.ThrowAsync<InvalidOperationException>(() => _userService.CreateUser(command));
+        _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+
+    }
+
+    [Fact]
+    public async Task GetUserByEmail_ShouldReturnUserSummaryDto_WhenEmailExist()
+    {
+        var userEmail = "teste@example.com";
+        var testeUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "User teste",
+            Email = userEmail,
+        };
+        var expectedDto = new UserSummaryDto 
+        {
+            Id = testUser.Id,
+            Name = testUser.Name, 
+            Email = testUser.Email
+        };
+
+        _userRepositoryMock.Setup(r = r.GetUserByEmail(userEmail))
+            .ReturnsAsync(testeUser);
+        
+        _mockMapper.Setup(m => m.Map<UserSummaryDto>(testeUser))
+            .ReturnsAsync(expectedDto);
+
+        var result = await _userService.GetUserByEmail(userEmail);
+
+        Assert.NotNull(result);
+        Assert.Equal(expectedDto.Id, result.Id);
+        Assert.Equal(expectedDto.Name, result.Name);
+
+        _userRepositoryMock.Verify(r => r.GetUserByEmail(userEmail), Times.Once);
+
+    }
+
+    [Fact]
+    public async Task GetUserById_ShouldReturnUserSummaryDto_WhenIdExist()
+    {
+        var userId = "umGuiIdDiferente";
+        var testeUser = new User 
+        {
+            Id = userId,
+            Name = "user teste",
+            Email = "teste.user@gmail.com"
+        }
+        var expectedDto = new UserSummaryDto 
+        {
+            Id = testeUser.Id,
+            Name = testeUser.Name,
+            Email = testeUser.Email
+        }
+
+        _userRepositoryMock.Setup(r => r.GetUserById(userId))
+            .ReturnsAsync(testeUser);
+        
+        _mockMapper.Setup(m => m.Map<UserSummaryDto>(testeUser))
+            .ReturnsAsync(expectedDto);
+
+        var result = await _userService.GetUserById(userId);
+
+        Assert.NotNull(result);
+        Assert.Equal(expectedDto.Id, result.Id);
+        Assert.Equal(expectedDto.Name, result.Name);
+
+        _userRepositoryMock.Verify(r => r.GetUserByEmail(userEmail), Times.Once);
+    }
 }
