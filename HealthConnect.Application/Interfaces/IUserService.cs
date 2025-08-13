@@ -19,5 +19,5 @@ public interface IUserService
 
     public Task<UserSummaryDto> UpdateUser(Guid Id, UserUpdatingDto data);
 
-    public Task DeleteUser(Guid Id);
+    public Task DeleteUser(string email);
 }

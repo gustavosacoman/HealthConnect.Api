@@ -126,15 +126,15 @@ public class UserService : IUserService
         return _mapper.Map<UserSummaryDto>(user);
     }
 
-    public async Task DeleteUser(string Email)
+    public async Task DeleteUser(string email)
     {
-        if (string.IsNullOrEmpty(Email))
+        if (string.IsNullOrEmpty(email))
         {
-            throw new ArgumentException("User ID cannot be empty.", nameof(Email));
+            throw new ArgumentException("User ID cannot be empty.", nameof(email));
         }
 
-        var user = await _userRepository.GetUserByEmail(Email) ??
-            throw new KeyNotFoundException($"User with ID {Email} not found.");
+        var user = await _userRepository.GetUserByEmail(email) ??
+            throw new KeyNotFoundException($"User with ID {email} not found.");
 
         user.DeletedAt = DateTime.UtcNow;
 
