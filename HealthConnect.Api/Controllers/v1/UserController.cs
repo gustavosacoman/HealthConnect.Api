@@ -53,10 +53,10 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    [HttpDelete("{email}")]
+    public async Task<IActionResult> DeleteUser(string email)
     {
-        await _userService.DeleteUser(id);
+        await _userService.DeleteUser(email);
         return NoContent();
     }
 
