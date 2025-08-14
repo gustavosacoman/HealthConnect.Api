@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HealthConnect.Application.Dtos;
+
+public record UserUpdatingDto
+{
+    public string? Name { get; init; }
+
+    public string? Phone { get; init; }
+
+    public string? Password { get; init; }
+
+}

@@ -1,4 +1,6 @@
 ﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Infrastructure.Configurations;
+using HealthConnect.Infrastructure.Data;
 using HealthConnect.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +32,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 
-
+        services.AddScoped<IPasswordHasher, CryptoHelper>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }

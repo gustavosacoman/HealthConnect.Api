@@ -1,4 +1,4 @@
-﻿using HealthConnect.Infrastructure;
+﻿using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
