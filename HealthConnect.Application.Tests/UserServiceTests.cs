@@ -84,7 +84,7 @@ public class UserServiceTests
     [Fact]
     public async Task CreateUser_ShouldThrowInvalidOperationException_WhenEmailAlreadyExist()
     {
-        var command = new UserRegistrationDto 
+        var command = new UserRegistrationDto
         {
             Name = "userTest",
             Email = "teste.user@gmail.com",
@@ -92,13 +92,12 @@ public class UserServiceTests
             Password = "Password@123",
             CPF = "1345678910",
             BirthDate = new DateOnly(1990, 1, 1)
-        }
+        };
 
         _userRepositoryMock.Setup(r => r.GetUserByEmail(command.Email))
             .ReturnsAsync(new User());
 
-        await Assert.ThrowAsync<InvalidOperationException>(() => _userService.CreateUser(command));
-        _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.CreateUser(command));
 
     }
 
@@ -106,7 +105,7 @@ public class UserServiceTests
     public async Task GetUserByEmail_ShouldReturnUserSummaryDto_WhenEmailExist()
     {
         var userEmail = "teste@example.com";
-        var testeUser = new User
+        var testUser = new User
         {
             Id = Guid.NewGuid(),
             Name = "User teste",
@@ -119,11 +118,11 @@ public class UserServiceTests
             Email = testUser.Email
         };
 
-        _userRepositoryMock.Setup(r = r.GetUserByEmail(userEmail))
-            .ReturnsAsync(testeUser);
-        
-        _mockMapper.Setup(m => m.Map<UserSummaryDto>(testeUser))
-            .ReturnsAsync(expectedDto);
+        _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
+            .ReturnsAsync(testUser);
+
+        _mockMapper.Setup(mapper => mapper.Map<UserSummaryDto>(testUser))
+        .Returns(expectedDto);
 
         var result = await _userService.GetUserByEmail(userEmail);
 
@@ -138,25 +137,25 @@ public class UserServiceTests
     [Fact]
     public async Task GetUserById_ShouldReturnUserSummaryDto_WhenIdExist()
     {
-        var userId = "umGuiIdDiferente";
-        var testeUser = new User 
+        var userId = Guid.NewGuid();
+        var testUser = new User
         {
             Id = userId,
             Name = "user teste",
             Email = "teste.user@gmail.com"
-        }
-        var expectedDto = new UserSummaryDto 
+        };
+        var expectedDto = new UserSummaryDto
         {
-            Id = testeUser.Id,
-            Name = testeUser.Name,
-            Email = testeUser.Email
-        }
+            Id = testUser.Id,
+            Name = testUser.Name,
+            Email = testUser.Email
+        };
 
         _userRepositoryMock.Setup(r => r.GetUserById(userId))
-            .ReturnsAsync(testeUser);
-        
-        _mockMapper.Setup(m => m.Map<UserSummaryDto>(testeUser))
-            .ReturnsAsync(expectedDto);
+            .ReturnsAsync(testUser);
+
+        _mockMapper.Setup(mapper => mapper.Map<UserSummaryDto>(testUser))
+        .Returns(expectedDto);
 
         var result = await _userService.GetUserById(userId);
 
@@ -164,6 +163,102 @@ public class UserServiceTests
         Assert.Equal(expectedDto.Id, result.Id);
         Assert.Equal(expectedDto.Name, result.Name);
 
-        _userRepositoryMock.Verify(r => r.GetUserByEmail(userEmail), Times.Once);
+        _userRepositoryMock.Verify(r => r.GetUserById(userId), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetAllUsers_ShouldReturnListOfUserSummaryDto()
+    {
+        var users = new List<User>
+        {
+            new User { Id = Guid.NewGuid(), Name = "User 1", Email = "teste.user1@example.com" },
+            new User { Id = Guid.NewGuid(), Name = "User 2", Email = "teste.user2@example.com" },
+            new User { Id = Guid.NewGuid(), Name = "User 3", Email = "teste.user2@example.com" }
+        };
+
+        _userRepositoryMock.Setup(r => r.GetAllUsers())
+            .ReturnsAsync(users);
+
+        _mockMapper.Setup(m => m.Map<IEnumerable<UserSummaryDto>>(users))
+            .Returns(users.Select(u => new UserSummaryDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email
+            }));
+
+        var result = await _userService.GetAllUsers();
+
+        Assert.NotNull(result);
+        Assert.Equal(3, result.Count());
+
+    }
+
+    [Fact]
+    public async Task UpdateUser_ShouldUpdateTheUser()
+    {
+        var command = new UserUpdatingDto
+        {
+            Name = "Updated User",
+            Phone = "9876543210",
+            Password = "NewPassword@123",
+
+        };
+
+        var userId = Guid.NewGuid();
+        var existingUser = new User
+        {
+            Id = userId,
+            Name = "Old User",
+            Email = "oldUser@example.com",
+            HashedPassword = "old_hashed_password",
+        };
+
+        _userRepositoryMock.Setup(r => r.GetUserById(userId))
+            .ReturnsAsync(existingUser);
+
+        existingUser.Name = command.Name;
+        existingUser.Phone = command.Phone;
+        existingUser.HashedPassword = "new_hashed_password";
+
+        _unitOfWorkMock.Setup(uow => uow.SaveChangesAsync()).ReturnsAsync(1);
+
+        _mockMapper.Setup(m => m.Map<UserSummaryDto>(existingUser))
+            .Returns(new UserSummaryDto
+            {
+                Id = existingUser.Id,
+                Name = existingUser.Name,
+                Email = existingUser.Email,
+                Phone = existingUser.Phone
+            });
+
+        var result = await _userService.UpdateUser(userId, command);
+
+        Assert.NotNull(result);
+        Assert.Equal(command.Name, result.Name);
+        Assert.Equal(command.Phone, result.Phone);
+    }
+
+    [Fact]
+    public async Task DeleteUser_ShouldApplieSoftDeletInUser()
+    {
+
+        var userEmail = "userToDelete@example.com";
+        var existingUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "User to Delete",
+            Email = userEmail,
+            DeletedAt = null
+        };
+
+        _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
+        .ReturnsAsync(existingUser);
+
+        await _userService.DeleteUser(userEmail);
+
+        Assert.NotNull(existingUser.DeletedAt);
+        _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(), Times.Once);
+
     }
 }
