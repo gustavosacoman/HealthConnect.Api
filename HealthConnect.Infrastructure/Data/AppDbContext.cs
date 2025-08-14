@@ -2,7 +2,7 @@
 using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthConnect.Infrastructure;
+namespace HealthConnect.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
@@ -38,5 +38,11 @@ public class AppDbContext : DbContext
                 entry.Property(p => p.UpdatedAt).CurrentValue = timestamp;
             }
         }
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 }

@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Domain", "HealthConnect.Domain\HealthConnect.Domain.csproj", "{7D15FAE6-77CF-4FF0-B919-3001511F3CC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Application", "HealthConnect.Application\HealthConnect.Application.csproj", "{7FE49BD2-5090-40E5-9210-AC974F70DB8A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D15FAE6-77CF-4FF0-B919-3001511F3CC6} = {7D15FAE6-77CF-4FF0-B919-3001511F3CC6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructure", "HealthConnect.Infrastructure\HealthConnect.Infrastructure.csproj", "{45C7B3F0-5F54-4C43-B0CD-16FC6A023F4E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -24,6 +27,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Application.Tests", "HealthConnect.Application.Tests\HealthConnect.Application.Tests.csproj", "{EDA3183B-2CE6-4A63-B073-A2348929C3EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructure.Tests", "HealthConnect.Infrastructure.Tests\HealthConnect.Infrastructure.Tests.csproj", "{B5810227-2DF6-4C8B-8D21-9DA8C7CD07EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Api.Tests", "HealthConnect.Api.Tests\HealthConnect.Api.Tests.csproj", "{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Domain.Tests", "HealthConnect.Domain.Tests\HealthConnect.Domain.Tests.csproj", "{ED7E207C-B15F-49F9-BB9C-B435C200C98A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +114,30 @@ Global
 		{B5810227-2DF6-4C8B-8D21-9DA8C7CD07EA}.Release|x64.Build.0 = Release|Any CPU
 		{B5810227-2DF6-4C8B-8D21-9DA8C7CD07EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{B5810227-2DF6-4C8B-8D21-9DA8C7CD07EA}.Release|x86.Build.0 = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|x64.Build.0 = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Debug|x86.Build.0 = Debug|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|x64.ActiveCfg = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|x64.Build.0 = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|x86.ActiveCfg = Release|Any CPU
+		{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}.Release|x86.Build.0 = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|x64.Build.0 = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED7E207C-B15F-49F9-BB9C-B435C200C98A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

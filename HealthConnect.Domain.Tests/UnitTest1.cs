@@ -1,4 +1,4 @@
-﻿namespace HealthConnect.Application.Tests;
+﻿namespace HealthConnect.Domain.Tests;
 
 public class UnitTest1
 {
