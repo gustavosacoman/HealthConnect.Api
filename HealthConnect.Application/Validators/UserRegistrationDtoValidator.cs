@@ -18,7 +18,7 @@ public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDt
             .MaximumLength(50).WithMessage("First name must not exceed 50 characters.");
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")
-            .EmailAddress(EmailValidationMode.AspNetCoreCompatible).WithMessage("Invalid email format.")
+            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").WithMessage("Invalid email format.")
             .MaximumLength(100).WithMessage("Email must not exceed 100 characters.");
         RuleFor(x => x.CPF)
             .NotEmpty().WithMessage("CPF is required.")
