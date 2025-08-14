@@ -14,6 +14,5 @@ public class UserMapper : Profile
     public UserMapper()
     {
         CreateMap<User, UserSummaryDto>();
-        CreateMap<UserSummaryDto, User >();
     }
 }
