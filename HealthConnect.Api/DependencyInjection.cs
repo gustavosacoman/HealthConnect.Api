@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace HealthConnect.Api;
+
+using System.Diagnostics.CodeAnalysis;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-
-namespace HealthConnect.Api;
 
 /// <summary>
 /// Provides extension methods for registering and configuring presentation layer services.
