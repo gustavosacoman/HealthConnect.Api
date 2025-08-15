@@ -1,29 +1,31 @@
-﻿using HealthConnect.Application.Interfaces;
+﻿namespace HealthConnect.Infrastructure.Repositories;
+
+using HealthConnect.Application.Interfaces;
 using HealthConnect.Infrastructure.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthConnect.Infrastructure.Repositories;
-
-public class UnitOfWork : IUnitOfWork
+/// <summary>
+/// Provides a unit of work implementation for managing database transactions.
+/// </summary>
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    private readonly AppDbContext _appDbContext;
-    public UnitOfWork(AppDbContext context)
-    {
-        _appDbContext = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly AppDbContext _appDbContext = context;
 
+    /// <summary>
+    /// Saves all changes made in this context to the database asynchronously.
+    /// </summary>
+    /// <returns>The number of state entries written to the database.</returns>
     public async Task<int> SaveChangesAsync()
     {
         return await _appDbContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Disposes the database context asynchronously.
+    /// </summary>
     public async ValueTask DisposeAsync()
     {
         await _appDbContext.DisposeAsync();
     }
-
 }

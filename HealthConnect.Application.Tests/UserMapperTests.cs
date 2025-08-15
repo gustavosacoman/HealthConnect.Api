@@ -37,9 +37,10 @@ public class UserMapperTests
             Email = "test@example.com",
             CPF = "12345678901",
             Phone = "1234567890",
+            HashedPassword = "hashedpassword",
+            Salt = "salt",
             BirthDate = new DateOnly(1990, 1, 1)
         };
-
 
         var userDto = _mapper.Map<UserSummaryDto>(userEntity);
 

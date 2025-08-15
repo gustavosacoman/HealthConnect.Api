@@ -3,16 +3,17 @@
 using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 /// <summary>
 /// Controller for managing user-related operations.
 /// </summary>
 /// <remarks>
-/// Initializes a new instance of the <see cref="UserController"/> class.
+/// Provides endpoints to retrieve, create, update, and delete user information.
 /// </remarks>
-/// <param name="userService">The user service.</param>
 [ApiController]
 [Route("api/v1/[controller]")]
+[Produces("application/json")]
 public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
@@ -23,6 +24,8 @@ public class UserController(IUserService userService) : ControllerBase
     /// <param name="id">The user's unique identifier.</param>
     /// <returns>The user summary.</returns>
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await _userService.GetUserById(id);
@@ -35,6 +38,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <param name="email">The user's email address.</param>
     /// <returns>The user summary.</returns>
     [HttpGet("by-email/{email}")]
+    [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _userService.GetUserByEmail(email);
@@ -46,6 +50,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// </summary>
     /// <returns>A list of user summaries.</returns>
     [HttpGet("all")]
+    [ProducesResponseType(typeof(IEnumerable<UserSummaryDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsers();
@@ -58,6 +63,8 @@ public class UserController(IUserService userService) : ControllerBase
     /// <param name="data">The user registration data.</param>
     /// <returns>The created user summary.</returns>
     [HttpPost]
+    [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUser([FromBody] UserRegistrationDto data)
     {
         var user = await _userService.CreateUser(data);
@@ -71,6 +78,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <param name="data">The user update data.</param>
     /// <returns>The updated user summary.</returns>
     [HttpPatch("{id:guid}")]
+    [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserUpdatingDto data)
     {
         var user = await _userService.UpdateUser(id, data);
@@ -83,6 +91,8 @@ public class UserController(IUserService userService) : ControllerBase
     /// <param name="email">The user's email address.</param>
     /// <returns>No content.</returns>
     [HttpDelete("{email}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(string email)
     {
         await _userService.DeleteUser(email);

@@ -18,7 +18,7 @@ public record UserRegistrationDto
     /// <summary>
     /// Gets the user's phone number.
     /// </summary>
-    required public string Phone { get; init; }
+    public string? Phone { get; init; }
 
     /// <summary>
     /// Gets the user's password.

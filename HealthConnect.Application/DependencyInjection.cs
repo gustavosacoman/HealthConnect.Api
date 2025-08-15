@@ -1,20 +1,23 @@
-﻿using FluentValidation;
+﻿namespace HealthConnect.Application;
+
+using FluentValidation;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Application;
-
+/// <summary>
+/// Provides extension methods for registering application services and validators.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Registers application services and validators with the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to add services to.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     public static IServiceCollection AddApplication(
         this IServiceCollection services)
     {
