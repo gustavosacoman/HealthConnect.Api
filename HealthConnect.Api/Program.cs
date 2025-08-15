@@ -1,12 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using HealthConnect.Api;
+using HealthConnect.Application;
 using HealthConnect.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddApplication();
 
 var app = builder.Build();
 
