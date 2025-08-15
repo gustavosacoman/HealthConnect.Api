@@ -1,11 +1,6 @@
 ﻿using FluentValidation.TestHelper;
 using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HealthConnect.Application.Tests;
 
@@ -21,7 +16,15 @@ public class UserRegistrationDtoValidatorTests
     [Fact]
     public void Should_Have_Error_When_Name_Is_Null_Or_Empty()
     {
-        var dto = new UserRegistrationDto { Name = string.Empty };
+        var dto = new UserRegistrationDto
+        {
+            Name = string.Empty,
+            Email = "test@example.com",
+            Phone = "1234567890",
+            Password = "ValidPassword123@",
+            CPF = "12345678901",
+            BirthDate = new DateOnly(1990, 1, 1)
+        };
 
         var result = _validator.TestValidate(dto);
 
@@ -31,7 +34,15 @@ public class UserRegistrationDtoValidatorTests
     [Fact]
     public void Should_Not_Have_Error_When_Name_Is_Specified()
     {
-        var dto = new UserRegistrationDto { Name = "Valid Name" }; // Cenário de sucesso
+        var dto = new UserRegistrationDto
+        {
+            Name = "Valid Name",
+            Email = "test@example.com",
+            Phone = "1234567890",
+            Password = "ValidPassword123@",
+            CPF = "12345678901",
+            BirthDate = new DateOnly(1990, 1, 1)
+        };
 
         var result = _validator.TestValidate(dto);
 

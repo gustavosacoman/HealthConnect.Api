@@ -1,4 +1,6 @@
-﻿using HealthConnect.Application.Interfaces;
+﻿namespace HealthConnect.Infrastructure;
+
+using HealthConnect.Application.Interfaces;
 using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;
 using HealthConnect.Infrastructure.Repositories;
@@ -6,18 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
+
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Infrastructure;
-
+/// <summary>
+/// Provides extension methods for registering infrastructure services in the dependency injection container.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public static class DependencyInjection
 {
-
+    /// <summary>
+    /// Adds infrastructure services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to add services to.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when the connection string 'DefaultConnection' is not configured.</exception>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -36,5 +42,4 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
-
 }

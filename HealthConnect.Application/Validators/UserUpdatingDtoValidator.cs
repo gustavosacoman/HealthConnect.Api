@@ -1,18 +1,18 @@
-﻿using FluentValidation;
-using FluentValidation.Validators;
+﻿namespace HealthConnect.Application.Validators;
+
+using FluentValidation;
 using HealthConnect.Application.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Application.Validators;
-
+/// <summary>
+/// Validator for <see cref="UserUpdatingDto"/>. Ensures that user update data meets required validation rules.
+/// </summary>
 public class UserUpdatingDtoValidator : AbstractValidator<UserUpdatingDto>
 {
-    public UserUpdatingDtoValidator() 
-    { 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserUpdatingDtoValidator"/> class.
+    /// </summary>
+    public UserUpdatingDtoValidator()
+    {
         RuleFor(x => x.Name)
             .MaximumLength(50).WithMessage("First name must not exceed 50 characters.");
         RuleFor(x => x.Password)
@@ -23,8 +23,5 @@ public class UserUpdatingDtoValidator : AbstractValidator<UserUpdatingDto>
             .NotEmpty().WithMessage("Phone is required.")
             .Matches(@"^[1-9]\d{1,14}$").WithMessage("Phone must be a valid international phone number format.")
             .MaximumLength(15).WithMessage("Phone must not exceed 15 characters.");
-
     }
-
-
 }

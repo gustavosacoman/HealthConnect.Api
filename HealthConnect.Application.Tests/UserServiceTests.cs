@@ -95,10 +95,21 @@ public class UserServiceTests
         };
 
         _userRepositoryMock.Setup(r => r.GetUserByEmail(command.Email))
-            .ReturnsAsync(new User());
+            .ReturnsAsync(new User
+            {
+                Id = Guid.NewGuid(),
+                Name = command.Name,
+                Email = command.Email,
+                CPF = command.CPF,
+                Phone = command.Phone,
+                HashedPassword = "hashed_password",
+                Salt = "salt",
+                BirthDate = command.BirthDate,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            });
 
         await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.CreateUser(command));
-
     }
 
     [Fact]
@@ -110,12 +121,20 @@ public class UserServiceTests
             Id = Guid.NewGuid(),
             Name = "User teste",
             Email = userEmail,
+            Phone = "1234567890",
+            CPF = "12345678901",
+            HashedPassword = "hashed_password",
+            Salt = "One Salt",
+            BirthDate = new DateOnly(1990, 1, 1)
         };
         var expectedDto = new UserSummaryDto 
         {
             Id = testUser.Id,
             Name = testUser.Name, 
-            Email = testUser.Email
+            Email = testUser.Email,
+            Phone = testUser.Phone,
+            CPF = testUser.CPF,
+            BirthDate = testUser.BirthDate
         };
 
         _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
@@ -141,14 +160,22 @@ public class UserServiceTests
         var testUser = new User
         {
             Id = userId,
-            Name = "user teste",
-            Email = "teste.user@gmail.com"
+            Name = "User teste",
+            Email = "usertest@example.com",
+            Phone = "1234567890",
+            CPF = "12345678901",
+            HashedPassword = "hashed_password",
+            Salt = "One Salt",
+            BirthDate = new DateOnly(1990, 1, 1)
         };
         var expectedDto = new UserSummaryDto
         {
             Id = testUser.Id,
             Name = testUser.Name,
-            Email = testUser.Email
+            Email = testUser.Email,
+            Phone = testUser.Phone,
+            CPF = testUser.CPF,
+            BirthDate = testUser.BirthDate
         };
 
         _userRepositoryMock.Setup(r => r.GetUserById(userId))
@@ -171,9 +198,40 @@ public class UserServiceTests
     {
         var users = new List<User>
         {
-            new User { Id = Guid.NewGuid(), Name = "User 1", Email = "teste.user1@example.com" },
-            new User { Id = Guid.NewGuid(), Name = "User 2", Email = "teste.user2@example.com" },
-            new User { Id = Guid.NewGuid(), Name = "User 3", Email = "teste.user2@example.com" }
+            new User 
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 1",
+                Email = "teste.user1@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1),
+                HashedPassword = "hashed_password",
+                Salt = "salt",
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 2",
+                Email = "teste.user2@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1),
+                HashedPassword = "hashed_password",
+                Salt = "salt",
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 3",
+                Email = "teste.user3@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1),
+                HashedPassword = "hashed_password",
+                Salt = "salt",
+            },
+
         };
 
         _userRepositoryMock.Setup(r => r.GetAllUsers())
@@ -184,7 +242,9 @@ public class UserServiceTests
             {
                 Id = u.Id,
                 Name = u.Name,
-                Email = u.Email
+                Email = u.Email,
+                CPF = u.CPF,
+                BirthDate = u.BirthDate,
             }));
 
         var result = await _userService.GetAllUsers();
@@ -212,6 +272,10 @@ public class UserServiceTests
             Name = "Old User",
             Email = "oldUser@example.com",
             HashedPassword = "old_hashed_password",
+            Salt = "old_salt",
+            Phone = "1234567890",
+            CPF = "12345678901",
+            BirthDate = new DateOnly(1990, 1, 1)
         };
 
         _userRepositoryMock.Setup(r => r.GetUserById(userId))
@@ -229,7 +293,9 @@ public class UserServiceTests
                 Id = existingUser.Id,
                 Name = existingUser.Name,
                 Email = existingUser.Email,
-                Phone = existingUser.Phone
+                Phone = existingUser.Phone,
+                CPF  = existingUser.CPF,
+                BirthDate = existingUser.BirthDate
             });
 
         var result = await _userService.UpdateUser(userId, command);
@@ -249,6 +315,11 @@ public class UserServiceTests
             Id = Guid.NewGuid(),
             Name = "User to Delete",
             Email = userEmail,
+            Phone = "1234567890",
+            CPF = "12345678901",
+            BirthDate = new DateOnly(1990, 1, 1),
+            HashedPassword = "hashed_password",
+            Salt = "salt",
             DeletedAt = null
         };
 

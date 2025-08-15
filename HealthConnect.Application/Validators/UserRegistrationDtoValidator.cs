@@ -1,16 +1,17 @@
-﻿using FluentValidation;
-using FluentValidation.Validators;
+﻿namespace HealthConnect.Application.Validators;
+
+using FluentValidation;
 using HealthConnect.Application.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Application.Validators;
-
+/// <summary>
+/// Validator for <see cref="UserRegistrationDto"/>. Ensures that user registration data meets required validation rules.
+/// </summary>
 public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRegistrationDtoValidator"/> class.
+    /// </summary>
     public UserRegistrationDtoValidator()
     {
         RuleFor(x => x.Name)
@@ -37,5 +38,4 @@ public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDt
             .NotEmpty().WithMessage("Birth date is required.")
             .LessThan(DateOnly.FromDateTime(DateTime.Now.Date)).WithMessage("Birth date must be in the past.");
     }
-
 }

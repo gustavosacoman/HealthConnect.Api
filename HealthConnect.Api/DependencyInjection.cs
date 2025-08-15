@@ -1,23 +1,48 @@
-﻿using HealthConnect.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace HealthConnect.Api;
+
+using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
-namespace HealthConnect.Api;
-
+/// <summary>
+/// Provides extension methods for registering and configuring presentation layer services.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adds presentation layer services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to add services to.</param>
+    /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddControllers();
 
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "HealthConnect API",
+                Description = "API para o sistema de agendamento de consultas HealthConnect.",
+            });
+
+            // Encontra o caminho para o ficheiro XML gerado e diz ao Swagger para usá-lo
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+        });
+
 
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowWebApp",
+            options.AddPolicy(
+                "AllowWebApp",
                 policy =>
                 {
                     policy.AllowAnyOrigin()
@@ -35,6 +60,11 @@ public static class DependencyInjection
         return services;
     }
 
+    /// <summary>
+    /// Configures the presentation layer for the specified <see cref="WebApplication"/>.
+    /// </summary>
+    /// <param name="app">The web application to configure.</param>
+    /// <returns>The configured web application.</returns>
     public static WebApplication UsePresentation(this WebApplication app)
     {
         using (var scope = app.Services.CreateScope())

@@ -1,22 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HealthConnect.Application.Dtos;
 
-namespace HealthConnect.Application.Dtos;
-
+/// <summary>
+/// Data Transfer Object for user registration.
+/// </summary>
 public record UserRegistrationDto
 {
-    public string Name { get; init; }
+    /// <summary>
+    /// Gets the user's full name.
+    /// </summary>
+    required public string Name { get; init; }
 
-    public string Email { get; init; }
+    /// <summary>
+    /// Gets the user's email address.
+    /// </summary>
+    required public string Email { get; init; }
 
-    public string Phone { get; init; }
+    /// <summary>
+    /// Gets the user's phone number.
+    /// </summary>
+    public string? Phone { get; init; }
 
-    public string Password { get; init; }
+    /// <summary>
+    /// Gets the user's password.
+    /// </summary>
+    required public string Password { get; init; }
 
-    public string CPF { get; init; }
+    /// <summary>
+    /// Gets the user's CPF (Cadastro de Pessoas Físicas).
+    /// </summary>
+    required public string CPF { get; init; }
 
-    public DateOnly BirthDate { get; init; }
+    /// <summary>
+    /// Gets the user's birth date.
+    /// </summary>
+    required public DateOnly BirthDate { get; init; }
 }

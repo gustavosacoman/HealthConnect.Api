@@ -1,16 +1,18 @@
-﻿using HealthConnect.Application.Interfaces;
+﻿namespace HealthConnect.Infrastructure.Configurations;
+
+using HealthConnect.Application.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Infrastructure.Configurations;
-
+/// <summary>
+/// Provides cryptographic helper methods for password hashing and verification.
+/// </summary>
 public class CryptoHelper : IPasswordHasher
 {
+    /// <summary>
+    /// Generates a cryptographically secure random salt.
+    /// </summary>
+    /// <returns>A base64-encoded salt string.</returns>
     public string GenerateSalt()
     {
         byte[] salt = new byte[128 / 8];
@@ -27,6 +29,12 @@ public class CryptoHelper : IPasswordHasher
         return Convert.ToBase64String(salt);
     }
 
+    /// <summary>
+    /// Hashes the specified password using the provided salt.
+    /// </summary>
+    /// <param name="password">The password to hash.</param>
+    /// <param name="salt">The base64-encoded salt.</param>
+    /// <returns>A base64-encoded password hash.</returns>
     public string HashPassword(string password, string salt)
     {
         if (string.IsNullOrEmpty(password))
@@ -51,10 +59,16 @@ public class CryptoHelper : IPasswordHasher
         return Convert.ToBase64String(hash);
     }
 
+    /// <summary>
+    /// Verifies that the provided password matches the stored hash using the stored salt.
+    /// </summary>
+    /// <param name="password">The password to verify.</param>
+    /// <param name="storedHash">The stored base64-encoded password hash.</param>
+    /// <param name="storedSalt">The stored base64-encoded salt.</param>
+    /// <returns><c>true</c> if the password matches the hash; otherwise, <c>false</c>.</returns>
     public bool VerifyPassword(string password, string storedHash, string storedSalt)
     {
         var hashedPassword = HashPassword(password, storedSalt);
         return hashedPassword == storedHash;
     }
-
 }
