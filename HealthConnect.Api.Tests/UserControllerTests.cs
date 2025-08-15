@@ -97,7 +97,10 @@ public class UserControllerTests
         {
             Name = "teste User",
             Email = "userTest@example.com",
-            Password = "Password123@"
+            Password = "Password123@",
+            Phone = "1234567890",
+            CPF = "12345678901",
+            BirthDate = new DateOnly(1990, 1, 1)
         };
         var createdUser = new UserSummaryDto
         {
