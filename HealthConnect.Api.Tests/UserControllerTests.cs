@@ -29,12 +29,14 @@ public class UserControllerTests
         {
             Id = userId,
             Name = "Teste User",
-            Email = "testeuser@example.com"
+            Email = "testeuser@example.com",
+            Phone = "1234567890",
+            CPF = "12345678901", 
+            BirthDate = new DateOnly(1990, 1, 1)
         };
 
         _userServiceMock.Setup(service => service.GetUserById(userId))
                         .ReturnsAsync(expectedUser);
-
 
         var result = await _controller.GetUserById(userId);
 
@@ -54,7 +56,10 @@ public class UserControllerTests
         {
             Id = Guid.NewGuid(),
             Name = "Teste User",
-            Email = email
+            Email = email,
+            Phone = "1234567890",
+            CPF = "12345678901",  
+            BirthDate = new DateOnly(1990, 1, 1)
         };
 
         _userServiceMock.Setup(service => service.GetUserByEmail(email))
@@ -74,9 +79,33 @@ public class UserControllerTests
     {
         var expectedUsers = new List<UserSummaryDto>
         {
-            new UserSummaryDto { Id = Guid.NewGuid(), Name = "User 1", Email = "testeUser1@example.com" },
-            new UserSummaryDto { Id = Guid.NewGuid(), Name = "User 2", Email = "testeUser2@example.com" },
-            new UserSummaryDto { Id = Guid.NewGuid(), Name = "User 3", Email = "testeUser3@example.com" }
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 1",
+                Email = "testeUser1@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 2",
+                Email = "testeUser2@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "User 3",
+                Email = "testeUser3@example.com",
+                Phone = "1234567890",
+                CPF = "12345678901",
+                BirthDate = new DateOnly(1990, 1, 1)
+            }
         };
 
         _userServiceMock.Setup(service => service.GetAllUsers())
@@ -94,7 +123,7 @@ public class UserControllerTests
     public async Task CreateUser_ShouldReturnCreatedAtActionWithUser()
     {
         var newUser = new UserRegistrationDto
-        {
+        {   
             Name = "teste User",
             Email = "userTest@example.com",
             Password = "Password123@",
@@ -106,7 +135,10 @@ public class UserControllerTests
         {
             Id = Guid.NewGuid(),
             Name = newUser.Name,
-            Email = newUser.Email
+            Email = newUser.Email,
+            Phone = newUser.Phone,
+            CPF = newUser.CPF,
+            BirthDate = newUser.BirthDate
         };
 
         _userServiceMock.Setup(service => service.CreateUser(newUser))
