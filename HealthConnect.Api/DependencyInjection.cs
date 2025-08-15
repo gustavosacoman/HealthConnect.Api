@@ -1,6 +1,7 @@
 ﻿using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace HealthConnect.Api;
 
@@ -25,6 +26,12 @@ public static class DependencyInjection
                 });
         });
 
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        });
+
         return services;
     }
 
@@ -36,11 +43,10 @@ public static class DependencyInjection
             DbContext.Database.Migrate();
         }
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseForwardedHeaders();
+
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
         app.UseCors("AllowWebApp");
