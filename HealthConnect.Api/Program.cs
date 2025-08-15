@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using HealthConnect.Api;
 using HealthConnect.Infrastructure;
-using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,5 +14,10 @@ app.UsePresentation();
 
 app.Run();
 
+/// <summary>
+/// Entry point for the HealthConnect API application.
+/// </summary>
 [ExcludeFromCodeCoverage]
-public partial class Program { }
+public partial class Program
+{
+}
