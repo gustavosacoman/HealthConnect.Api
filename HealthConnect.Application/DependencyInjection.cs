@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Application;
 
+
 using FluentValidation;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Services;
@@ -22,7 +23,7 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<IUserService, UserService>();
         return services;
     }
