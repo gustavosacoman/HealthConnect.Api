@@ -20,7 +20,8 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers()
+            .AddXmlSerializerFormatters();
 
         services.AddEndpointsApiExplorer();
 
@@ -33,11 +34,9 @@ public static class DependencyInjection
                 Description = "API para o sistema de agendamento de consultas HealthConnect.",
             });
 
-            // Encontra o caminho para o ficheiro XML gerado e diz ao Swagger para usá-lo
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
-
 
         services.AddCors(options =>
         {

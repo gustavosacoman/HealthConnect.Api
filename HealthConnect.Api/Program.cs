@@ -1,7 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using HealthConnect.Api;
+using HealthConnect.Api.Middleweres;
 using HealthConnect.Application;
 using HealthConnect.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,8 @@ builder.Services
     .AddApplication();
 
 var app = builder.Build();
-
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UsePresentation();
-
 app.Run();
 
 /// <summary>
