@@ -69,7 +69,10 @@ public static class DependencyInjection
         using (var scope = app.Services.CreateScope())
         {
             var DbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            DbContext.Database.Migrate();
+            if (DbContext.Database.IsRelational())
+            {
+                DbContext.Database.Migrate();
+            }
         }
 
         app.UseForwardedHeaders();
