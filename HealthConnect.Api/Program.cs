@@ -6,10 +6,15 @@ using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddDatabase(builder.Configuration);
+}
+
 builder.Services
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration)
-    .AddApplication();
+    .AddApplication()
+    .AddRepositories();
 
 var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
