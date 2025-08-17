@@ -24,7 +24,7 @@ public static class DependencyInjection
     /// <param name="configuration">The application configuration.</param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="ArgumentException">Thrown when the connection string 'DefaultConnection' is not configured.</exception>
-    public static IServiceCollection AddInfrastructure(
+    public static IServiceCollection AddDatabase(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -36,11 +36,17 @@ public static class DependencyInjection
         }
 
         services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(connectionString));
+            options.UseNpgsql(connectionString));
 
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, CryptoHelper>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
+
 }
