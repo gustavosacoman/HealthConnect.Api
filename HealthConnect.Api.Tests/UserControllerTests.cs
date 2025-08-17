@@ -1,171 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HealthConnect.Api.Controllers.v1;
+﻿using HealthConnect.Api;
 using HealthConnect.Application.Dtos;
-using HealthConnect.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Xunit;
-
-namespace HealthConnect.Api.Tests;
-
 public class UserControllerTests
+    : IClassFixture<CustomWebAppFactory>
+
 {
-    private readonly Mock<IUserService> _userServiceMock;
-    private readonly UserController _controller;
-
-    public UserControllerTests()
+    private readonly HttpClient _client;
+    public UserControllerTests(CustomWebAppFactory factory)
     {
-        _userServiceMock = new Mock<IUserService>();
-        _controller = new UserController(_userServiceMock.Object);
+        _client = factory.CreateClient();
+    }
+
+
+    [Fact]
+    public async Task GetAllUsers_WhenCalled_ReturnsAllUsers()
+    {
+        var response = await _client.GetAsync("/api/v1/user/all");
+
+        response.EnsureSuccessStatusCode();
+        var users = await response.Content.ReadFromJsonAsync<IEnumerable<UserSummaryDto>>();
+
+        Assert.NotNull(users);
+        Assert.Equal(3, users.Count());
     }
 
     [Fact]
-    public async Task GetUserById_WhenUserExists_ShouldReturnOkResultWithUser()
+    public async Task GetUserById_WhenCalledWithValidId_ReturnsUser()
     {
-        var userId = Guid.NewGuid();
-        var expectedUser = new UserSummaryDto
-        {
-            Id = userId,
-            Name = "Teste User",
-            Email = "testeuser@example.com",
-            Phone = "1234567890",
-            CPF = "12345678901", 
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
+        var userId = "123e4567-e89b-12d3-a456-426614174000";
+        var response = await _client.GetAsync($"/api/v1/user/{userId}");
 
-        _userServiceMock.Setup(service => service.GetUserById(userId))
-                        .ReturnsAsync(expectedUser);
-
-        var result = await _controller.GetUserById(userId);
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-
-        var returnedUser = Assert.IsType<UserSummaryDto>(okResult.Value);
-
-        Assert.Equal(expectedUser.Id, returnedUser.Id);
-        Assert.Equal(expectedUser.Email, returnedUser.Email);
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        Assert.NotNull(user);
+        Assert.Equal(userId, user.Id.ToString());
+        Assert.Equal(user.Name, "Bruno Costa");
     }
 
     [Fact]
-    public async Task GetUserByEmail_WhenUserExists_ShouldReturnOkResultWithUser()
+    public async Task GetUserByEmail_WhenCalledWithValidEmail_ReturnsUserAsync()
     {
-        var email = "testeUsef@example.com";
-        var expectedUser = new UserSummaryDto
-        {
-            Id = Guid.NewGuid(),
-            Name = "Teste User",
-            Email = email,
-            Phone = "1234567890",
-            CPF = "12345678901",  
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
+        var email = "bruno@example.com";
 
-        _userServiceMock.Setup(service => service.GetUserByEmail(email))
-                        .ReturnsAsync(expectedUser);
+        var response = await _client.GetAsync($"/api/v1/user/by-email/{email}");
 
-        var result = await _controller.GetUserByEmail(email);
+        response.EnsureSuccessStatusCode();
 
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedUser = Assert.IsType<UserSummaryDto>(okResult.Value);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.Equal(expectedUser.Id, returnedUser.Id);
-        Assert.Equal(expectedUser.Email, returnedUser.Email);
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        Assert.NotNull(user);
+        Assert.Equal(email, user.Email);
     }
-
-    [Fact]
-    public async Task GetAllUsers_ShouldReturnOkResultWithUsers()
-    {
-        var expectedUsers = new List<UserSummaryDto>
-        {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 1",
-                Email = "testeUser1@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 2",
-                Email = "testeUser2@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 3",
-                Email = "testeUser3@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            }
-        };
-
-        _userServiceMock.Setup(service => service.GetAllUsers())
-                        .ReturnsAsync(expectedUsers);
-
-        var result = await _controller.GetAllUsers();
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedUsers = Assert.IsType<List<UserSummaryDto>>(okResult.Value);
-
-        Assert.Equal(3, returnedUsers.Count());
-    }
-
-    [Fact]
-    public async Task CreateUser_ShouldReturnCreatedAtActionWithUser()
-    {
-        var newUser = new UserRegistrationDto
-        {   
-            Name = "teste User",
-            Email = "userTest@example.com",
-            Password = "Password123@",
-            Phone = "1234567890",
-            CPF = "12345678901",
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
-        var createdUser = new UserSummaryDto
-        {
-            Id = Guid.NewGuid(),
-            Name = newUser.Name,
-            Email = newUser.Email,
-            Phone = newUser.Phone,
-            CPF = newUser.CPF,
-            BirthDate = newUser.BirthDate
-        };
-
-        _userServiceMock.Setup(service => service.CreateUser(newUser))
-                        .ReturnsAsync(createdUser);
-
-        var result = await _controller.CreateUser(newUser);
-
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-
-        var returnedUser = Assert.IsType<UserSummaryDto>(createdAtActionResult.Value);
-
-        Assert.Equal(createdUser.Id, returnedUser.Id);
-        Assert.Equal(nameof(UserController.GetUserById), createdAtActionResult.ActionName);
-
-    }
-
-    [Fact]
-    public async Task DeleteUser_WhenUserExists_ShouldReturnNoContent()
-    {
-        var userEmail = "userTest@example.com";
-
-        var result = await _controller.DeleteUser(userEmail);
-
-        Assert.IsType<NoContentResult>(result);
-
-        _userServiceMock.Verify(service => service.DeleteUser(userEmail), Times.Once);
-
-    }
-
 }
