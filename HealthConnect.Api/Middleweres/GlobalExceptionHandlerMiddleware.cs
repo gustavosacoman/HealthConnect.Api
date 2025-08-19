@@ -29,8 +29,9 @@ public class GlobalExceptionHandlerMiddleware(
         var statusCode = exception switch
         {
             KeyNotFoundException _ => HttpStatusCode.NotFound,
+            ArgumentNullException _ => HttpStatusCode.NotFound,
             ArgumentException _ => HttpStatusCode.BadRequest,
-            InvalidOperationException _ => HttpStatusCode.BadRequest,
+            InvalidOperationException _ => HttpStatusCode.NotAcceptable,
             _ => HttpStatusCode.InternalServerError
         };
 
