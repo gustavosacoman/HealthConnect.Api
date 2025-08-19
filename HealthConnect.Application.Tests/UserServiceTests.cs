@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Services;
 using HealthConnect.Domain.Models;

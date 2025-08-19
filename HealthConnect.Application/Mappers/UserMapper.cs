@@ -1,7 +1,7 @@
 ﻿namespace HealthConnect.Application.Mappers;
 
 using AutoMapper;
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Domain.Models;
 
 /// <summary>

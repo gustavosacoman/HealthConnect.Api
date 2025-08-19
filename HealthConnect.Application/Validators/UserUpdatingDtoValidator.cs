@@ -1,7 +1,7 @@
 ﻿namespace HealthConnect.Application.Validators;
 
 using FluentValidation;
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 
 /// <summary>
 /// Validator for <see cref="UserUpdatingDto"/>. Ensures that user update data meets required validation rules.

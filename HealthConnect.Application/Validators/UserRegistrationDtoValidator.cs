@@ -1,7 +1,7 @@
 ﻿namespace HealthConnect.Application.Validators;
 
 using FluentValidation;
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using System;
 
 /// <summary>

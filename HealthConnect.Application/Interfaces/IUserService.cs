@@ -1,6 +1,6 @@
 ﻿namespace HealthConnect.Application.Interfaces;
 
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 
 /// <summary>
 /// Provides user-related operations such as retrieval, creation, updating, and deletion.

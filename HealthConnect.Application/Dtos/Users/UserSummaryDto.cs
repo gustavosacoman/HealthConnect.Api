@@ -1,4 +1,4 @@
-﻿namespace HealthConnect.Application.Dtos;
+﻿namespace HealthConnect.Application.Dtos.Users;
 
 /// <summary>
 /// Represents a summary of user information.

@@ -1,6 +1,7 @@
 ﻿using HealthConnect.Api;
 using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
