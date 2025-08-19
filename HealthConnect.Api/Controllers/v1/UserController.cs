@@ -1,6 +1,6 @@
 ﻿namespace HealthConnect.Api.Controllers.v1;
 
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
