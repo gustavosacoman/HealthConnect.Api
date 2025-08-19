@@ -1,20 +1,39 @@
 ﻿using HealthConnect.Api;
+using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
+using HealthConnect.Infrastructure.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
+
+namespace HealthConnect.Api.Tests;
 public class UserControllerTests
     : IClassFixture<CustomWebAppFactory>
 
 {
     private readonly HttpClient _client;
+    private readonly CustomWebAppFactory _factory;
     public UserControllerTests(CustomWebAppFactory factory)
     {
-        _client = factory.CreateClient();
-    }
+        _factory = factory;
+        _client = _factory.CreateClient();
 
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var scopedServices = scope.ServiceProvider;
+            var db = scopedServices.GetRequiredService<AppDbContext>();
+
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            SeedData.PopulateDatabase(db);
+        }
+
+    }
 
     [Fact]
     public async Task GetAllUsers_WhenCalled_ReturnsAllUsers()
@@ -104,17 +123,23 @@ public class UserControllerTests
         Assert.NotEqual("0987654321", user.Phone);
     }
 
+    [Fact]
     public async Task SoftDeleteUser_ShouldPutADateInDeleleField_WhenCalled()
     {
-        var userId = "123e4567-e89b-12d3-a456-426614174000";
-        var response = await _client.DeleteAsync($"/api/v1/user/{userId}");
+        var userEmail = "bruno@example.com";
+        var response = await _client.DeleteAsync($"/api/v1/user/{userEmail}");
         
         response.EnsureSuccessStatusCode();
 
-        var user = await _client.GetAsync($"/api/v1/user/{userId}");
+        var getResponse = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
 
-        Assert.Equal(HttpStatusCode.NotFound, user.StatusCode);
-        Assert.Equal("User not found", await user.Content.ReadAsStringAsync());
+        Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
+
+        var content = await getResponse.Content.ReadAsStringAsync();
+        var errorResponse = JsonDocument.Parse(content).RootElement;
+        Assert.Equal(404, errorResponse.GetProperty("StatusCode").GetInt32());
+        Assert.Equal($"User with email {userEmail} not found.",
+            errorResponse.GetProperty("Message").GetString());
     }
 
 }
