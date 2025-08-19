@@ -1,171 +1,147 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HealthConnect.Api.Controllers.v1;
+﻿using HealthConnect.Api;
+using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
-using HealthConnect.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
+using HealthConnect.Infrastructure.Data;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HealthConnect.Api.Tests;
-
 public class UserControllerTests
+    : IClassFixture<CustomWebAppFactory>
+
 {
-    private readonly Mock<IUserService> _userServiceMock;
-    private readonly UserController _controller;
-
-    public UserControllerTests()
+    private readonly HttpClient _client;
+    private readonly CustomWebAppFactory _factory;
+    public UserControllerTests(CustomWebAppFactory factory)
     {
-        _userServiceMock = new Mock<IUserService>();
-        _controller = new UserController(_userServiceMock.Object);
-    }
+        _factory = factory;
+        _client = _factory.CreateClient();
 
-    [Fact]
-    public async Task GetUserById_WhenUserExists_ShouldReturnOkResultWithUser()
-    {
-        var userId = Guid.NewGuid();
-        var expectedUser = new UserSummaryDto
+        using (var scope = _factory.Services.CreateScope())
         {
-            Id = userId,
-            Name = "Teste User",
-            Email = "testeuser@example.com",
-            Phone = "1234567890",
-            CPF = "12345678901", 
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
+            var scopedServices = scope.ServiceProvider;
+            var db = scopedServices.GetRequiredService<AppDbContext>();
 
-        _userServiceMock.Setup(service => service.GetUserById(userId))
-                        .ReturnsAsync(expectedUser);
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
 
-        var result = await _controller.GetUserById(userId);
+            SeedData.PopulateDatabase(db);
+        }
 
-        var okResult = Assert.IsType<OkObjectResult>(result);
-
-        var returnedUser = Assert.IsType<UserSummaryDto>(okResult.Value);
-
-        Assert.Equal(expectedUser.Id, returnedUser.Id);
-        Assert.Equal(expectedUser.Email, returnedUser.Email);
     }
 
     [Fact]
-    public async Task GetUserByEmail_WhenUserExists_ShouldReturnOkResultWithUser()
+    public async Task GetAllUsers_WhenCalled_ReturnsAllUsers()
     {
-        var email = "testeUsef@example.com";
-        var expectedUser = new UserSummaryDto
-        {
-            Id = Guid.NewGuid(),
-            Name = "Teste User",
-            Email = email,
-            Phone = "1234567890",
-            CPF = "12345678901",  
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
+        var response = await _client.GetAsync("/api/v1/user/all");
 
-        _userServiceMock.Setup(service => service.GetUserByEmail(email))
-                        .ReturnsAsync(expectedUser);
+        response.EnsureSuccessStatusCode();
+        var users = await response.Content.ReadFromJsonAsync<IEnumerable<UserSummaryDto>>();
 
-        var result = await _controller.GetUserByEmail(email);
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedUser = Assert.IsType<UserSummaryDto>(okResult.Value);
-
-        Assert.Equal(expectedUser.Id, returnedUser.Id);
-        Assert.Equal(expectedUser.Email, returnedUser.Email);
+        Assert.NotNull(users);
+        Assert.Equal(3, users.Count());
     }
 
     [Fact]
-    public async Task GetAllUsers_ShouldReturnOkResultWithUsers()
+    public async Task GetUserById_WhenCalledWithValidId_ReturnsUser()
     {
-        var expectedUsers = new List<UserSummaryDto>
-        {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 1",
-                Email = "testeUser1@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 2",
-                Email = "testeUser2@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "User 3",
-                Email = "testeUser3@example.com",
-                Phone = "1234567890",
-                CPF = "12345678901",
-                BirthDate = new DateOnly(1990, 1, 1)
-            }
-        };
+        var userId = "123e4567-e89b-12d3-a456-426614174000";
+        var response = await _client.GetAsync($"/api/v1/user/{userId}");
 
-        _userServiceMock.Setup(service => service.GetAllUsers())
-                        .ReturnsAsync(expectedUsers);
-
-        var result = await _controller.GetAllUsers();
-
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedUsers = Assert.IsType<List<UserSummaryDto>>(okResult.Value);
-
-        Assert.Equal(3, returnedUsers.Count());
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        Assert.NotNull(user);
+        Assert.Equal(userId, user.Id.ToString());
+        Assert.Equal(user.Name, "Bruno Costa");
     }
 
     [Fact]
-    public async Task CreateUser_ShouldReturnCreatedAtActionWithUser()
+    public async Task GetUserByEmail_WhenCalledWithValidEmail_ReturnsUserAsync()
     {
+        var email = "bruno@example.com";
+
+        var response = await _client.GetAsync($"/api/v1/user/by-email/{email}");
+
+        response.EnsureSuccessStatusCode();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        Assert.NotNull(user);
+        Assert.Equal(email, user.Email);
+    }
+
+    [Fact]
+    public async Task CreateUser_ShouldCreateAUser_WhenCalled()
+    {
+
         var newUser = new UserRegistrationDto
-        {   
-            Name = "teste User",
-            Email = "userTest@example.com",
-            Password = "Password123@",
-            Phone = "1234567890",
-            CPF = "12345678901",
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
-        var createdUser = new UserSummaryDto
         {
-            Id = Guid.NewGuid(),
-            Name = newUser.Name,
-            Email = newUser.Email,
-            Phone = newUser.Phone,
-            CPF = newUser.CPF,
-            BirthDate = newUser.BirthDate
+            Name = "User test",
+            Email = "userTeste@example.com",
+            Password = "Password123@#",
+            CPF = "58965234525",
+            Phone = "1234567890",
+            BirthDate = new DateOnly(1990, 1, 1),
         };
+        var response = await _client.PostAsJsonAsync("/api/v1/user", newUser);
 
-        _userServiceMock.Setup(service => service.CreateUser(newUser))
-                        .ReturnsAsync(createdUser);
+        response.EnsureSuccessStatusCode();
 
-        var result = await _controller.CreateUser(newUser);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
 
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-
-        var returnedUser = Assert.IsType<UserSummaryDto>(createdAtActionResult.Value);
-
-        Assert.Equal(createdUser.Id, returnedUser.Id);
-        Assert.Equal(nameof(UserController.GetUserById), createdAtActionResult.ActionName);
-
+        Assert.NotNull(user);
+        Assert.Equal(newUser.Name, user.Name);
+        Assert.Equal(newUser.Email, user.Email);
     }
 
     [Fact]
-    public async Task DeleteUser_WhenUserExists_ShouldReturnNoContent()
+    public async Task UpdateUser_ShouldUpdateAUser_WhenCalled()
     {
-        var userEmail = "userTest@example.com";
+        var userId = "123e4567-e89b-12d3-a456-426614174000";
 
-        var result = await _controller.DeleteUser(userEmail);
+        var updatedUser = new UserUpdatingDto
+        {
+            Password = "NewPassword123@#",
+            Phone = "2568745689",
+        };
+        var response = await _client.PatchAsJsonAsync($"/api/v1/user/{userId}", updatedUser);
 
-        Assert.IsType<NoContentResult>(result);
+        response.EnsureSuccessStatusCode();
 
-        _userServiceMock.Verify(service => service.DeleteUser(userEmail), Times.Once);
+        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        Assert.NotNull(user);
+        Assert.Equal(userId, user.Id.ToString());
+        Assert.Equal(updatedUser.Phone, user.Phone);
+        Assert.NotEqual("0987654321", user.Phone);
+    }
 
+    [Fact]
+    public async Task SoftDeleteUser_ShouldPutADateInDeleleField_WhenCalled()
+    {
+        var userEmail = "bruno@example.com";
+        var response = await _client.DeleteAsync($"/api/v1/user/{userEmail}");
+        
+        response.EnsureSuccessStatusCode();
+
+        var getResponse = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
+
+        Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
+
+        var content = await getResponse.Content.ReadAsStringAsync();
+        var errorResponse = JsonDocument.Parse(content).RootElement;
+        Assert.Equal(404, errorResponse.GetProperty("StatusCode").GetInt32());
+        Assert.Equal($"User with email {userEmail} not found.",
+            errorResponse.GetProperty("Message").GetString());
     }
 
 }
+        
+        
