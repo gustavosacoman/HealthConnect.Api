@@ -18,4 +18,6 @@ public interface IPasswordHasher
     /// <param name="salt">The salt to use for hashing.</param>
     /// <returns>The hashed password as a string.</returns>
     string HashPassword(string password, string salt);
+
+    bool VerifyPassword(string password, string storedHash, string storedSalt);
 }
