@@ -1,5 +1,6 @@
 ﻿using FluentValidation.TestHelper;
 using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Validators;
 
 namespace HealthConnect.Application.Tests;
