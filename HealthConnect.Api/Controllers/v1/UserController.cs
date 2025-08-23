@@ -3,7 +3,6 @@
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 /// <summary>
 /// Controller for managing user-related operations.
