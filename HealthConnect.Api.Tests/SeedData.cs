@@ -1,5 +1,7 @@
-﻿using HealthConnect.Domain.Models;
+﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,14 +13,14 @@ namespace HealthConnect.Api.Tests;
 
 public static class SeedData
 {
-    public static void PopulateDatabase(AppDbContext context)
-    {
-        if (!context.Users.Any())
-        {
-            context.Users.RemoveRange(context.Users);
-            context.SaveChanges();
+    public const string DefaultTestUserPassword = "Password123!";
 
-            var users = new List<User>
+    public static void PopulateDatabase(AppDbContext context, IPasswordHasher passwordHasher)
+    {
+        var salt = passwordHasher.GenerateSalt();
+        var hashedPassword = passwordHasher.HashPassword(DefaultTestUserPassword, salt);
+
+        var users = new List<User>
         {
             new User
             {
@@ -36,8 +38,8 @@ public static class SeedData
                 Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174000"),
                 Name = "Bruno Costa",
                 Email = "bruno@example.com",
-                HashedPassword = "hashed_password_2",
-                Salt = "another random_salt_value",
+                HashedPassword = hashedPassword,
+                Salt = salt,
                 CPF = "10987654321",
                 Phone = "0987654321",
                 BirthDate = new DateOnly(1985, 5, 15)
@@ -54,9 +56,7 @@ public static class SeedData
                 BirthDate = new DateOnly(1992, 3, 20)
             }
         };
-            context.Users.AddRange(users);
-            context.SaveChanges();
-
-        }
+        context.Users.AddRange(users);
+        context.SaveChanges();
     }
 }
