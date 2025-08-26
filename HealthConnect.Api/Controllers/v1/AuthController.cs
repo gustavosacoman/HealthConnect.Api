@@ -11,7 +11,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 {
     public readonly IAuthService _authService = authService;
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> Authenticate([FromBody] LoginRequestDto requestDto)
     {
         var response = await _authService.LoginAsync(requestDto);
