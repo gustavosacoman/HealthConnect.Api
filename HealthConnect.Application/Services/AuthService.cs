@@ -17,6 +17,7 @@ public class AuthService(
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IConfiguration _configuration = configuration;
+
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
     {
         if (request == null)
@@ -58,7 +59,7 @@ public class AuthService(
         var keyString = _configuration["Jwt:Key"]
             ?? throw new InvalidOperationException("JWT key is not configured.");
 
-        var key = Encoding.ASCII.GetBytes(keyString);
+        var key = Encoding.UTF8.GetBytes(keyString);
 
         var claims = new List<Claim>
         {

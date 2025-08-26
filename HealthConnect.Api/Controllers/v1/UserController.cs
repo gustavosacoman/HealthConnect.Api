@@ -2,6 +2,7 @@
 
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
