@@ -23,9 +23,8 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        services.AddControllers()
-            .AddXmlSerializerFormatters();
-
+        services.AddControllers();
+        services.AddAuthorization();
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen(options =>
@@ -86,7 +85,7 @@ public static class DependencyInjection
         app.UseHttpsRedirection();
         app.UseCors("AllowWebApp");
         app.UseAuthorization();
-        app.MapControllers();
+        
 
         return app;
     }
