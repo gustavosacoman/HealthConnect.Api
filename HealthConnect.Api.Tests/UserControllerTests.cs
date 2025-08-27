@@ -1,6 +1,10 @@
 ﻿using HealthConnect.Api;
 using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Auth;
+using HealthConnect.Application.Dtos.Users;
+using HealthConnect.Application.Interfaces;
+using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -17,27 +21,60 @@ public class UserControllerTests
 {
     private readonly HttpClient _client;
     private readonly CustomWebAppFactory _factory;
+    private readonly IPasswordHasher _passwordHasher;
+
     public UserControllerTests(CustomWebAppFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
+        _passwordHasher = new CryptoHelper();
 
         using (var scope = _factory.Services.CreateScope())
         {
             var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<AppDbContext>();
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.
+                Add(new System.Net.Http.Headers
+                .MediaTypeWithQualityHeaderValue("application/json"));
+
 
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
-            SeedData.PopulateDatabase(db);
+            SeedData.PopulateDatabase(db, _passwordHasher);
+        }
+    }
+
+    private async Task<string> AuthenticateAndGetTokenAsync()
+    {
+        var loginRequest = new LoginRequestDto
+        {
+            Email = "bruno@example.com",
+            Password = "Password123!",
+        };
+        var response = await _client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
+        response.EnsureSuccessStatusCode();
+
+        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
+
+        if (loginResponse?.Token == null)
+        {
+            throw new InvalidOperationException("No possible to get the token");
+
         }
 
+        return loginResponse.Token;
     }
 
     [Fact]
     public async Task GetAllUsers_WhenCalled_ReturnsAllUsers()
     {
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
         var response = await _client.GetAsync("/api/v1/user/all");
 
         response.EnsureSuccessStatusCode();
@@ -50,6 +87,10 @@ public class UserControllerTests
     [Fact]
     public async Task GetUserById_WhenCalledWithValidId_ReturnsUser()
     {
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         var userId = "123e4567-e89b-12d3-a456-426614174000";
         var response = await _client.GetAsync($"/api/v1/user/{userId}");
 
@@ -64,6 +105,11 @@ public class UserControllerTests
     [Fact]
     public async Task GetUserByEmail_WhenCalledWithValidEmail_ReturnsUserAsync()
     {
+
+        var token = await   AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
         var email = "bruno@example.com";
 
         var response = await _client.GetAsync($"/api/v1/user/by-email/{email}");
@@ -80,6 +126,10 @@ public class UserControllerTests
     [Fact]
     public async Task CreateUser_ShouldCreateAUser_WhenCalled()
     {
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var newUser = new UserRegistrationDto
         {
@@ -105,6 +155,12 @@ public class UserControllerTests
     [Fact]
     public async Task UpdateUser_ShouldUpdateAUser_WhenCalled()
     {
+
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
         var userId = "123e4567-e89b-12d3-a456-426614174000";
 
         var updatedUser = new UserUpdatingDto
@@ -126,7 +182,13 @@ public class UserControllerTests
     [Fact]
     public async Task SoftDeleteUser_ShouldPutADateInDeleleField_WhenCalled()
     {
-        var userEmail = "bruno@example.com";
+
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var userEmail = "carla@example.com";
         var response = await _client.DeleteAsync($"/api/v1/user/{userEmail}");
         
         response.EnsureSuccessStatusCode();

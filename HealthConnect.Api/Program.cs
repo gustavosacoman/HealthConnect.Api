@@ -14,7 +14,8 @@ if (!builder.Environment.IsEnvironment("Testing"))
 builder.Services
     .AddPresentation()
     .AddApplication()
-    .AddRepositories();
+    .AddRepositories()
+    .AddJWTConfiguration(builder.Configuration);
 
 var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();

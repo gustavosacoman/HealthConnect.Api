@@ -1,9 +1,9 @@
 ﻿namespace HealthConnect.Api.Controllers.v1;
 
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 /// <summary>
 /// Controller for managing user-related operations.
@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;

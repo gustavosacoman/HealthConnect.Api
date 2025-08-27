@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HealthConnect.Application.Dtos;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Mappers;
 using HealthConnect.Domain.Models;
 using Xunit;

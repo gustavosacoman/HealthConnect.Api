@@ -32,6 +32,8 @@ public class GlobalExceptionHandlerMiddleware(
             ArgumentNullException _ => HttpStatusCode.NotFound,
             ArgumentException _ => HttpStatusCode.BadRequest,
             InvalidOperationException _ => HttpStatusCode.NotAcceptable,
+            NullReferenceException _ => HttpStatusCode.BadRequest,
+            UnauthorizedAccessException _ => HttpStatusCode.Unauthorized,
             _ => HttpStatusCode.InternalServerError
         };
 

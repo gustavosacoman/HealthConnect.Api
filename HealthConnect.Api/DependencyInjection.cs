@@ -1,11 +1,14 @@
 ﻿namespace HealthConnect.Api;
 
 using HealthConnect.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
 
 /// <summary>
 /// Provides extension methods for registering and configuring presentation layer services.
@@ -20,9 +23,8 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        services.AddControllers()
-            .AddXmlSerializerFormatters();
-
+        services.AddControllers();
+        services.AddAuthorization();
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen(options =>
@@ -79,12 +81,35 @@ public static class DependencyInjection
 
         app.UseSwagger();
         app.UseSwaggerUI();
-
+        app.UseAuthentication();
         app.UseHttpsRedirection();
         app.UseCors("AllowWebApp");
         app.UseAuthorization();
-        app.MapControllers();
+        
 
         return app;
+    }
+
+    public static IServiceCollection AddJWTConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = configuration["Jwt:Audience"],
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+            };
+        });
+        return services;
     }
 }
