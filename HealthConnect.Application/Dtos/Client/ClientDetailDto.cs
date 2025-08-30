@@ -9,10 +9,10 @@ public record ClientDetailDto
 
     public string Email { get; init; }
 
-    public string Cpf { get; init; }
-
-    public DateTime BirthDate { get; init; }
+    public string CPF { get; init; }
 
     public string Phone { get; init; }
+
+    public DateTime BirthDate { get; init; }
 
 }
