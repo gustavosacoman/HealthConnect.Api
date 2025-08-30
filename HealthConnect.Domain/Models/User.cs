@@ -43,6 +43,11 @@ public class User : IAuditable, ISoftDeletable
     required public string Salt { get; set; }
 
     /// <summary>
+    /// Gets or sets the associated doctor information for the user, if applicable.
+    /// </summary>
+    public virtual Doctor? Doctor { get; set; }
+
+    /// <summary>
     /// Gets or sets the birth date of the user.
     /// </summary>
     public DateOnly BirthDate { get; set; }

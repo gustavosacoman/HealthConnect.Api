@@ -1,18 +1,11 @@
-﻿namespace HealthConnect.Application.Validators;
+﻿using FluentValidation;
+using HealthConnect.Application.Dtos.Doctors;
 
-using FluentValidation;
-using HealthConnect.Application.Dtos.Users;
-using System;
+namespace HealthConnect.Application.Validators.DoctorDtoValidator;
 
-/// <summary>
-/// Validator for <see cref="UserRegistrationDto"/>. Ensures that user registration data meets required validation rules.
-/// </summary>
-public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDto>
+public class DoctorRegistrationDtoValidator : AbstractValidator<DoctorRegistrationDto>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UserRegistrationDtoValidator"/> class.
-    /// </summary>
-    public UserRegistrationDtoValidator()
+    public DoctorRegistrationDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("First name is required.")
@@ -29,7 +22,7 @@ public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDt
             .NotEmpty().WithMessage("Password is required.")
             .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$").WithMessage("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long.")
-            .MaximumLength(254).WithMessage("Password must not exceed 100 characters.");
+            .MaximumLength(254).WithMessage("Password must not exceed 254 characters.");
         RuleFor(x => x.Phone)
             .NotEmpty().WithMessage("Phone is required.")
             .Matches(@"^[1-9]\d{1,14}$").WithMessage("Phone must be a valid international phone number format.")
@@ -37,5 +30,16 @@ public class UserRegistrationDtoValidator : AbstractValidator<UserRegistrationDt
         RuleFor(x => x.BirthDate)
             .NotEmpty().WithMessage("Birth date is required.")
             .LessThan(DateOnly.FromDateTime(DateTime.Now.Date)).WithMessage("Birth date must be in the past.");
+        RuleFor(x => x.RQE)
+           .NotEmpty().WithMessage("RQE is required.")
+           .MaximumLength(20).WithMessage("RQE must not exceed 20 characters.");
+        RuleFor(x => x.CRM)
+           .NotEmpty().WithMessage("CRM is required.")
+           .MaximumLength(20).WithMessage("CRM must not exceed 20 characters.");
+        RuleFor(x => x.Specialty)
+            .NotEmpty().WithMessage("Specialty is required.")
+            .MaximumLength(100).WithMessage("Specialty must not exceed 100 characters.");
+        RuleFor(x => x.Biography)
+              .MaximumLength(3500).WithMessage("Biography must not exceed 3500 characters.");
     }
 }

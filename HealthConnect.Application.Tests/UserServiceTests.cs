@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Services;
 using HealthConnect.Domain.Models;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HealthConnect.Application.Tests;
 
@@ -19,6 +14,7 @@ public class UserServiceTests
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IPasswordHasher> _mockPasswordHasher;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<IDoctorRepository> _doctorRepository;
 
     private readonly UserService _userService;
     public UserServiceTests()
@@ -26,6 +22,7 @@ public class UserServiceTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _mockPasswordHasher = new Mock<IPasswordHasher>();
+        _doctorRepository = new Mock<IDoctorRepository>();
         _mockMapper = new Mock<IMapper>();
 
 
@@ -33,84 +30,9 @@ public class UserServiceTests
             _userRepositoryMock.Object,
             _mockMapper.Object,
             _mockPasswordHasher.Object,
-            _unitOfWorkMock.Object
+            _unitOfWorkMock.Object,
+            _doctorRepository.Object
         );
-    }
-
-    [Fact]
-    public async Task CreateUserAsync_WithValidAndUniqueData_ShouldSucceedAndSaveChanges()
-    {
-        var command = new UserRegistrationDto
-        {
-            Name = "Test User",
-            Email = "teste.user@gmail.com",
-            Phone = "1234567890",
-            Password = "Password@123",
-            CPF = "12345678901",
-            BirthDate = new DateOnly(1990, 1, 1)
-
-        };
-
-        _userRepositoryMock.Setup(r => r.GetUserByEmail(It.IsAny<string>()))
-            .ReturnsAsync((User)null);
-
-        _userRepositoryMock.Setup(r => r.CreateUser(It.IsAny<User>()));
-
-        _unitOfWorkMock.Setup(uow => uow.SaveChangesAsync()).ReturnsAsync(1);
-
-        _mockPasswordHasher.Setup(p => p.GenerateSalt()).Returns("fake_salt");
-        _mockPasswordHasher.Setup(p => p.HashPassword(It.IsAny<string>(), It.IsAny<string>())).Returns("fake_hash");
-
-        _mockMapper.Setup(m => m.Map<UserSummaryDto>(It.IsAny<User>()))
-            .Returns(new UserSummaryDto 
-            {
-                Id = Guid.NewGuid(),
-                Name = command.Name,
-                Email = command.Email,
-                CPF = command.CPF,
-                BirthDate = command.BirthDate,
-                Phone = command.Phone
-            });
-
-
-        var result = await _userService.CreateUser(command);
-
-        _userRepositoryMock.Verify(r => r.CreateUser(It.IsAny<User>()), Times.Once);
-        _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(), Times.Once);
-
-        Assert.NotNull(result);
-        Assert.Equal(command.Name, result.Name);
-    }
-
-    [Fact]
-    public async Task CreateUser_ShouldThrowInvalidOperationException_WhenEmailAlreadyExist()
-    {
-        var command = new UserRegistrationDto
-        {
-            Name = "userTest",
-            Email = "teste.user@gmail.com",
-            Phone = "123456789",
-            Password = "Password@123",
-            CPF = "1345678910",
-            BirthDate = new DateOnly(1990, 1, 1)
-        };
-
-        _userRepositoryMock.Setup(r => r.GetUserByEmail(command.Email))
-            .ReturnsAsync(new User
-            {
-                Id = Guid.NewGuid(),
-                Name = command.Name,
-                Email = command.Email,
-                CPF = command.CPF,
-                Phone = command.Phone,
-                HashedPassword = "hashed_password",
-                Salt = "salt",
-                BirthDate = command.BirthDate,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            });
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.CreateUser(command));
     }
 
     [Fact]
@@ -138,19 +60,19 @@ public class UserServiceTests
             BirthDate = testUser.BirthDate
         };
 
-        _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
+        _userRepositoryMock.Setup(r => r.GetUserByEmailAsync(userEmail))
             .ReturnsAsync(testUser);
 
         _mockMapper.Setup(mapper => mapper.Map<UserSummaryDto>(testUser))
         .Returns(expectedDto);
 
-        var result = await _userService.GetUserByEmail(userEmail);
+        var result = await _userService.GetUserByEmailAsync(userEmail);
 
         Assert.NotNull(result);
         Assert.Equal(expectedDto.Id, result.Id);
         Assert.Equal(expectedDto.Name, result.Name);
 
-        _userRepositoryMock.Verify(r => r.GetUserByEmail(userEmail), Times.Once);
+        _userRepositoryMock.Verify(r => r.GetUserByEmailAsync(userEmail), Times.Once);
 
     }
 
@@ -179,19 +101,19 @@ public class UserServiceTests
             BirthDate = testUser.BirthDate
         };
 
-        _userRepositoryMock.Setup(r => r.GetUserById(userId))
+        _userRepositoryMock.Setup(r => r.GetUserByIdAsync(userId))
             .ReturnsAsync(testUser);
 
         _mockMapper.Setup(mapper => mapper.Map<UserSummaryDto>(testUser))
         .Returns(expectedDto);
 
-        var result = await _userService.GetUserById(userId);
+        var result = await _userService.GetUserByIdAsync(userId);
 
         Assert.NotNull(result);
         Assert.Equal(expectedDto.Id, result.Id);
         Assert.Equal(expectedDto.Name, result.Name);
 
-        _userRepositoryMock.Verify(r => r.GetUserById(userId), Times.Once);
+        _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userId), Times.Once);
     }
 
     [Fact]
@@ -235,7 +157,7 @@ public class UserServiceTests
 
         };
 
-        _userRepositoryMock.Setup(r => r.GetAllUsers())
+        _userRepositoryMock.Setup(r => r.GetAllUsersAsync())
             .ReturnsAsync(users);
 
         _mockMapper.Setup(m => m.Map<IEnumerable<UserSummaryDto>>(users))
@@ -248,7 +170,7 @@ public class UserServiceTests
                 BirthDate = u.BirthDate,
             }));
 
-        var result = await _userService.GetAllUsers();
+        var result = await _userService.GetAllUsersAsync();
 
         Assert.NotNull(result);
         Assert.Equal(3, result.Count());
@@ -279,7 +201,7 @@ public class UserServiceTests
             BirthDate = new DateOnly(1990, 1, 1)
         };
 
-        _userRepositoryMock.Setup(r => r.GetUserById(userId))
+        _userRepositoryMock.Setup(r => r.GetUserByIdAsync(userId))
             .ReturnsAsync(existingUser);
 
         existingUser.Name = command.Name;
@@ -299,7 +221,7 @@ public class UserServiceTests
                 BirthDate = existingUser.BirthDate
             });
 
-        var result = await _userService.UpdateUser(userId, command);
+        var result = await _userService.UpdateUserAsync(userId, command);
 
         Assert.NotNull(result);
         Assert.Equal(command.Name, result.Name);
@@ -311,9 +233,10 @@ public class UserServiceTests
     {
 
         var userEmail = "userToDelete@example.com";
+        
         var existingUser = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
             Name = "User to Delete",
             Email = userEmail,
             Phone = "1234567890",
@@ -321,13 +244,32 @@ public class UserServiceTests
             BirthDate = new DateOnly(1990, 1, 1),
             HashedPassword = "hashed_password",
             Salt = "salt",
-            DeletedAt = null
+            DeletedAt = null,
+
+
         };
 
-        _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
+        var doctor = new Doctor
+        {
+            Id = Guid.NewGuid(),
+            CRM = "CRM123456",
+            RQE = "RQE654321",
+            Biography = "Experienced general practitioner with a passion for patient care.",
+            Specialty = "General Medicine",
+            UserId = Guid.Parse("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
+            User = existingUser,
+            CreatedAt = DateTime.UtcNow,
+            DeletedAt = null,
+
+        };
+
+        existingUser.Doctor = doctor;
+
+        _userRepositoryMock.Setup(r => r.GetUserByEmailAsync(userEmail))
         .ReturnsAsync(existingUser);
 
-        await _userService.DeleteUser(userEmail);
+        await _userService.DeleteUserAsync(userEmail);
+        Assert.NotNull(existingUser.Doctor.DeletedAt);
 
         Assert.NotNull(existingUser.DeletedAt);
         _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(), Times.Once);

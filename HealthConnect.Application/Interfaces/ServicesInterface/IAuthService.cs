@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthConnect.Application.Interfaces;
+namespace HealthConnect.Application.Interfaces.ServicesInterface;
 
 public interface IAuthService
 {

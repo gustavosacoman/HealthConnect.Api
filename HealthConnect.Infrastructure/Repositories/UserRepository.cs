@@ -1,6 +1,6 @@
 ﻿namespace HealthConnect.Infrastructure.Repositories;
 
-using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// </summary>
     /// <param name="User">The User object to be created.</param>
     /// <returns>A Task that represents the asynchronous add operation.</returns>
-    public async Task CreateUser(User User)
+    public async Task CreateUserAsync(User User)
     {
         await _appDbContext.Users.AddAsync(User);
     }
@@ -28,7 +28,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// <returns>
     /// A Task that, upon completion, contains an IEnumerable<User> collection with all users.
     /// </returns>
-    public async Task<IEnumerable<User>> GetAllUsers()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _appDbContext.Users.ToListAsync();
     }
@@ -41,9 +41,10 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// A Task that, upon completion, contains the User object corresponding to the provided email,
     /// or <c>null</c> if no user is found.
     /// </returns>
-    public async Task<User?> GetUserByEmail(string Email)
+    public async Task<User?> GetUserByEmailAsync(string Email)
     {
-        return await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == Email);
+        return await _appDbContext.Users.Include(u => u.Doctor)
+            .FirstOrDefaultAsync(u => u.Email == Email);
     }
 
     /// <summary>
@@ -54,9 +55,15 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// A Task that, upon completion, contains the User object corresponding to the provided ID,
     /// or <c>null</c> if no user is found.
     /// </returns>
-    public async Task<User?> GetUserById(Guid Id)
+    public async Task<User?> GetUserByIdAsync(Guid Id)
     {
         return await _appDbContext.Users.FindAsync(Id);
     }
 
+    public async Task<User?> GetDoctorByEmailAsync(string email)
+    {
+        return await _appDbContext.Users
+            .Include(u => u.Doctor)
+            .FirstOrDefaultAsync(u => u.Email == email && u.Doctor != null);
+    }
 }

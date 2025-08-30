@@ -1,8 +1,11 @@
 ﻿namespace HealthConnect.Application.Services;
 
 using AutoMapper;
+using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 
 /// <summary>
@@ -12,26 +15,28 @@ public class UserService(
     IUserRepository userRepository,
     IMapper mapper,
     IPasswordHasher passwordHasher,
-    IUnitOfWork unitOfWork) : IUserService
+    IUnitOfWork unitOfWork,
+    IDoctorRepository doctorRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
     /// <summary>
     /// Gets a user by their unique identifier.
     /// </summary>
     /// <param name="Id">The user ID.</param>
     /// <returns>The user summary DTO.</returns>
-    public async Task<UserSummaryDto> GetUserById(Guid Id)
+    public async Task<UserSummaryDto> GetUserByIdAsync(Guid Id)
     {
         if (Id == Guid.Empty)
         {
             throw new ArgumentException("User ID cannot be empty.", nameof(Id));
         }
 
-        var user = await _userRepository.GetUserById(Id);
+        var user = await _userRepository.GetUserByIdAsync(Id);
 
         return _mapper.Map<UserSummaryDto>(user)
             ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
@@ -42,14 +47,14 @@ public class UserService(
     /// </summary>
     /// <param name="Email">The user's email.</param>
     /// <returns>The user summary DTO.</returns>
-    public async Task<UserSummaryDto> GetUserByEmail(string Email)
+    public async Task<UserSummaryDto> GetUserByEmailAsync(string Email)
     {
         if (string.IsNullOrWhiteSpace(Email))
         {
             throw new ArgumentException("Email cannot be null or empty.", nameof(Email));
         }
 
-        var user = await _userRepository.GetUserByEmail(Email);
+        var user = await _userRepository.GetUserByEmailAsync(Email);
 
         return _mapper.Map<UserSummaryDto>(user)
             ?? throw new KeyNotFoundException($"User with email {Email} not found.");
@@ -59,37 +64,42 @@ public class UserService(
     /// Gets all users.
     /// </summary>
     /// <returns>A collection of user summary DTOs.</returns>
-    public async Task<IEnumerable<UserSummaryDto>> GetAllUsers()
+    public async Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync()
     {
-        var users = await _userRepository.GetAllUsers();
+        var users = await _userRepository.GetAllUsersAsync();
         return _mapper.Map<IEnumerable<UserSummaryDto>>(users);
     }
 
-    /// <summary>
-    /// Creates a new user.
-    /// </summary>
-    /// <param name="data">The user registration data.</param>
-    /// <returns>The created user summary DTO.</returns>
-    public async Task<UserSummaryDto> CreateUser(UserRegistrationDto data)
+    public async Task<DoctorDetailDto> GetDoctorByEmailAsync(string email)
     {
-        if (data == null)
+        if (string.IsNullOrWhiteSpace(email))
         {
-            throw new ArgumentNullException(nameof(data), "User cannot be null.");
+            throw new ArgumentException("Email cannot be null or empty.", nameof(email));
         }
 
-        if (string.IsNullOrWhiteSpace(data.Name) || string.IsNullOrWhiteSpace(data.Email) ||
-            string.IsNullOrWhiteSpace(data.Password) || string.IsNullOrWhiteSpace(data.CPF))
-        {
-            throw new ArgumentException("User data is incomplete.");
-        }
+        var user = await _userRepository.GetDoctorByEmailAsync(email);
 
-        if (await _userRepository.GetUserByEmail(data.Email) != null)
+        return _mapper.Map<DoctorDetailDto>(user.Doctor)
+            ?? throw new KeyNotFoundException($"No doctor profile found for user with email {email}.");
+    }
+    /// <summary>
+    /// Creates a new doctor user in the system.
+    /// </summary>
+    /// <param name="data">The doctor registration data.</param>
+    /// <returns>The summary DTO of the created user.</returns>
+    public async Task<DoctorDetailDto> CreateDoctorAsync(DoctorRegistrationDto data)
+    {
+        if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
         {
             throw new InvalidOperationException($"User with email {data.Email} already exists.");
         }
 
-        var salt = _passwordHasher.GenerateSalt();
+        if (await _doctorRepository.GetDoctorByRQE(data.RQE) != null)
+        {
+            throw new InvalidOperationException($"Doctor with RQE {data.RQE} already exists.");
+        }
 
+        var salt = _passwordHasher.GenerateSalt();
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -100,12 +110,25 @@ public class UserService(
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
         };
+        var doctor = new Doctor
+        {
+            Id = Guid.NewGuid(),
+            User = user,
+            UserId = user.Id,
+            RQE = data.RQE,
+            CRM = data.CRM,
+            Biography = data.Biography,
+            Specialty = data.Specialty,
+        };
 
-        await _userRepository.CreateUser(user);
+        await _userRepository.CreateUserAsync(user);
+        await _doctorRepository.CreateDoctor(doctor);
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<UserSummaryDto>(user);
+        return _mapper.Map<DoctorDetailDto>(user.Doctor);
+
     }
+
 
     /// <summary>
     /// Updates an existing user.
@@ -113,7 +136,7 @@ public class UserService(
     /// <param name="Id">The user ID.</param>
     /// <param name="data">The user update data.</param>
     /// <returns>The updated user summary DTO.</returns>
-    public async Task<UserSummaryDto> UpdateUser(Guid Id, UserUpdatingDto data)
+    public async Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data)
     {
         if (Id == Guid.Empty)
         {
@@ -125,7 +148,7 @@ public class UserService(
             throw new ArgumentNullException(nameof(data), "User data cannot be null.");
         }
 
-        var user = await _userRepository.GetUserById(Id)
+        var user = await _userRepository.GetUserByIdAsync(Id)
             ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
 
         user.Name = data.Name ?? user.Name;
@@ -147,17 +170,18 @@ public class UserService(
     /// </summary>
     /// <param name="email">The user's email.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public async Task DeleteUser(string email)
+    public async Task DeleteUserAsync(string email)
     {
         if (string.IsNullOrEmpty(email))
         {
             throw new ArgumentException("User ID cannot be empty.", nameof(email));
         }
 
-        var user = await _userRepository.GetUserByEmail(email) ??
+        var user = await _userRepository.GetUserByEmailAsync(email) ??
             throw new KeyNotFoundException($"User with ID {email} not found.");
 
         user.DeletedAt = DateTime.UtcNow;
+        user.Doctor.DeletedAt = DateTime.UtcNow;
 
         await _unitOfWork.SaveChangesAsync();
     }
