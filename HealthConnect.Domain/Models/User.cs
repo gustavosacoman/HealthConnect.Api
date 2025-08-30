@@ -45,7 +45,7 @@ public class User : IAuditable, ISoftDeletable
     /// <summary>
     /// Gets or sets the associated doctor information for the user, if applicable.
     /// </summary>
-    public Doctor? Doctor { get; set; }
+    public virtual Doctor? Doctor { get; set; }
 
     /// <summary>
     /// Gets or sets the birth date of the user.
