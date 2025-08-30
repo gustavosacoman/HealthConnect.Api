@@ -218,7 +218,8 @@ public class UserService(
         {
             user.Client.DeletedAt = DateTime.UtcNow;
         }
-        else
+
+        if (user.Doctor != null)
         {
             user.Doctor.DeletedAt = DateTime.UtcNow;
         }
