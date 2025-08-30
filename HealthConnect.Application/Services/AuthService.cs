@@ -2,6 +2,8 @@
 
 using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -30,7 +32,7 @@ public class AuthService(
             throw new ArgumentException("Email and password must be provided.");
         }
 
-        var user = await _userRepository.GetUserByEmail(request.Email);
+        var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
         if (user == null)
         {
