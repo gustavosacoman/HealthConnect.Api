@@ -1,6 +1,6 @@
-﻿using HealthConnect.Domain.Interfaces;
+﻿namespace HealthConnect.Domain.Models;
 
-namespace HealthConnect.Domain.Models;
+using HealthConnect.Domain.Interfaces;
 
 public class Doctor: IAuditable, ISoftDeletable
 {
