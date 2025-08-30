@@ -1,7 +1,8 @@
 ﻿namespace HealthConnect.Api.Controllers.v1;
 
+using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
-using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
-        var user = await _userService.GetUserById(id);
+        var user = await _userService.GetUserByIdAsync(id);
         return Ok(user);
     }
 
@@ -42,7 +43,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
-        var user = await _userService.GetUserByEmail(email);
+        var user = await _userService.GetUserByEmailAsync(email);
         return Ok(user);
     }
 
@@ -54,22 +55,22 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<UserSummaryDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userService.GetAllUsers();
+        var users = await _userService.GetAllUsersAsync();
         return Ok(users);
     }
 
     /// <summary>
-    /// Creates a new user.
+    /// Creates a new complete doctor.
     /// </summary>
     /// <param name="data">The user registration data.</param>
     /// <returns>The created user summary.</returns>
-    [HttpPost]
+    [HttpPost("doctor")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUser([FromBody] UserRegistrationDto data)
+    public async Task<IActionResult> CreateDoctor([FromBody] DoctorRegistrationDto data)
     {
-        var user = await _userService.CreateUser(data);
-        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+        var doctor = await _userService.CreateDoctorAsync(data);
+        return CreatedAtAction(nameof(GetUserById), new { id = doctor.UserId }, doctor);
     }
 
     /// <summary>
@@ -82,7 +83,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserUpdatingDto data)
     {
-        var user = await _userService.UpdateUser(id, data);
+        var user = await _userService.UpdateUserAsync(id, data);
         return Ok(user);
     }
 
@@ -96,7 +97,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(string email)
     {
-        await _userService.DeleteUser(email);
+        await _userService.DeleteUserAsync(email);
         return NoContent();
     }
 }
