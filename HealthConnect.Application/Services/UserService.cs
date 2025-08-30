@@ -1,6 +1,7 @@
 ﻿namespace HealthConnect.Application.Services;
 
 using AutoMapper;
+using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
@@ -16,13 +17,15 @@ public class UserService(
     IMapper mapper,
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
-    IDoctorRepository doctorRepository) : IUserService
+    IDoctorRepository doctorRepository,
+    IClientRepository clientRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
+    private readonly IClientRepository _clientRepository = clientRepository;
 
     /// <summary>
     /// Gets a user by their unique identifier.
@@ -129,6 +132,35 @@ public class UserService(
 
     }
 
+    public async Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data)
+    {
+        if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
+        {
+            throw new InvalidOperationException($"User with email {data.Email} already exists.");
+        }
+
+        var salt = _passwordHasher.GenerateSalt();
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = data.Name,
+            Email = data.Email,
+            CPF = data.CPF,
+            Salt = salt,
+            HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
+            BirthDate = data.BirthDate,
+        };
+        var client = new Client
+        {
+            Id = Guid.NewGuid(),
+            User = user,
+            UserId = user.Id,
+        };
+        await _userRepository.CreateUserAsync(user);
+        await _clientRepository.CreateClientAsync(client);
+        await _unitOfWork.SaveChangesAsync();
+        return _mapper.Map<ClientDetailDto>(user.Client);
+    }
 
     /// <summary>
     /// Updates an existing user.
@@ -181,7 +213,15 @@ public class UserService(
             throw new KeyNotFoundException($"User with ID {email} not found.");
 
         user.DeletedAt = DateTime.UtcNow;
-        user.Doctor.DeletedAt = DateTime.UtcNow;
+
+        if (user.Client != null)
+        {
+            user.Client.DeletedAt = DateTime.UtcNow;
+        }
+        else
+        {
+            user.Doctor.DeletedAt = DateTime.UtcNow;
+        }
 
         await _unitOfWork.SaveChangesAsync();
     }
