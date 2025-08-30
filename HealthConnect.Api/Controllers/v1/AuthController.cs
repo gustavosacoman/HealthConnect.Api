@@ -1,7 +1,7 @@
 ﻿namespace HealthConnect.Api.Controllers.v1;
 
 using HealthConnect.Application.Dtos.Auth;
-using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
