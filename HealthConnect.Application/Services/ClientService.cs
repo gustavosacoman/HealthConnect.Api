@@ -24,7 +24,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
             throw new ArgumentException("Client ID cannot be empty.", nameof(clientId));
         }
 
-        var user = await _clientRepository.GetClientByUserIdAsync(clientId) ??
+        var user = await _clientRepository.GetClientByIdAsync(clientId) ??
             throw new KeyNotFoundException($"Client with ID {clientId} not found.");
 
         return _mapper.Map<ClientSummaryDto>(user);
