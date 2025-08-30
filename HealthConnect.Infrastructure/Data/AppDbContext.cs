@@ -23,6 +23,8 @@ public class AppDbContext : DbContext
     /// </summary>
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Doctor> Doctors { get; set; }
+
     /// <summary>
     /// Saves all changes made in this context to the database asynchronously.
     /// </summary>
