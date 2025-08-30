@@ -1,6 +1,7 @@
 ﻿namespace HealthConnect.Infrastructure;
 
 using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;
 using HealthConnect.Infrastructure.Repositories;
@@ -45,6 +46,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, CryptoHelper>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }

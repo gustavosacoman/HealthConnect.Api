@@ -2,7 +2,7 @@
 
 
 using FluentValidation;
-using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IDoctorService, DoctorService>();
         return services;
     }
 }
