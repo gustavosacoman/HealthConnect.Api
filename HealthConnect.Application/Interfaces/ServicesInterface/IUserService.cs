@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Application.Interfaces.ServicesInterface;
 
+using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 
@@ -36,6 +37,7 @@ public interface IUserService
     /// <returns>The summary information of the created doctor user.</returns>
     public Task<DoctorDetailDto> CreateDoctorAsync(DoctorRegistrationDto data);
 
+    public Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data);
     /// <summary>
     /// Updates an existing user.
     /// </summary>
