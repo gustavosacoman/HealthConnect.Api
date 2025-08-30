@@ -51,7 +51,6 @@ public class AuthControllerTests
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            // Use um ITestOutputHelper para ver isso no log do teste, ou simplesmente coloque um breakpoint aqui.
             System.Diagnostics.Debug.WriteLine(errorContent);
         }
 

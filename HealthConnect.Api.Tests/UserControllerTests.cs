@@ -2,6 +2,7 @@
 using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Auth;
+using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Infrastructure.Configurations;
@@ -124,14 +125,14 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async Task CreateUser_ShouldCreateAUser_WhenCalled()
+    public async Task CreateDoctor_ShouldCreateAUserAndADoctor_WhenCalled()
     {
         var token = await AuthenticateAndGetTokenAsync();
 
         _client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-        var newUser = new UserRegistrationDto
+        var newUser = new DoctorRegistrationDto
         {
             Name = "User test",
             Email = "userTeste@example.com",
@@ -139,17 +140,24 @@ public class UserControllerTests
             CPF = "58965234525",
             Phone = "1234567890",
             BirthDate = new DateOnly(1990, 1, 1),
+            RQE = "RQE123456",
+            CRM = "CRM654321",
+            Biography = "Experienced general practitioner with a passion for patient care.",
+            Specialty = "General Medicine",
         };
-        var response = await _client.PostAsJsonAsync("/api/v1/user", newUser);
+
+        var response = await _client.PostAsJsonAsync("/api/v1/user/doctor", newUser);
 
         response.EnsureSuccessStatusCode();
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var user = await response.Content.ReadFromJsonAsync<UserSummaryDto>();
+        var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
 
-        Assert.NotNull(user);
-        Assert.Equal(newUser.Name, user.Name);
-        Assert.Equal(newUser.Email, user.Email);
+        Assert.NotNull(doctor);
+        Assert.Equal(newUser.Name, doctor.Name);
+        Assert.Equal(newUser.Email, doctor.Email);
+        Assert.Equal(newUser.CRM, doctor.CRM);
+        Assert.Equal(newUser.RQE, doctor.RQE);
     }
 
     [Fact]
@@ -189,19 +197,30 @@ public class UserControllerTests
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var userEmail = "carla@example.com";
+        var userRQE = "RQE210987";
         var response = await _client.DeleteAsync($"/api/v1/user/{userEmail}");
         
         response.EnsureSuccessStatusCode();
 
         var getResponse = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
+        var getResponseDoctor = await _client.GetAsync($"/api/v1/doctor/by-RQE/{userRQE}");
 
         Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, getResponseDoctor.StatusCode);
 
         var content = await getResponse.Content.ReadAsStringAsync();
+        var contentDoctor = await getResponseDoctor.Content.ReadAsStringAsync();
+
+        
         var errorResponse = JsonDocument.Parse(content).RootElement;
+        var errorResponseDoctor = JsonDocument.Parse(contentDoctor).RootElement;
         Assert.Equal(404, errorResponse.GetProperty("StatusCode").GetInt32());
+        Assert.Equal(404, errorResponseDoctor.GetProperty("StatusCode").GetInt32());
         Assert.Equal($"User with email {userEmail} not found.",
             errorResponse.GetProperty("Message").GetString());
+        Assert.Equal($"Doctor with RQE {userRQE} not found.",
+            errorResponseDoctor.GetProperty("Message").GetString());
+
     }
 
 }

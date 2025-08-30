@@ -56,7 +56,41 @@ public static class SeedData
                 BirthDate = new DateOnly(1992, 3, 20)
             }
         };
+
+        var doctors = new List<Doctor>
+        {
+            new Doctor
+            {
+                Id = Guid.NewGuid(),
+                UserId = users[0].Id,
+                CRM = "CRM123456",
+                RQE = "RQE654321",
+                Specialty = "Dermatology",
+                User = users[0]
+            },
+            new Doctor
+            {
+                Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174001"),
+                UserId = users[1].Id,
+                CRM = "CRM654321",
+                RQE = "RQE987654",
+                Specialty = "Cardiology",
+                User = users[1]
+
+            },
+            new Doctor
+            {
+                Id = Guid.NewGuid(),
+                UserId = users[2].Id,
+                CRM = "CRM789012",
+                RQE = "RQE210987",
+                Specialty = "Neurology",
+                User = users[2]
+            },
+
+        };
         context.Users.AddRange(users);
+        context.Doctors.AddRange(doctors);
         context.SaveChanges();
     }
 }

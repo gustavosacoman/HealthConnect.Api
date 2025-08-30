@@ -1,4 +1,5 @@
 ﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Services;
 using HealthConnect.Domain.Models;
 using Microsoft.Extensions.Configuration;
@@ -48,7 +49,7 @@ public class AuthServiceTest
             BirthDate = new DateOnly(1990, 1, 1)
         };
 
-        _userRepositoryMock.Setup(r => r.GetUserByEmail(userEmail))
+        _userRepositoryMock.Setup(r => r.GetUserByEmailAsync(userEmail))
             .ReturnsAsync(testUser);
 
         _passwordHasherMock.Setup(p => 
@@ -67,7 +68,7 @@ public class AuthServiceTest
         Assert.NotNull(result);
 
         _userRepositoryMock.Verify(r => 
-        r.GetUserByEmail(userEmail), Times.Once);
+        r.GetUserByEmailAsync(userEmail), Times.Once);
 
         _passwordHasherMock.Verify(p => 
         p.VerifyPassword(

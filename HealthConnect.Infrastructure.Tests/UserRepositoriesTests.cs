@@ -58,7 +58,7 @@ public class UserRepositoriesTests : IDisposable
 
         var newUser = CreateTestUser("Test User", "teste.user@gmail.com");
 
-        await _userRepository.CreateUser(newUser);
+        await _userRepository.CreateUserAsync(newUser);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -81,7 +81,7 @@ public class UserRepositoriesTests : IDisposable
 
         await _dbContext.Users.AddRangeAsync(user1, user2);
         await _unitOfWork.SaveChangesAsync();
-        IEnumerable<User> users = await _userRepository.GetAllUsers();
+        IEnumerable<User> users = await _userRepository.GetAllUsersAsync();
 
         Assert.NotNull(users);
         Assert.Equal(2, users.Count());
@@ -96,7 +96,7 @@ public class UserRepositoriesTests : IDisposable
         await _dbContext.Users.AddRangeAsync(user1, user2);
         await _unitOfWork.SaveChangesAsync();
 
-        var user = await _userRepository.GetUserByEmail("user1@gmail.com");
+        var user = await _userRepository.GetUserByEmailAsync("user1@gmail.com");
 
         Assert.NotNull(user);
         Assert.NotEqual(user2, user);
@@ -111,7 +111,7 @@ public class UserRepositoriesTests : IDisposable
         await _dbContext.Users.AddAsync(user1);
         await _unitOfWork.SaveChangesAsync();
 
-        var user = await _userRepository.GetUserById(user1.Id);
+        var user = await _userRepository.GetUserByIdAsync(user1.Id);
 
         Assert.NotNull(user);
         Assert.Equal(user1.Id, user.Id);
