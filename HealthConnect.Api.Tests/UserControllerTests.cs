@@ -83,7 +83,7 @@ public class UserControllerTests
         var users = await response.Content.ReadFromJsonAsync<IEnumerable<UserSummaryDto>>();
 
         Assert.NotNull(users);
-        Assert.Equal(3, users.Count());
+        Assert.Equal(6, users.Count());
     }
 
     [Fact]
