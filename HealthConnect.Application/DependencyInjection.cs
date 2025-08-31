@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IClientService, ClientService>();
         services.AddScoped<IDoctorService, DoctorService>();
         return services;
     }
