@@ -13,6 +13,6 @@ public record ClientDetailDto
 
     public string Phone { get; init; }
 
-    public DateTime BirthDate { get; init; }
+    public DateOnly BirthDate { get; init; }
 
 }
