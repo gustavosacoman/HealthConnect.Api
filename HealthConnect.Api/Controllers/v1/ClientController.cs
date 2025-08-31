@@ -1,4 +1,5 @@
 ﻿using HealthConnect.Application.Interfaces.ServicesInterface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthConnect.Api.Controllers.v1;
@@ -6,6 +7,7 @@ namespace HealthConnect.Api.Controllers.v1;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class ClientController(IClientService clientService) : ControllerBase
 {
     public readonly IClientService _clientService = clientService;
