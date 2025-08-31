@@ -109,6 +109,7 @@ public class UserService(
             Name = data.Name,
             Email = data.Email,
             CPF = data.CPF,
+            Phone = data.Phone,
             Salt = salt,
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
@@ -128,8 +129,7 @@ public class UserService(
         await _doctorRepository.CreateDoctor(doctor);
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<DoctorDetailDto>(user.Doctor);
-
+        return _mapper.Map<DoctorDetailDto>(doctor);
     }
 
     public async Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data)
@@ -146,6 +146,7 @@ public class UserService(
             Name = data.Name,
             Email = data.Email,
             CPF = data.CPF,
+            Phone = data.Phone,
             Salt = salt,
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
@@ -156,16 +157,18 @@ public class UserService(
             User = user,
             UserId = user.Id,
         };
+        user.Client = client;
+
         await _userRepository.CreateUserAsync(user);
         await _clientRepository.CreateClientAsync(client);
         await _unitOfWork.SaveChangesAsync();
-        return _mapper.Map<ClientDetailDto>(user.Client);
+        return _mapper.Map<ClientDetailDto>(client);
     }
 
     /// <summary>
     /// Updates an existing user.
     /// </summary>
-    /// <param name="Id">The user ID.</param>
+    /// <param name="Id">The user ID.</param>AutoMapperMappingException: Missing type map configuration 
     /// <param name="data">The user update data.</param>
     /// <returns>The updated user summary DTO.</returns>
     public async Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data)
