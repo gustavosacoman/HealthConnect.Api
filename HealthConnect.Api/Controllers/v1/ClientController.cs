@@ -21,12 +21,12 @@ public class ClientController(IClientService clientService) : ControllerBase
         return Ok(clients);
     }
 
-    [HttpGet("{clientId:guid}")]
+    [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetClientByIdAsync(Guid clientId)
+    public async Task<IActionResult> GetClientByIdAsync(Guid id)
     {
-        var client = await _clientService.GetClientByIdAsync(clientId);
+        var client = await _clientService.GetClientByIdAsync(id);
         return Ok(client);
     }
 
