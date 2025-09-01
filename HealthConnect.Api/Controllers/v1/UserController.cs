@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Api.Controllers.v1;
 
+using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces.ServicesInterface;
@@ -73,6 +74,15 @@ public class UserController(IUserService userService) : ControllerBase
         return CreatedAtAction(nameof(GetUserById), new { id = doctor.UserId }, doctor);
     }
 
+    [HttpPost("client")]
+    [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateClient([FromBody] ClientRegistrationDto data)
+    {
+        var client = await _userService.CreateClientAsync(data);
+        return CreatedAtAction(nameof(GetUserById), new { id = client.UserId }, client);
+    }
+
     /// <summary>
     /// Updates an existing user.
     /// </summary>
@@ -100,4 +110,6 @@ public class UserController(IUserService userService) : ControllerBase
         await _userService.DeleteUserAsync(email);
         return NoContent();
     }
+
+
 }

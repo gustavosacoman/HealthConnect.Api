@@ -3,6 +3,7 @@
 
 using FluentValidation;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Application.Mappers;
 using HealthConnect.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -23,10 +24,28 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapperConfiguration();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IClientService, ClientService>();
         services.AddScoped<IDoctorService, DoctorService>();
+        return services;
+    }
+
+    /// <summary>
+    /// Explicitly adds all AutoMapper profiles.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The updated service collection.</returns>
+    public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services)
+    {
+        Console.WriteLine(">>>> [DEBUG] CONFIGURANDO O AUTOMAPPER <<<<aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\n\n\n\n");
+        services.AddAutoMapper(cfg =>
+        {
+            cfg.AddProfile<ClientMapper>();
+            cfg.AddProfile<DoctorMapper>();
+            cfg.AddProfile<UserMapper>();
+        });
         return services;
     }
 }

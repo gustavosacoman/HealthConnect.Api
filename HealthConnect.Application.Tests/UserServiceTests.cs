@@ -15,6 +15,7 @@ public class UserServiceTests
     private readonly Mock<IPasswordHasher> _mockPasswordHasher;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<IDoctorRepository> _doctorRepository;
+    private readonly Mock<IClientRepository> _clientMockRepository;
 
     private readonly UserService _userService;
     public UserServiceTests()
@@ -24,6 +25,7 @@ public class UserServiceTests
         _mockPasswordHasher = new Mock<IPasswordHasher>();
         _doctorRepository = new Mock<IDoctorRepository>();
         _mockMapper = new Mock<IMapper>();
+        _clientMockRepository = new Mock<IClientRepository>();
 
 
         _userService = new UserService(
@@ -31,7 +33,8 @@ public class UserServiceTests
             _mockMapper.Object,
             _mockPasswordHasher.Object,
             _unitOfWorkMock.Object,
-            _doctorRepository.Object
+            _doctorRepository.Object,
+            _clientMockRepository.Object
         );
     }
 

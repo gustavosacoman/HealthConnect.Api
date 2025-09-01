@@ -111,7 +111,7 @@ public static class DependencyInjection
         app.UseHttpsRedirection();
         app.UseCors("AllowWebApp");
         app.UseAuthorization();
-        
+        app.MapControllers();
 
         return app;
     }

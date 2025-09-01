@@ -20,6 +20,6 @@ public class DoctorMapper : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
             .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.User.CPF))
-            .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.User.BirthDate));
+            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.User.BirthDate));
     }
 }

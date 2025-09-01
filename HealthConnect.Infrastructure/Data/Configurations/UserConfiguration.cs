@@ -47,7 +47,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.BirthDate)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("date");
 
         builder.HasQueryFilter(u => u.DeletedAt == null);
     }

@@ -47,6 +47,8 @@ public class User : IAuditable, ISoftDeletable
     /// </summary>
     public virtual Doctor? Doctor { get; set; }
 
+    public virtual Client? Client { get; set; }
+
     /// <summary>
     /// Gets or sets the birth date of the user.
     /// </summary>

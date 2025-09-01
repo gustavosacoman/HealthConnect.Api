@@ -17,21 +17,6 @@ public class DoctorService(
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task DeleteDoctorAsync(string rqe)
-    {
-        if (string.IsNullOrWhiteSpace(rqe))
-        {
-            throw new NullReferenceException("RQE cannot be null or empty.");
-        }
-
-        var doctor = await _doctorRepository.GetDoctorByRQE(rqe)
-            ?? throw new KeyNotFoundException($"Doctor with ID {rqe} not found.");
-
-        doctor.DeletedAt = DateTime.UtcNow;
-
-        await _unitOfWork.SaveChangesAsync();
-    }
-
     public async Task<IEnumerable<DoctorSummaryDto>> GetAllDoctorsAsync()
     {
         var doctors = await _doctorRepository.GetAllDoctors();

@@ -54,6 +54,39 @@ public static class SeedData
                 CPF = "11223344556",
                 Phone = "1122334455",
                 BirthDate = new DateOnly(1992, 3, 20)
+            },
+            new User
+            {
+                Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174003"),
+                Name = "Daniela Pereira",
+                Email = "daniela@example.com",
+                HashedPassword = "hashed_password_4",
+                Salt = "some_random_salt_value",
+                CPF = "66778899000",
+                Phone = "6677889900",
+                BirthDate = new DateOnly(1988, 7, 30)
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "Eduardo Gomes",
+                Email = "eduardo@example.com",
+                HashedPassword = "hashed_password_5",
+                Salt = "different_random_salt_value",
+                CPF = "44556677889",
+                Phone = "4455667788",
+                BirthDate = new DateOnly(1995, 11, 25)
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "Fernanda Lima",
+                Email = "fernanda@example.com",
+                HashedPassword = "hashed_password_6",
+                Salt = "unique_random_salt_value",
+                CPF = "99887766554",
+                Phone = "9988776655",
+                BirthDate = new DateOnly(1991, 9, 10)
             }
         };
 
@@ -89,8 +122,32 @@ public static class SeedData
             },
 
         };
+
+        var clients = new List<Client>
+        {
+            new Client
+            {
+                Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174008"),
+                UserId = users[3].Id,
+                User = users[3]
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                UserId = users[4].Id,
+                User = users[4]
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                UserId = users[5].Id,
+                User = users[5]
+            }
+        };
+
         context.Users.AddRange(users);
         context.Doctors.AddRange(doctors);
+        context.Clients.AddRange(clients);
         context.SaveChanges();
     }
 }

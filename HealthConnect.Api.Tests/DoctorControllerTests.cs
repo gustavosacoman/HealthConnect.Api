@@ -12,13 +12,11 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 {
     private readonly HttpClient _client;
     private readonly CustomWebAppFactory _factory;
-    private readonly IPasswordHasher _passwordHasher;
 
     public DoctorControllerTests(CustomWebAppFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
-        _passwordHasher = new CryptoHelper();
         using (var scope = _factory.Services.CreateScope())
         {
             var scopedServices = scope.ServiceProvider;

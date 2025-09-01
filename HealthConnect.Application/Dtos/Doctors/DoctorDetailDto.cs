@@ -22,6 +22,8 @@ public class DoctorDetailDto
     /// </summary>
     public string? Biography { get; init; }
 
+    required public string Specialty { get; init; }
+
     /// <summary>
     /// Gets the unique identifier of the user.
     /// </summary>

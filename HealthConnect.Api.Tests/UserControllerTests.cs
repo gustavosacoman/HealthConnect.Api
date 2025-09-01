@@ -2,6 +2,7 @@
 using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Auth;
+using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
@@ -82,7 +83,7 @@ public class UserControllerTests
         var users = await response.Content.ReadFromJsonAsync<IEnumerable<UserSummaryDto>>();
 
         Assert.NotNull(users);
-        Assert.Equal(3, users.Count());
+        Assert.Equal(6, users.Count());
     }
 
     [Fact]
@@ -158,6 +159,43 @@ public class UserControllerTests
         Assert.Equal(newUser.Email, doctor.Email);
         Assert.Equal(newUser.CRM, doctor.CRM);
         Assert.Equal(newUser.RQE, doctor.RQE);
+        Assert.Equal(newUser.BirthDate, doctor.BirthDate);
+        Assert.Equal(newUser.Phone, doctor.Phone);
+        Assert.Equal(newUser.Biography, doctor.Biography);
+        Assert.Equal(newUser.Specialty, doctor.Specialty);
+        Assert.Equal(newUser.CPF, doctor.CPF);
+        
+
+    }
+    [Fact]
+    public async Task CreateClient_ShouldCreateAUserAndAClient_WhenCalled()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var newUser = new ClientRegistrationDto
+        {
+            Name = "UserTest",
+            Email = "userTest@example.com",
+            Phone = "4112345678",
+            Password = "Password123!@",
+            CPF = "32165498700",
+            BirthDate = new DateOnly(1995, 6, 15),
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/v1/user/client", newUser);
+        response.EnsureSuccessStatusCode();
+
+        var client = await response.Content.ReadFromJsonAsync<ClientDetailDto>();
+
+        Assert.NotNull(client);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(newUser.Name, client.Name);
+        Assert.Equal(newUser.Email, client.Email);
+        Assert.Equal(newUser.CPF, client.CPF);
+        Assert.Equal(newUser.Phone, client.Phone);
+        Assert.Equal(newUser.BirthDate, client.BirthDate);
     }
 
     [Fact]
