@@ -18,6 +18,8 @@ public class Doctor: IAuditable, ISoftDeletable
 
     required public virtual User User { get; set; }
 
+    public ICollection<Availability>? Availabilities { get; set; }
+
     required public Guid UserId { get; set; }
 
     public DateTime CreatedAt { get; set; }

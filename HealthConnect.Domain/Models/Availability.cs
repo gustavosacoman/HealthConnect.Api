@@ -9,6 +9,8 @@ public class Availability : IAuditable, ISoftDeletable
 
     required public Guid DoctorId { get; set; }
 
+    public Doctor? Doctor { get; set; }
+
     required public DateTime SlotDateTime { get; set; }
 
     required public int DurationMinutes { get; set; }
