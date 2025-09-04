@@ -4,7 +4,7 @@ using HealthConnect.Application.Dtos.Availability;
 
 public interface IAvailabilityService
 {
-    public Task<AvailabilitySummaryDto> GetAllAvailabilitiesPerDoctor(Guid doctorId);
+    public Task<IEnumerable<AvailabilitySummaryDto>> GetAllAvailabilitiesPerDoctor(Guid doctorId);
 
     public Task<AvailabilitySummaryDto> CreateAvailability(AvailabilityRegistrationDto availability);
 
