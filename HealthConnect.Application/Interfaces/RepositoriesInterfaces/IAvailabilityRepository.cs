@@ -10,9 +10,11 @@ namespace HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 
 public interface IAvailabilityRepository
 {
+    Task<bool> HasOverlappingAvailabilityAsync(Guid doctorId, DateTime newSlotStart, DateTime newSlotEnd);
+
     public Task<Availability> GetAvailabilityByIdAsync(Guid id);
 
-    public IQueryable<Availability> GetAllAvailabilityPerDoctor(Guid doctorId);
+    public Task<IEnumerable<TProjection>> GetAllAvailabilityPerDoctor<TProjection>(Guid doctorId);
 
     public Task CreateAvailabilityAsync(Availability availability);
 }
