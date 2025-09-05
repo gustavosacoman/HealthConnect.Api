@@ -47,6 +47,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, CryptoHelper>();
         services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
         services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

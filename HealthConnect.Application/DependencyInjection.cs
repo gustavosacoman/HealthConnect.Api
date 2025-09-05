@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddAutoMapperConfiguration();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAvailabilityService, AvailabilityService>();
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<IDoctorService, DoctorService>();
         return services;
@@ -39,12 +40,12 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services)
     {
-        Console.WriteLine(">>>> [DEBUG] CONFIGURANDO O AUTOMAPPER <<<<aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\n\n\n\n");
         services.AddAutoMapper(cfg =>
         {
             cfg.AddProfile<ClientMapper>();
             cfg.AddProfile<DoctorMapper>();
             cfg.AddProfile<UserMapper>();
+            cfg.AddProfile<AvailabilityMapper>();
         });
         return services;
     }
