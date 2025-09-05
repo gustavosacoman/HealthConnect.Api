@@ -17,4 +17,6 @@ public interface IAvailabilityRepository
     public Task<IEnumerable<TProjection>> GetAllAvailabilityPerDoctor<TProjection>(Guid doctorId);
 
     public Task CreateAvailabilityAsync(Availability availability);
+
+    public Task DeleteAvailabilityAsync(Availability availability);
 }

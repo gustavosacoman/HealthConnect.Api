@@ -42,4 +42,11 @@ public class AvailabilityRepository(
     {
         return await _appDbContext.Availabilities.FindAsync(id);
     }
+
+    public async Task DeleteAvailabilityAsync(Availability availability)
+    {
+        await _appDbContext.Availabilities
+            .Where(a => a.Id == availability.Id)
+            .ExecuteDeleteAsync();
+    }
 }
