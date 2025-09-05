@@ -18,5 +18,5 @@ public interface IAvailabilityRepository
 
     public Task CreateAvailabilityAsync(Availability availability);
 
-    public Task DeleteAvailabilityAsync(Availability availability);
+    public Task DeleteAvailability(Availability availability);
 }

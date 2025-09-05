@@ -43,10 +43,14 @@ public class AvailabilityRepository(
         return await _appDbContext.Availabilities.FindAsync(id);
     }
 
-    public async Task DeleteAvailabilityAsync(Availability availability)
+    /// <summary>
+    /// Marks the specified <see cref="Availability"/> entity for deletion in the context.
+    /// </summary>
+    /// <param name="availability">The availability entity to delete.</param>
+    /// <returns>A completed task.</returns>
+    public Task DeleteAvailability(Availability availability)
     {
-        await _appDbContext.Availabilities
-            .Where(a => a.Id == availability.Id)
-            .ExecuteDeleteAsync();
+        _appDbContext.Availabilities.Remove(availability);
+        return Task.CompletedTask;
     }
 }
