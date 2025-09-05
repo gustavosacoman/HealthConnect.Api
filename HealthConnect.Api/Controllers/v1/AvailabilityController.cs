@@ -9,6 +9,7 @@ using HealthConnect.Application.Dtos.Availability;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class AvailabilityController(IAvailabilityService availabilityService) : ControllerBase
 {
     private readonly IAvailabilityService _availabilityService = availabilityService;
@@ -17,7 +18,7 @@ public class AvailabilityController(IAvailabilityService availabilityService) : 
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateAvailability(AvailabilityRegistrationDto availability)
     {
-        var createdAvailability = await _availabilityService.CreateAvailability(availability);
+        var createdAvailability = await _availabilityService.CreateAvailabilityAsync(availability);
 
         return CreatedAtAction(
             nameof(GetAvailabilityById),
@@ -29,7 +30,7 @@ public class AvailabilityController(IAvailabilityService availabilityService) : 
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAvailabilityById(Guid availabilityId)
     {
-        var availability = await _availabilityService.GetAvailabilityById(availabilityId);
+        var availability = await _availabilityService.GetAvailabilityByIdAsync(availabilityId);
         return Ok(availability);
     }
 
@@ -37,7 +38,7 @@ public class AvailabilityController(IAvailabilityService availabilityService) : 
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAvailabilitiesPerDoctor(Guid doctorId)
     {
-        var availabilities = await _availabilityService.GetAllAvailabilitiesPerDoctor(doctorId);
+        var availabilities = await _availabilityService.GetAllAvailabilitiesPerDoctorAsync(doctorId);
         return Ok(availabilities);
     }
 
@@ -46,7 +47,7 @@ public class AvailabilityController(IAvailabilityService availabilityService) : 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAvailability(Guid availabilityId)
     {
-        await _availabilityService.DeleteAvailability(availabilityId);
+        await _availabilityService.DeleteAvailabilityAsync(availabilityId);
         return NoContent();
     }
 }
