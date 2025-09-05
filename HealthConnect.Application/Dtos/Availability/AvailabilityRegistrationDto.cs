@@ -2,7 +2,7 @@
 
 public record AvailabilityRegistrationDto
 {
-    public Guid DoctorId { get; init; }
-    public DateTime SlotDateTime { get; init; }
-    public int DurationMinutes { get; init; }
+    required public Guid DoctorId { get; init; }
+    required public DateTime SlotDateTime { get; init; }
+    required public int DurationMinutes { get; init; }
 }
