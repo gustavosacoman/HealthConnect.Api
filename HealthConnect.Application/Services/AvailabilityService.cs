@@ -19,7 +19,7 @@ public class AvailabilityService
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
-    public async Task<AvailabilitySummaryDto> CreateAvailability(AvailabilityRegistrationDto availability)
+    public async Task<AvailabilitySummaryDto> CreateAvailabilityAsync(AvailabilityRegistrationDto availability)
     {
         var doctor = await _doctorRepository.GetDoctorById(availability.DoctorId) ??
             throw new ArgumentNullException("Doctor not found");
@@ -84,7 +84,7 @@ public class AvailabilityService
             (doctorId);
     }
 
-    public async Task<AvailabilitySummaryDto> GetAvailabilityById(Guid availabilityId)
+    public async Task<AvailabilitySummaryDto> GetAvailabilityByIdAsync(Guid availabilityId)
     {
 
         if (availabilityId == Guid.Empty)
@@ -97,7 +97,7 @@ public class AvailabilityService
             : throw new ArgumentNullException("Availability not found");
     }
 
-    public async Task DeleteAvailability(Guid availabilityId)
+    public async Task DeleteAvailabilityAsync(Guid availabilityId)
     {
         if (availabilityId == Guid.Empty)
         {
@@ -108,7 +108,7 @@ public class AvailabilityService
             .GetAvailabilityByIdAsync(availabilityId)
             ?? throw new ArgumentNullException("Availability not found");
 
-        await _availabilityRepository.DeleteAvailabilityAsync(availability);
+        await _availabilityRepository.DeleteAvailability(availability);
         await _unitOfWork.SaveChangesAsync();
     }
 

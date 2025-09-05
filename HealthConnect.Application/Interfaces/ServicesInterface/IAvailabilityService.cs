@@ -4,12 +4,12 @@ using HealthConnect.Application.Dtos.Availability;
 
 public interface IAvailabilityService
 {
-    public Task<IEnumerable<AvailabilitySummaryDto>> GetAllAvailabilitiesPerDoctor(Guid doctorId);
+    public Task<IEnumerable<AvailabilitySummaryDto>> GetAllAvailabilitiesPerDoctorAsync(Guid doctorId);
 
-    public Task<AvailabilitySummaryDto> CreateAvailability(AvailabilityRegistrationDto availability);
+    public Task<AvailabilitySummaryDto> CreateAvailabilityAsync(AvailabilityRegistrationDto availability);
 
-    public Task<AvailabilitySummaryDto> GetAvailabilityById(Guid availabilityId);
+    public Task<AvailabilitySummaryDto> GetAvailabilityByIdAsync(Guid availabilityId);
 
-    public Task DeleteAvailability(Guid availabilityId);
+    public Task DeleteAvailabilityAsync(Guid availabilityId);
 
 }
