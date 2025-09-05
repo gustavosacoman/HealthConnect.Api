@@ -24,5 +24,9 @@ public class AvailabilityConfiguration : IEntityTypeConfiguration<Availability>
 
         builder.Property(a => a.IsBooked)
             .IsRequired();
+
+        builder.HasOne(a => a.Doctor)
+            .WithMany(d => d.Availabilities)
+            .HasForeignKey(a => a.DoctorId);
     }
 }
