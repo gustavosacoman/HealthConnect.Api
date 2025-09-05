@@ -70,19 +70,46 @@ public class AvailabilityService
 
     public async Task<IEnumerable<AvailabilitySummaryDto>> GetAllAvailabilitiesPerDoctorAsync(Guid doctorId)
     {
+        if (doctorId == Guid.Empty)
+        {
+            throw new ArgumentNullException("Invalid doctor ID");
+        }
+        if (await _doctorRepository.GetDoctorById(doctorId) is null)
+        {
+            throw new ArgumentNullException("Doctor not found");
+        }
+
         return await _availabilityRepository
             .GetAllAvailabilityPerDoctor<AvailabilitySummaryDto>
             (doctorId);
     }
 
-    public Task<AvailabilitySummaryDto> GetAvailabilityById(Guid availabilityId)
+    public async Task<AvailabilitySummaryDto> GetAvailabilityById(Guid availabilityId)
     {
-        throw new NotImplementedException();
+
+        if (availabilityId == Guid.Empty)
+        {
+            throw new ArgumentNullException("Invalid availability ID");
+        }
+        return await _availabilityRepository
+            .GetAvailabilityByIdAsync(availabilityId) is Availability availability
+            ? _mapper.Map<AvailabilitySummaryDto>(availability)
+            : throw new ArgumentNullException("Availability not found");
     }
 
-    public Task DeleteAvailability(Guid availabilityId)
+    public async Task DeleteAvailability(Guid availabilityId)
     {
-        throw new NotImplementedException();
+        if (availabilityId == Guid.Empty)
+        {
+            throw new ArgumentNullException("Invalid availability ID");
+        }
+
+        var availability = await _availabilityRepository
+            .GetAvailabilityByIdAsync(availabilityId)
+            ?? throw new ArgumentNullException("Availability not found");
+
+        await _availabilityRepository.DeleteAvailabilityAsync(availability);
+        await _unitOfWork.SaveChangesAsync();
     }
 
 }
