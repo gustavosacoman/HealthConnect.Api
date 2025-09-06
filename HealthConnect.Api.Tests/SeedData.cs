@@ -145,9 +145,39 @@ public static class SeedData
             }
         };
 
+        var availabilities = new List<Availability>
+        {
+            new Availability
+            {
+                Id = Guid.Parse("223e4567-e89b-12d3-a456-426614174000"),
+                DoctorId = doctors[1].Id,
+                SlotDateTime = DateTime.UtcNow.AddDays(1).AddHours(9),
+                DurationMinutes = 15,
+                IsBooked = false
+            },
+            new Availability
+            {
+                Id = Guid.NewGuid(),
+                DoctorId = doctors[1].Id,
+                SlotDateTime = DateTime.UtcNow.AddDays(2).AddHours(10),
+                DurationMinutes = 15,
+                IsBooked = false
+            },
+            new Availability
+            {
+                Id = Guid.NewGuid(),
+                DoctorId = doctors[1].Id,
+                SlotDateTime = DateTime.UtcNow.AddDays(3).AddHours(8),
+                DurationMinutes = 15,
+                IsBooked = false
+            }
+        };
+
+        
         context.Users.AddRange(users);
         context.Doctors.AddRange(doctors);
         context.Clients.AddRange(clients);
+        context.Availabilities.AddRange(availabilities);
         context.SaveChanges();
     }
 }

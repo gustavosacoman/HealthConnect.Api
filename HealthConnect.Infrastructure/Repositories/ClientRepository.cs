@@ -10,7 +10,7 @@ public class ClientRepository(AppDbContext appDbContext) : IClientRepository
 
     public async Task CreateClientAsync(Client client)
     {
-        await _appDbContex.AddAsync(client);
+        await _appDbContex.Clients.AddAsync(client);
     }
 
     public async Task<IEnumerable<Client>> GetAllClientsAsync()

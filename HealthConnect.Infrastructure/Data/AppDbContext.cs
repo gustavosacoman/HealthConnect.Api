@@ -27,6 +27,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Client> Clients { get; set; }
 
+    public DbSet<Availability> Availabilities { get; set; }
+
     /// <summary>
     /// Saves all changes made in this context to the database asynchronously.
     /// </summary>
