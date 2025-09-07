@@ -1,5 +1,6 @@
 ﻿using HealthConnect.Application.Dtos.Appointment;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthConnect.Api.Controllers.v1;
@@ -7,6 +8,7 @@ namespace HealthConnect.Api.Controllers.v1;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class AppointmentController(IAppointmentService appointmentService) : ControllerBase
 {
     private readonly IAppointmentService _appointmentService = appointmentService;

@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
-[Authorize]
 public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
@@ -29,6 +28,7 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await _userService.GetUserByIdAsync(id);
@@ -42,6 +42,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <returns>The user summary.</returns>
     [HttpGet("by-email/{email}")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
@@ -54,6 +55,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <returns>A list of user summaries.</returns>
     [HttpGet("all")]
     [ProducesResponseType(typeof(IEnumerable<UserSummaryDto>), StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsersAsync();
