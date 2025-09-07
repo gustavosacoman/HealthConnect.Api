@@ -212,7 +212,7 @@ public class UserControllerTests
         var updatedUser = new UserUpdatingDto
         {
             Password = "NewPassword123@#",
-            Phone = "55+2568745689",
+            Phone = "2568745689",
         };
         var response = await _client.PatchAsJsonAsync($"/api/v1/user/{userId}", updatedUser);
 
