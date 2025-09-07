@@ -23,6 +23,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(
         this IServiceCollection services)
     {
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapperConfiguration();
         services.AddScoped<IUserService, UserService>();
