@@ -113,7 +113,7 @@ public static class SeedData
             },
             new Doctor
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174010"),
                 UserId = users[2].Id,
                 CRM = "CRM789012",
                 RQE = "RQE210987",
@@ -133,7 +133,7 @@ public static class SeedData
             },
             new Client
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174015"),
                 UserId = users[4].Id,
                 User = users[4]
             },
@@ -173,11 +173,40 @@ public static class SeedData
             }
         };
 
-        
+        var appointments = new List<Appointment>
+        {
+            new Appointment
+            {
+                Id = Guid.NewGuid(),
+                ClientId = clients[1].Id,
+                DoctorId = doctors[2].Id,
+                AvailabilityId = availabilities[1].Id,
+                AppointmentDateTime = availabilities[1].SlotDateTime,
+                AppointmentStatus = Domain.Enum.AppointmentStatus.Scheduled,
+                Notes = "Initial consultation",
+                Availability = availabilities[1],
+                Client = clients[1],
+                Doctor = doctors[2]
+            },
+            new Appointment 
+            {
+                Id = Guid.Parse("323e4567-e89b-12d3-a456-426614174025"),
+                ClientId = clients[0].Id,
+                DoctorId = doctors[1].Id,
+                AvailabilityId = availabilities[0].Id,
+                AppointmentDateTime = availabilities[0].SlotDateTime,
+                AppointmentStatus = Domain.Enum.AppointmentStatus.Scheduled,
+                Notes = "Initial consultation",
+                Availability = availabilities[0],
+                Client = clients[0],
+                Doctor = doctors[1]
+            }
+        };
         context.Users.AddRange(users);
         context.Doctors.AddRange(doctors);
         context.Clients.AddRange(clients);
         context.Availabilities.AddRange(availabilities);
+        context.Appointments.AddRange(appointments);
         context.SaveChanges();
     }
 }
