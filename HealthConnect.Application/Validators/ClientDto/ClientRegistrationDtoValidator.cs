@@ -1,11 +1,11 @@
-﻿using FluentValidation;
-using HealthConnect.Application.Dtos.Doctors;
+﻿namespace HealthConnect.Application.Validators.ClientDto;
 
-namespace HealthConnect.Application.Validators.DoctorDtoValidator;
+using FluentValidation;
+using HealthConnect.Application.Dtos.Client;
 
-public class DoctorRegistrationDtoValidator : AbstractValidator<DoctorRegistrationDto>
+public class ClientRegistrationDtoValidator : AbstractValidator<ClientRegistrationDto>
 {
-    public DoctorRegistrationDtoValidator()
+    public ClientRegistrationDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("First name is required.")
@@ -30,16 +30,5 @@ public class DoctorRegistrationDtoValidator : AbstractValidator<DoctorRegistrati
         RuleFor(x => x.BirthDate)
             .NotEmpty().WithMessage("Birth date is required.")
             .LessThan(DateOnly.FromDateTime(DateTime.Now.Date)).WithMessage("Birth date must be in the past.");
-        RuleFor(x => x.RQE)
-           .NotEmpty().WithMessage("RQE is required.")
-           .MaximumLength(20).WithMessage("RQE must not exceed 20 characters.");
-        RuleFor(x => x.CRM)
-           .NotEmpty().WithMessage("CRM is required.")
-           .MaximumLength(20).WithMessage("CRM must not exceed 20 characters.");
-        RuleFor(x => x.Specialty)
-            .NotEmpty().WithMessage("Specialty is required.")
-            .MaximumLength(100).WithMessage("Specialty must not exceed 100 characters.");
-        RuleFor(x => x.Biography)
-              .MaximumLength(3500).WithMessage("Biography must not exceed 3500 characters.");
     }
 }
