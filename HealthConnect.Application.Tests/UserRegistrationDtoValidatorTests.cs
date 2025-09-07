@@ -3,7 +3,7 @@ using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Validators;
-using HealthConnect.Application.Validators.DoctorDtoValidator;
+using HealthConnect.Application.Validators.DoctorDto;
 
 namespace HealthConnect.Application.Tests;
 
