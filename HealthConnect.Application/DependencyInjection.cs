@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAvailabilityService, AvailabilityService>();
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IAppointmentService, AppointmentService>();
         services.AddScoped<IDoctorService, DoctorService>();
         return services;
     }
@@ -46,6 +47,7 @@ public static class DependencyInjection
             cfg.AddProfile<DoctorMapper>();
             cfg.AddProfile<UserMapper>();
             cfg.AddProfile<AvailabilityMapper>();
+            cfg.AddProfile<AppointmentMapper>();
         });
         return services;
     }

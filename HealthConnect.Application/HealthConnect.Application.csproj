@@ -24,4 +24,8 @@
     <ProjectReference Include="..\HealthConnect.Domain\HealthConnect.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\AvailabilityDto\" />
+  </ItemGroup>
+
 </Project>
