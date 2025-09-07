@@ -20,7 +20,7 @@ public class ClientRegistrationDtoValidator : AbstractValidator<ClientRegistrati
             .Length(11).WithMessage("CPF must contain exactly 11 characters");
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
-            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$").WithMessage("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).+$").WithMessage("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long.")
             .MaximumLength(254).WithMessage("Password must not exceed 254 characters.");
         RuleFor(x => x.Phone)
