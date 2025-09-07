@@ -28,6 +28,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Application.Tests", "HealthConnect.Application.Tests\HealthConnect.Application.Tests.csproj", "{EDA3183B-2CE6-4A63-B073-A2348929C3EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructure.Tests", "HealthConnect.Infrastructure.Tests\HealthConnect.Infrastructure.Tests.csproj", "{B5810227-2DF6-4C8B-8D21-9DA8C7CD07EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7FE49BD2-5090-40E5-9210-AC974F70DB8A} = {7FE49BD2-5090-40E5-9210-AC974F70DB8A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Api.Tests", "HealthConnect.Api.Tests\HealthConnect.Api.Tests.csproj", "{9CB4A2FF-5494-4182-BBA5-A1B3CFCB663A}"
 EndProject
