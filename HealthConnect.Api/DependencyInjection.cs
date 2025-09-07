@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using FluentValidation.AspNetCore;
 
 /// <summary>
 /// Provides extension methods for registering and configuring presentation layer services.
@@ -31,9 +33,10 @@ public static class DependencyInjection
         });
 
         services.AddControllers()
-            .AddXmlSerializerFormatters();
+        .AddXmlSerializerFormatters();
 
-        services.AddControllers();
+        services.AddFluentValidationAutoValidation();
+
         services.AddAuthorization();
         services.AddEndpointsApiExplorer();
 
