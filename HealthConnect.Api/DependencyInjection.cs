@@ -13,6 +13,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 /// <summary>
 /// Provides extension methods for registering and configuring presentation layer services.
@@ -38,7 +39,11 @@ public static class DependencyInjection
         }).AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        }).AddXmlSerializerFormatters();
+        }).AddXmlSerializerFormatters()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
         services.AddFluentValidationAutoValidation();
 
