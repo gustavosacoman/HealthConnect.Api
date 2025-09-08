@@ -1,5 +1,7 @@
 ﻿namespace HealthConnect.Api;
 
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -7,11 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
-using FluentValidation;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using FluentValidation.AspNetCore;
+using System.Text.Json;
 
 /// <summary>
 /// Provides extension methods for registering and configuring presentation layer services.
@@ -32,8 +33,12 @@ public static class DependencyInjection
             options.LowercaseUrls = true;
         });
 
-        services.AddControllers()
-        .AddXmlSerializerFormatters();
+        services.AddControllers(options =>
+        {
+        }).AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        }).AddXmlSerializerFormatters();
 
         services.AddFluentValidationAutoValidation();
 
@@ -116,13 +121,13 @@ public static class DependencyInjection
         }
 
         app.UseForwardedHeaders();
-
+        // app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseCors("AllowWebApp");
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseAuthentication();
-        app.UseHttpsRedirection();
-        app.UseCors("AllowWebApp");
-        app.UseAuthorization();
         app.MapControllers();
 
         return app;
