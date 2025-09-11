@@ -23,12 +23,14 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(
         this IServiceCollection services)
     {
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapperConfiguration();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAvailabilityService, AvailabilityService>();
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IAppointmentService, AppointmentService>();
         services.AddScoped<IDoctorService, DoctorService>();
         return services;
     }
@@ -46,6 +48,7 @@ public static class DependencyInjection
             cfg.AddProfile<DoctorMapper>();
             cfg.AddProfile<UserMapper>();
             cfg.AddProfile<AvailabilityMapper>();
+            cfg.AddProfile<AppointmentMapper>();
         });
         return services;
     }

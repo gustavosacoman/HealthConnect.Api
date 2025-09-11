@@ -12,6 +12,8 @@ public interface IAvailabilityRepository
 {
     Task<bool> HasOverlappingAvailabilityAsync(Guid doctorId, DateTime newSlotStart, DateTime newSlotEnd);
 
+    public Task<Availability?> GetAvailabilityByDoctorIdDateAscyn(Guid doctorId, DateTime slotDateTime);
+
     public Task<Availability> GetAvailabilityByIdAsync(Guid id);
 
     public Task<IEnumerable<TProjection>> GetAllAvailabilityPerDoctor<TProjection>(Guid doctorId);

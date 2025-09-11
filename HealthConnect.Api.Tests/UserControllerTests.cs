@@ -137,7 +137,7 @@ public class UserControllerTests
         {
             Name = "User test",
             Email = "userTeste@example.com",
-            Password = "Password123@#",
+            Password = "Password123!@",
             CPF = "58965234525",
             Phone = "1234567890",
             BirthDate = new DateOnly(1990, 1, 1),

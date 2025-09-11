@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using HealthConnect.Application.Dtos.Doctors;
+﻿namespace HealthConnect.Application.Validators.DoctorDto;
 
-namespace HealthConnect.Application.Validators.DoctorDtoValidator;
+using FluentValidation;
+using HealthConnect.Application.Dtos.Doctors;
 
 public class DoctorUpdatingDtoValidator : AbstractValidator<DoctorUpdatingDto>
 {

@@ -19,6 +19,7 @@ builder.Services
 
 var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+await app.SeedDatabaseAsync();
 app.UsePresentation();
 app.Run();
 

@@ -53,4 +53,11 @@ public class AvailabilityRepository(
         _appDbContext.Availabilities.Remove(availability);
         return Task.CompletedTask;
     }
+
+    public Task<Availability?> GetAvailabilityByDoctorIdDateAscyn(Guid doctorId, DateTime slotDateTime)
+    {
+        return _appDbContext.Availabilities.Where(a => a.DoctorId == doctorId && a.SlotDateTime == slotDateTime)
+            .OrderBy(a => a.SlotDateTime)
+            .FirstOrDefaultAsync();
+    }
 }
