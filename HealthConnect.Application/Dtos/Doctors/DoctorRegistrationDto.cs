@@ -19,7 +19,7 @@ public record DoctorRegistrationDto
 
     required public string CRM { get; init; }
 
-    required public string Specialty { get; init; }
+    public Guid SpecialityId { get; init; }
 
     public string? Biography { get; init; }
 
