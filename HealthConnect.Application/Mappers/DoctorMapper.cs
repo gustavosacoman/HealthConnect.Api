@@ -8,8 +8,11 @@ public class DoctorMapper : Profile
 {
     public DoctorMapper()
     {
-        this.CreateMap<Doctor, DoctorSummaryDto>();
-
+        this.CreateMap<Doctor, DoctorSummaryDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
+            .ForMember(dest => dest.CRM, opt => opt.MapFrom(opt => opt.CRM))
+            .ForMember(dest => dest.Speciality, opt => opt.MapFrom(src => src.Speciality.Name));
         this.CreateMap<Doctor, DoctorDetailDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
