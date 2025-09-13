@@ -9,6 +9,8 @@ public class Speciality : IAuditable, ISoftDeletable
 
     required public string Name { get; set; }
 
+    public ICollection<Doctor> Doctors { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }

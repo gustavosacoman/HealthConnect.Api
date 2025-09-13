@@ -12,7 +12,9 @@ public class Doctor: IAuditable, ISoftDeletable
 
     public string? Biography { get; set; }
 
-    required public string Specialty { get; set; }
+    public Speciality Speciality { get; set; }
+
+    public Guid SpecialityId { get; set; }
 
     //public string ProfilePicture { get; set; }
 
