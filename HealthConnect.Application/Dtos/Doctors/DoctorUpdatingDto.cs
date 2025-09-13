@@ -12,7 +12,7 @@ public record DoctorUpdatingDto
 
     public string? CRM { get; init; }
 
-    public string? Specialty { get; init; }
+    public Guid SpecialityId { get; init; }
 
     public string? Biography { get; init; }
     //public string? ProfilePicture { get; init; }
