@@ -16,19 +16,24 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
 
     public async Task<IEnumerable<Doctor>> GetAllDoctors()
     {
-        return await _appDbContext.Doctors.ToListAsync();
+        return await _appDbContext.Doctors
+            .Include(d => d.Speciality)
+            .ToListAsync();
     }
 
     public async Task<Doctor?> GetDoctorById(Guid id)
     {
         return await _appDbContext.Doctors
             .Include(d => d.User)
+            .Include(d => d.Speciality)
             .FirstOrDefaultAsync(d => d.Id == id && d.User != null);
     }
 
     public async Task<Doctor?> GetDoctorByRQE(string rqe)
     {
-        return await _appDbContext.Doctors.FirstOrDefaultAsync(d => d.RQE == rqe);
+        return await _appDbContext.Doctors
+            .Include(d => d.Speciality)
+            .FirstOrDefaultAsync(d => d.RQE == rqe);
     }
 
 }

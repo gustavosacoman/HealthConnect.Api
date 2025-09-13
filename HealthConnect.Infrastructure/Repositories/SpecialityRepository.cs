@@ -1,10 +1,9 @@
-﻿using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
+﻿namespace HealthConnect.Infrastructure.Repositories;
+
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-
-namespace HealthConnect.Infrastructure.Repositories;
-
 public class SpecialityRepository(AppDbContext appDbContext) : ISpecialityRepository
 {
     private readonly AppDbContext _appDbContext1 = appDbContext;
