@@ -14,6 +14,7 @@ public class DoctorMapper : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
             .ForMember(dest => dest.CRM, opt => opt.MapFrom(opt => opt.CRM))
+            .ForMember(dest => dest.Speciality, opt => opt .MapFrom(src => src.Speciality.Name))
             .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))

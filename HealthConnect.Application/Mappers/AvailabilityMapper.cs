@@ -14,7 +14,7 @@ public class AvailabilityMapper : Profile
             .ForMember(desc => desc.SlotDateTime, opt => opt.MapFrom(src => src.SlotDateTime))
             .ForMember(desc => desc.DurationMinutes, opt => opt.MapFrom(src => src.DurationMinutes))
             .ForMember(desc => desc.Name, opt => opt.MapFrom(src => src.Doctor.User.Name))
-            .ForMember(desc => desc.Specialty, opt => opt.MapFrom(src => src.Doctor.Specialty));
+            .ForMember(desc => desc.Specialty, opt => opt.MapFrom(src => src.Doctor.Speciality.Name));
 
     }
 }
