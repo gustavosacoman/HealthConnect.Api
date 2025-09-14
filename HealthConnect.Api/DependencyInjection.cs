@@ -39,10 +39,8 @@ public static class DependencyInjection
         }).AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        }).AddXmlSerializerFormatters()
-        .AddJsonOptions(options =>
-        {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         });
 
         services.AddFluentValidationAutoValidation();
