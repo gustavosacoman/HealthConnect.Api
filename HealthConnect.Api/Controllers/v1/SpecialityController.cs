@@ -18,7 +18,7 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
         return Ok(speciality);
     }
 
-    [HttpGet("by-name/{name:string}")]
+    [HttpGet("by-name/{name}")]
     public async Task<IActionResult> GetSpecialityByName(string name)
     {
         var speciality = await _specialityService.GetSpecialityByName(name);
