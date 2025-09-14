@@ -27,6 +27,7 @@ public class DbInitializerTest
 
         Assert.True(await context.Users.AnyAsync(u => u.Email == "julia@admin.com"));
         Assert.True(await context.Users.AnyAsync(u => u.Email == "john@admin.com"));
+        Assert.True(await context.Specialities.AnyAsync(s => s.Name == "Cardiologista"));
 
     }
 }
