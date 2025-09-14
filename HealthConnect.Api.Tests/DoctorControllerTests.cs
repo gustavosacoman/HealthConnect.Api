@@ -145,7 +145,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 
         var updateData = new DoctorUpdatingDto
         {
-            Specialty = "Neurologist",
             Biography = "Updated biography",
         };
         var response = await _client.PatchAsJsonAsync($"/api/v1/doctor?id={doctorId}", updateData);
@@ -156,7 +155,7 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(updatedDoctor);
-        Assert.Equal("Neurologist", updatedDoctor.Specialty);
+        Assert.Equal("Updated biography", updatedDoctor.Biography);
     }
 
 }

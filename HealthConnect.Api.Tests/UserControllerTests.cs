@@ -4,6 +4,7 @@ using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
+using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Infrastructure.Configurations;
@@ -132,6 +133,7 @@ public class UserControllerTests
 
         _client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var specialityId = "123e4567-e89b-12d3-a456-426614174888";
 
         var newUser = new DoctorRegistrationDto
         {
@@ -144,15 +146,20 @@ public class UserControllerTests
             RQE = "RQE123456",
             CRM = "CRM654321",
             Biography = "Experienced general practitioner with a passion for patient care.",
-            Specialty = "General Medicine",
+            SpecialityId = Guid.Parse("123e4567-e89b-12d3-a456-426614174888"),
         };
 
         var response = await _client.PostAsJsonAsync("/api/v1/user/doctor", newUser);
 
+
+        var responseSpeciality = await _client.GetAsync($"/api/v1/speciality/{newUser.SpecialityId}");
+        
         response.EnsureSuccessStatusCode();
+        responseSpeciality.EnsureSuccessStatusCode();
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
+        var speciality = await responseSpeciality.Content.ReadFromJsonAsync<SpecialitySummaryDto>();
 
         Assert.NotNull(doctor);
         Assert.Equal(newUser.Name, doctor.Name);
@@ -162,10 +169,9 @@ public class UserControllerTests
         Assert.Equal(newUser.BirthDate, doctor.BirthDate);
         Assert.Equal(newUser.Phone, doctor.Phone);
         Assert.Equal(newUser.Biography, doctor.Biography);
-        Assert.Equal(newUser.Specialty, doctor.Specialty);
+        Assert.Equal(speciality.Name, doctor.Speciality);
         Assert.Equal(newUser.CPF, doctor.CPF);
         
-
     }
     [Fact]
     public async Task CreateClient_ShouldCreateAUserAndAClient_WhenCalled()

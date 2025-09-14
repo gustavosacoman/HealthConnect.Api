@@ -20,6 +20,15 @@ public static class SeedData
         var salt = passwordHasher.GenerateSalt();
         var hashedPassword = passwordHasher.HashPassword(DefaultTestUserPassword, salt);
 
+        var specialities = new List<Speciality>
+        {
+            new Speciality { Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174888"), Name = "Cardiology" },
+            new Speciality { Id = Guid.NewGuid(), Name = "Dermatology" },
+            new Speciality { Id = Guid.NewGuid(), Name = "Neurology" },
+            new Speciality { Id = Guid.NewGuid(), Name = "Pediatrics" },
+            new Speciality { Id = Guid.NewGuid(), Name = "Psychiatry" }
+        };
+
         var users = new List<User>
         {
             new User
@@ -98,7 +107,8 @@ public static class SeedData
                 UserId = users[0].Id,
                 CRM = "CRM123456",
                 RQE = "RQE654321",
-                Specialty = "Dermatology",
+                Speciality = specialities[0],
+                SpecialityId = specialities[0].Id,
                 User = users[0]
             },
             new Doctor
@@ -107,7 +117,8 @@ public static class SeedData
                 UserId = users[1].Id,
                 CRM = "CRM654321",
                 RQE = "RQE987654",
-                Specialty = "Cardiology",
+                Speciality = specialities[0],
+                SpecialityId = specialities[0].Id,
                 User = users[1]
 
             },
@@ -117,7 +128,8 @@ public static class SeedData
                 UserId = users[2].Id,
                 CRM = "CRM789012",
                 RQE = "RQE210987",
-                Specialty = "Neurology",
+                Speciality = specialities[0],
+                SpecialityId = specialities[0].Id,
                 User = users[2]
             },
 
@@ -202,6 +214,8 @@ public static class SeedData
                 Doctor = doctors[1]
             }
         };
+
+        context.Specialities.AddRange(specialities);
         context.Users.AddRange(users);
         context.Doctors.AddRange(doctors);
         context.Clients.AddRange(clients);
