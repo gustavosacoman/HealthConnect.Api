@@ -25,7 +25,7 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
         return Ok(speciality);
     }
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllSpecialities()
     {
         var specialities = await _specialityService.GetAllSpecialities();
