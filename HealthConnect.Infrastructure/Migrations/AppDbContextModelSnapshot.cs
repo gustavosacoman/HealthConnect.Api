@@ -157,10 +157,8 @@ namespace HealthConnect.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<string>("Specialty")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                    b.Property<Guid>("SpecialityId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -176,10 +174,40 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.HasIndex("RQE")
                         .IsUnique();
 
+                    b.HasIndex("SpecialityId");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Doctors", (string)null);
+                });
+
+            modelBuilder.Entity("HealthConnect.Domain.Models.Speciality", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Specialities", (string)null);
                 });
 
             modelBuilder.Entity("HealthConnect.Domain.Models.User", b =>
@@ -289,11 +317,19 @@ namespace HealthConnect.Infrastructure.Migrations
 
             modelBuilder.Entity("HealthConnect.Domain.Models.Doctor", b =>
                 {
+                    b.HasOne("HealthConnect.Domain.Models.Speciality", "Speciality")
+                        .WithMany("Doctors")
+                        .HasForeignKey("SpecialityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HealthConnect.Domain.Models.User", "User")
                         .WithOne("Doctor")
                         .HasForeignKey("HealthConnect.Domain.Models.Doctor", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Speciality");
 
                     b.Navigation("User");
                 });
@@ -301,6 +337,11 @@ namespace HealthConnect.Infrastructure.Migrations
             modelBuilder.Entity("HealthConnect.Domain.Models.Doctor", b =>
                 {
                     b.Navigation("Availabilities");
+                });
+
+            modelBuilder.Entity("HealthConnect.Domain.Models.Speciality", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("HealthConnect.Domain.Models.User", b =>

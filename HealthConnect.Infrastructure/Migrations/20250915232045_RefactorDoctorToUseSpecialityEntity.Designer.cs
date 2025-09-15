@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HealthConnect.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250914031555_AddSpecialityAndDoctorRelation")]
-    partial class AddSpecialityAndDoctorRelation
+    [Migration("20250915232045_RefactorDoctorToUseSpecialityEntity")]
+    partial class RefactorDoctorToUseSpecialityEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthConnect.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSpecialityAndDoctorRelation : Migration
+    public partial class RefactorDoctorToUseSpecialityEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
