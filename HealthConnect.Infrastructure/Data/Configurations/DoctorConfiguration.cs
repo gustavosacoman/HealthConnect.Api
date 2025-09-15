@@ -26,10 +26,6 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasIndex(d => d.UserId)
             .IsUnique();
 
-        builder.Property(d => d.Specialty)
-            .IsRequired()
-            .HasMaxLength(100);
-
         builder.Property(d => d.Biography)
             .HasMaxLength(3500);
 
@@ -42,5 +38,9 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .WithOne(u => u.Doctor)
             .HasForeignKey<Doctor>(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(d => d.Speciality)
+            .WithMany(s => s.Doctors)
+            .HasForeignKey(d => d.SpecialityId);
     }
 }

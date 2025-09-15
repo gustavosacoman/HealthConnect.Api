@@ -145,7 +145,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 
         var updateData = new DoctorUpdatingDto
         {
-            Specialty = "Neurologist",
             Biography = "Updated biography",
         };
         var response = await _client.PatchAsJsonAsync($"/api/v1/doctor?id={doctorId}", updateData);
@@ -156,7 +155,26 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(updatedDoctor);
-        Assert.Equal("Neurologist", updatedDoctor.Specialty);
+        Assert.Equal("Updated biography", updatedDoctor.Biography);
+    }
+
+    [Fact]
+    public async Task GetDoctorsAllBySpeciality_ShouldReturnAEnumerableListOfDoctorDetailDto()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var specialityId = Guid.Parse("123e4567-e89b-12d3-a456-426614174888");
+
+        var response = await _client.GetAsync($"/api/v1/doctor/by-Speciality/all/{specialityId}");
+        response.EnsureSuccessStatusCode();
+
+        var doctors = await response.Content.ReadFromJsonAsync<IEnumerable<DoctorDetailDto>>();
+
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(doctors);
+        Assert.Equal(3, doctors.Count());
     }
 
 }

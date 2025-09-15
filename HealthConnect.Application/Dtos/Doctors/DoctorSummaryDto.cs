@@ -14,7 +14,7 @@ public record DoctorSummaryDto
 
     required public string CRM { get; init; }
 
-    required public string Specialty { get; init; }
+    required public string Speciality { get; init; }
 
     public string? Biography { get; init; }
 

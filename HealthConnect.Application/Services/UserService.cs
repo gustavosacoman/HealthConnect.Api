@@ -18,7 +18,8 @@ public class UserService(
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
     IDoctorRepository doctorRepository,
-    IClientRepository clientRepository) : IUserService
+    IClientRepository clientRepository,
+    ISpecialityRepository specialityRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -26,6 +27,7 @@ public class UserService(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly ISpecialityRepository _specialityRepository = specialityRepository;
 
     /// <summary>
     /// Gets a user by their unique identifier.
@@ -102,6 +104,12 @@ public class UserService(
             throw new InvalidOperationException($"Doctor with RQE {data.RQE} already exists.");
         }
 
+        var speciality = await _specialityRepository.GetSpecialityByIdAsync(data.SpecialityId);
+        if (speciality == null)
+        {
+            throw new KeyNotFoundException($"Speciality with ID {data.SpecialityId} not found.");
+        }
+
         var salt = _passwordHasher.GenerateSalt();
         var user = new User
         {
@@ -122,7 +130,8 @@ public class UserService(
             RQE = data.RQE,
             CRM = data.CRM,
             Biography = data.Biography,
-            Specialty = data.Specialty,
+            Speciality = speciality,
+            SpecialityId = speciality.Id,
         };
 
         await _userRepository.CreateUserAsync(user);

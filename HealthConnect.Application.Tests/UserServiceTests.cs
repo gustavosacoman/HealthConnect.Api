@@ -16,6 +16,7 @@ public class UserServiceTests
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<IDoctorRepository> _doctorRepository;
     private readonly Mock<IClientRepository> _clientMockRepository;
+    private readonly Mock<ISpecialityRepository> _specialityMockRepository;
 
     private readonly UserService _userService;
     public UserServiceTests()
@@ -26,6 +27,7 @@ public class UserServiceTests
         _doctorRepository = new Mock<IDoctorRepository>();
         _mockMapper = new Mock<IMapper>();
         _clientMockRepository = new Mock<IClientRepository>();
+        _specialityMockRepository = new Mock<ISpecialityRepository>();
 
 
         _userService = new UserService(
@@ -34,7 +36,8 @@ public class UserServiceTests
             _mockPasswordHasher.Object,
             _unitOfWorkMock.Object,
             _doctorRepository.Object,
-            _clientMockRepository.Object
+            _clientMockRepository.Object,
+            _specialityMockRepository.Object
         );
     }
 
@@ -258,7 +261,7 @@ public class UserServiceTests
             CRM = "CRM123456",
             RQE = "RQE654321",
             Biography = "Experienced general practitioner with a passion for patient care.",
-            Specialty = "General Medicine",
+            SpecialityId = Guid.NewGuid(),
             UserId = Guid.Parse("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
             User = existingUser,
             CreatedAt = DateTime.UtcNow,

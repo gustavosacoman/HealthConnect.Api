@@ -19,6 +19,8 @@ public class UserRegistrationDtoValidatorTests
     [Fact]
     public void Should_Have_Error_When_Name_Is_Null_Or_Empty()
     {
+
+        var SpecialityId = Guid.NewGuid();
         var dto = new DoctorRegistrationDto
         {
             Name = string.Empty,
@@ -29,7 +31,7 @@ public class UserRegistrationDtoValidatorTests
             BirthDate = new DateOnly(1990, 1, 1),
             CRM = "12345",
             RQE = "67890",
-            Specialty = "Cardiology"
+            SpecialityId = SpecialityId
         };
 
         var result = _validator.TestValidate(dto);
@@ -40,6 +42,7 @@ public class UserRegistrationDtoValidatorTests
     [Fact]
     public void Should_Not_Have_Error_When_Name_Is_Specified()
     {
+        var SpecialityId = Guid.NewGuid();
         var dto = new DoctorRegistrationDto
         {
             Name = "Valid Name",
@@ -50,7 +53,7 @@ public class UserRegistrationDtoValidatorTests
             BirthDate = new DateOnly(1990, 1, 1),
             CRM = "12345",
             RQE = "67890",
-            Specialty = "Cardiology"
+            SpecialityId = SpecialityId
         };
 
         var result = _validator.TestValidate(dto);
@@ -64,6 +67,7 @@ public class UserRegistrationDtoValidatorTests
     [InlineData("email.com")]
     public void Should_Have_Error_When_Email_Is_Invalid(string invalidEmail)
     {
+        var SpecialityId = Guid.NewGuid();
         var dto = new DoctorRegistrationDto
         {
             Name = "Valid Name",
@@ -74,7 +78,7 @@ public class UserRegistrationDtoValidatorTests
             Email = invalidEmail,
             CRM = "12345",
             RQE = "67890",
-            Specialty = "Cardiology"
+            SpecialityId = SpecialityId
         };
 
         var result = _validator.TestValidate(dto);

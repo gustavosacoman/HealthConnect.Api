@@ -49,6 +49,15 @@ public class DoctorController(IDoctorService doctorService) : ControllerBase
         return Ok(doctors);
     }
 
+    [HttpGet("by-Speciality/all/{specialityId:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<DoctorSummaryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllDoctorsBySpeciality(Guid specialityId)
+    {
+        var doctors = await _doctorService.GetAllDoctorsBySpecialityAsync(specialityId);
+        return Ok(doctors);
+    }
+
     [HttpPatch]
     [ProducesResponseType(typeof(DoctorSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
