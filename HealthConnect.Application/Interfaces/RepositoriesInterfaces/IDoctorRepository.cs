@@ -12,4 +12,6 @@ public interface IDoctorRepository
 
     public Task CreateDoctor(Doctor doctor);
 
+    public Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialityAsync(Guid specialityId);
+
 }

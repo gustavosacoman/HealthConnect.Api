@@ -21,6 +21,14 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialityAsync(Guid specialityId)
+    {
+        return await _appDbContext.Doctors.Where(d => d.SpecialityId == specialityId)
+            .Include(d => d.Speciality)
+            .Include(d => d.User)
+            .ToListAsync();
+    }
+
     public async Task<Doctor?> GetDoctorById(Guid id)
     {
         return await _appDbContext.Doctors

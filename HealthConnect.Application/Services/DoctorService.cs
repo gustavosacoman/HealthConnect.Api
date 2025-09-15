@@ -72,6 +72,18 @@ public class DoctorService(
         return _mapper.Map<DoctorSummaryDto>(doctor);
     }
 
+    public async Task<IEnumerable<DoctorDetailDto>> GetAllDoctorsBySpecialityAsync(Guid specialityId)
+    {
+        if (specialityId == Guid.Empty)
+        {
+            throw new NullReferenceException("Speciality ID cannot be empty.");
+        }
+        var doctors = await _doctorRepository.GetAllDoctorsBySpecialityAsync(specialityId) ??
+                throw new ArgumentNullException("No doctors found for the given speciality.");
+
+        return _mapper.Map<IEnumerable<DoctorDetailDto>>(doctors);
+    }
+
     public async Task<DoctorSummaryDto> UpdateDoctorAsync(Guid id, DoctorUpdatingDto doctorUpdatingDto)
     {
         if (id == Guid.Empty)
