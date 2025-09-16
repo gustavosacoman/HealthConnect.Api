@@ -19,11 +19,12 @@ builder.Services
 
 var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+app.UsePresentation();
 if (!app.Environment.IsEnvironment("Testing"))
 {
     await app.SeedDatabaseAsync();
 }
-app.UsePresentation();
 app.Run();
 
 /// <summary>

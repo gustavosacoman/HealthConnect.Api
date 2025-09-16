@@ -14,7 +14,6 @@ public static class DbInitializer
     {
         await using var scope = serviceProvider.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await context.Database.EnsureCreatedAsync();
 
         var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
         var specialityService = scope.ServiceProvider.GetRequiredService<ISpecialityService>();
