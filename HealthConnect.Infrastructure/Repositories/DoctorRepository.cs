@@ -18,6 +18,7 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
     {
         return await _appDbContext.Doctors
             .Include(d => d.Speciality)
+            .Include(d => d.User)
             .ToListAsync();
     }
 
