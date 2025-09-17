@@ -16,6 +16,8 @@ public record DoctorSummaryDto
 
     required public string Speciality { get; init; }
 
+    public string Name { get; init; }
+
     public string? Biography { get; init; }
 
     //public string ProfilePicture { get; init; }
