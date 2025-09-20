@@ -8,6 +8,7 @@ using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 
 /// <summary>
 /// Provides handling of user business rules for retrieval, creation, update, and deletion.
@@ -19,7 +20,8 @@ public class UserService(
     IUnitOfWork unitOfWork,
     IDoctorRepository doctorRepository,
     IClientRepository clientRepository,
-    ISpecialityRepository specialityRepository) : IUserService
+    ISpecialityRepository specialityRepository,
+    IRoleRepository roleRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -28,6 +30,7 @@ public class UserService(
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly ISpecialityRepository _specialityRepository = specialityRepository;
+    private readonly IRoleRepository _roleRepository = roleRepository;
 
     /// <summary>
     /// Gets a user by their unique identifier.
@@ -110,6 +113,9 @@ public class UserService(
             throw new KeyNotFoundException($"Speciality with ID {data.SpecialityId} not found.");
         }
 
+        var doctorRole = await _roleRepository.GetRoleByNameAsync("Doctor") ?? 
+             throw new KeyNotFoundException("Role 'Doctor' not found in the system.");
+
         var salt = _passwordHasher.GenerateSalt();
         var user = new User
         {
@@ -121,6 +127,7 @@ public class UserService(
             Salt = salt,
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
+            UserRoles = new List<UserRole>(),
         };
         var doctor = new Doctor
         {
@@ -133,7 +140,13 @@ public class UserService(
             Speciality = speciality,
             SpecialityId = speciality.Id,
         };
+        var newUserRole = new UserRole
+        {
+            User = user,
+            Role = doctorRole,
+        };
 
+        await _roleRepository.CreateUserRoleAsync(newUserRole);
         await _userRepository.CreateUserAsync(user);
         await _doctorRepository.CreateDoctor(doctor);
         await _unitOfWork.SaveChangesAsync();
@@ -148,6 +161,9 @@ public class UserService(
             throw new InvalidOperationException($"User with email {data.Email} already exists.");
         }
 
+        var patientRole = await _roleRepository.GetRoleByNameAsync("Patient") ??
+             throw new KeyNotFoundException("Role 'Client' not found in the system.");
+
         var salt = _passwordHasher.GenerateSalt();
         var user = new User
         {
@@ -159,6 +175,7 @@ public class UserService(
             Salt = salt,
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
+            UserRoles = new List<UserRole>(),
         };
         var client = new Client
         {
@@ -168,6 +185,13 @@ public class UserService(
         };
         user.Client = client;
 
+        var newUserRole = new UserRole
+        {
+            User = user,
+            Role = patientRole,
+        };
+
+        await _roleRepository.CreateUserRoleAsync(newUserRole);
         await _userRepository.CreateUserAsync(user);
         await _clientRepository.CreateClientAsync(client);
         await _unitOfWork.SaveChangesAsync();
