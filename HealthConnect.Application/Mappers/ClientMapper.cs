@@ -12,7 +12,9 @@ public class ClientMapper : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.PatientRoles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
+
         CreateMap<Client, ClientDetailDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
@@ -20,6 +22,7 @@ public class ClientMapper : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.User.CPF))
             .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.User.BirthDate))
-            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone));
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
+            .ForMember(dest => dest.PatientRoles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
     }
 }
