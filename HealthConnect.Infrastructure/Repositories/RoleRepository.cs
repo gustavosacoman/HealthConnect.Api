@@ -14,7 +14,7 @@ public class RoleRepository(AppDbContext appDbContext) : IRoleRepository
         await _appDbContext.Roles.AddAsync(role);
     }
 
-    public async Task CreateUserRole(UserRole userRole)
+    public async Task CreateUserRoleAsync(UserRole userRole)
     {
         await _appDbContext.UserRoles.AddAsync(userRole);
     }
