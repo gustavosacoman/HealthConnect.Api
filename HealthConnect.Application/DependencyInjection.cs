@@ -52,6 +52,7 @@ public static class DependencyInjection
             cfg.AddProfile<AvailabilityMapper>();
             cfg.AddProfile<AppointmentMapper>();
             cfg.AddProfile<SpecialityMapper>();
+            cfg.AddProfile<RoleMapper>();
         });
         return services;
     }
