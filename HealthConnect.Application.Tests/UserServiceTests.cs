@@ -17,6 +17,7 @@ public class UserServiceTests
     private readonly Mock<IDoctorRepository> _doctorRepository;
     private readonly Mock<IClientRepository> _clientMockRepository;
     private readonly Mock<ISpecialityRepository> _specialityMockRepository;
+    private readonly Mock<IRoleRepository> _roleMockRepository;
 
     private readonly UserService _userService;
     public UserServiceTests()
@@ -28,6 +29,7 @@ public class UserServiceTests
         _mockMapper = new Mock<IMapper>();
         _clientMockRepository = new Mock<IClientRepository>();
         _specialityMockRepository = new Mock<ISpecialityRepository>();
+        _roleMockRepository = new Mock<IRoleRepository>();
 
 
         _userService = new UserService(
@@ -37,7 +39,8 @@ public class UserServiceTests
             _unitOfWorkMock.Object,
             _doctorRepository.Object,
             _clientMockRepository.Object,
-            _specialityMockRepository.Object
+            _specialityMockRepository.Object,
+            _roleMockRepository.Object
         );
     }
 
