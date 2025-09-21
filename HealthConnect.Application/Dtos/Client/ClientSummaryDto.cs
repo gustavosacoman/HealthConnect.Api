@@ -10,5 +10,5 @@ public record ClientSummaryDto
 
     public string Email { get; init; }
 
-    public IReadOnlyCollection<string> PatientRoles { get; init; }
+    public IReadOnlyCollection<string> Roles { get; init; }
 }

@@ -24,7 +24,7 @@ public class DoctorDetailDto
 
     required public string Speciality { get; init; }
 
-    public IReadOnlyCollection<string> DoctorRoles { get; init; }
+    public IReadOnlyCollection<string> Roles { get; init; }
 
     /// <summary>
     /// Gets the unique identifier of the user.

@@ -15,7 +15,7 @@ public class DoctorMapper : Profile
             .ForMember(dest => dest.Speciality, opt => opt.MapFrom(src => src.Speciality.Name))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
-            .ForMember(dest => dest.DoctorRoles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
         this.CreateMap<Doctor, DoctorDetailDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
@@ -28,7 +28,7 @@ public class DoctorMapper : Profile
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
             .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.User.CPF))
             .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.User.BirthDate))
-            .ForMember(dest => dest.DoctorRoles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
 
     }
 }

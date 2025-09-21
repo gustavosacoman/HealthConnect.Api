@@ -20,7 +20,7 @@ public record DoctorSummaryDto
 
     public string? Biography { get; init; }
 
-    public IReadOnlyCollection<string> DoctorRoles { get; init; }
+    public IReadOnlyCollection<string> Roles { get; init; }
 
     //public string ProfilePicture { get; init; }
 }

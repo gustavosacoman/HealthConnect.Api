@@ -15,6 +15,6 @@ public record ClientDetailDto
 
     public DateOnly BirthDate { get; init; }
 
-    public IReadOnlyCollection<string> PatientRoles { get; init; }
+    public IReadOnlyCollection<string> Roles { get; init; }
 
 }
