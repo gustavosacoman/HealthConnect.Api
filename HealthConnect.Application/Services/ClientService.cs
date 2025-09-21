@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthConnect.Application.Services;
 public class ClientService(IClientRepository clientRepository, IMapper mapper ) : IClientService
@@ -11,10 +13,12 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
 
     public async Task<IEnumerable<ClientSummaryDto>> GetAllClientsAsync()
     {
-        var clients = await _clientRepository.GetAllClientsAsync() ??
-            throw new NullReferenceException("No clients found.");
+        var queriable = _clientRepository.GetAllClientsAsync();
 
-        return _mapper.Map<IEnumerable<ClientSummaryDto>>(clients);
+        var clients = queriable.OrderBy(c => c.User.Name)
+            .ProjectTo<ClientSummaryDto>(_mapper.ConfigurationProvider);
+
+        return await clients.ToListAsync();
     }
 
     public async Task<ClientSummaryDto> GetClientByIdAsync(Guid clientId)
