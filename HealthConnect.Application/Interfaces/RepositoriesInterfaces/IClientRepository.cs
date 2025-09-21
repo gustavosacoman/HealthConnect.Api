@@ -8,7 +8,7 @@ public interface IClientRepository
 
     public Task<Client> GetClientByUserIdAsync(Guid userId);
 
-    public Task<IEnumerable<Client>> GetAllClientsAsync();
+    public IQueryable<Client> GetAllClientsAsync();
 
     public Task CreateClientAsync(Client client);
 }

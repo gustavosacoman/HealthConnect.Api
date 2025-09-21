@@ -13,15 +13,17 @@ public class ClientRepository(AppDbContext appDbContext) : IClientRepository
         await _appDbContex.Clients.AddAsync(client);
     }
 
-    public async Task<IEnumerable<Client>> GetAllClientsAsync()
+    public IQueryable<Client> GetAllClientsAsync()
     {
-        return await _appDbContex.Clients.Include(c => c.User).ToListAsync();
+        return _appDbContex.Clients.AsNoTracking();
     }
 
     public async Task<Client> GetClientByIdAsync(Guid Id)
     {
         return await _appDbContex.Clients
             .Include(c => c.User)
+            .ThenInclude(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(c => c.Id == Id);
     }
 
@@ -29,6 +31,8 @@ public class ClientRepository(AppDbContext appDbContext) : IClientRepository
     {
         return await _appDbContex.Clients
             .Include(c => c.User)
+            .ThenInclude(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(c => c.UserId == userId);
     }
 }

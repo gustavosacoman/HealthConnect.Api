@@ -4,7 +4,7 @@ namespace HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 
 public interface IDoctorRepository
 {
-    public Task<IEnumerable<Doctor>> GetAllDoctors();
+    public IQueryable<Doctor> GetAllDoctors();
 
     public Task<Doctor?> GetDoctorById(Guid id);
 
@@ -12,6 +12,6 @@ public interface IDoctorRepository
 
     public Task CreateDoctor(Doctor doctor);
 
-    public Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialityAsync(Guid specialityId);
+    public IQueryable<Doctor> GetAllDoctorsBySpecialityAsync(Guid specialityId);
 
 }
