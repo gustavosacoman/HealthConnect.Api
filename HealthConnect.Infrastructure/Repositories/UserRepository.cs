@@ -2,6 +2,7 @@
 
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +31,10 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// </returns>
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        return await _appDbContext.Users.ToListAsync();
+        return await _appDbContext.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -44,6 +48,8 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     public async Task<User?> GetUserByEmailAsync(string Email)
     {
         return await _appDbContext.Users.Include(u => u.Doctor)
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(u => u.Email == Email);
     }
 
@@ -57,13 +63,34 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
     /// </returns>
     public async Task<User?> GetUserByIdAsync(Guid Id)
     {
-        return await _appDbContext.Users.FindAsync(Id);
+        return await _appDbContext.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(u => u.Id == Id);
     }
 
     public async Task<User?> GetDoctorByEmailAsync(string email)
     {
         return await _appDbContext.Users
             .Include(u => u.Doctor)
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(u => u.Email == email && u.Doctor != null);
+    }
+
+    public async Task AddUserRoleLinkAsync(UserRole userRole)
+    {
+        await _appDbContext.UserRoles.AddAsync(userRole);
+    }
+
+    public async Task RemoveRoleLinkAsync(UserRole userRole)
+    {
+        _appDbContext.UserRoles.Remove(userRole);
+    }
+
+    public async Task<UserRole> GetUserRoleLink(Guid userId, Guid roleId)
+    {
+        return await _appDbContext.UserRoles
+            .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
     }
 }
