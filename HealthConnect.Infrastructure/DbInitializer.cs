@@ -4,6 +4,7 @@ using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,21 @@ public static class DbInitializer
             "Urologista",
             "Otorrinolaringologista",
         };
+
+        var rolesList = new List<Role>
+        {
+            new Role { Name = "Admin" },
+            new Role { Name = "Doctor" },
+            new Role { Name = "Patient" },
+        };
+
+        foreach (var role in rolesList)
+        {
+            if (!await context.Roles.AnyAsync(r => r.Name == role.Name))
+            {
+                context.Roles.Add(role);
+            }
+        }
 
         foreach (var name in names)
         {
