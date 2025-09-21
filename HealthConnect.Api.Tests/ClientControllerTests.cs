@@ -72,7 +72,7 @@ public class ClientControllerTests
 
         var clientSummary = await response.Content.ReadFromJsonAsync<ClientSummaryDto>();
 
-        var expectedRoles = new List<string> { "Patient" };
+        var expectedRoles = new List<string> { "patient" };
 
         Assert.NotNull(clientSummary);
         Assert.Equal("Daniela Pereira", clientSummary.Name);
@@ -125,7 +125,7 @@ public class ClientControllerTests
         response.EnsureSuccessStatusCode();
 
         var clientDetail = await response.Content.ReadFromJsonAsync<ClientDetailDto>();
-        var expectedRoles = new List<string> { "Patient" };
+        var expectedRoles = new List<string> { "patient" };
         Assert.NotNull(clientDetail);
         Assert.Equal(id, clientDetail.Id.ToString());
         Assert.Equal("Daniela Pereira", clientDetail.Name);

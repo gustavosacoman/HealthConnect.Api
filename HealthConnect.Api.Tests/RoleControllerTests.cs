@@ -72,9 +72,9 @@ public class RoleControllerTests : IClassFixture<CustomWebAppFactory>
 
         var roles = await response.Content.ReadFromJsonAsync<List<RoleSummaryDto>>();
         Assert.NotNull(roles);
-        Assert.Equal("Admin", roles[0].Name);
-        Assert.Contains("Patient", roles[2].Name);
-        Assert.Contains("Doctor", roles[1].Name);
+        Assert.Equal("admin", roles[0].Name);
+        Assert.Contains("patient", roles[2].Name);
+        Assert.Contains("doctor", roles[1].Name);
     }
     [Fact]
     public async Task GetRoleByName_ShouldReturnRole()
@@ -91,7 +91,7 @@ public class RoleControllerTests : IClassFixture<CustomWebAppFactory>
         var role = await response.Content.ReadFromJsonAsync<RoleSummaryDto>();
 
         Assert.NotNull(role);
-        Assert.Equal("Admin", role.Name);
+        Assert.Equal("admin", role.Name);
     }
     [Fact]
     public async Task GetRoleById_ShouldReturnRole()
@@ -107,7 +107,7 @@ public class RoleControllerTests : IClassFixture<CustomWebAppFactory>
         var role = await response.Content.ReadFromJsonAsync<RoleSummaryDto>();
 
         Assert.NotNull(role);
-        Assert.Equal("Admin", role.Name);
+        Assert.Equal("admin", role.Name);
     }
     [Fact]
     public async Task GetRolesForUser_ShouldReturnRoles()
@@ -124,8 +124,8 @@ public class RoleControllerTests : IClassFixture<CustomWebAppFactory>
 
         Assert.NotNull(roles);
         Assert.Equal(2, roles.Count);
-        Assert.Equal("Doctor", roles[1].Name);
-        Assert.Equal("Admin", roles[0].Name);
+        Assert.Equal("doctor", roles[1].Name);
+        Assert.Equal("admin", roles[0].Name);
     }
 
     [Fact]

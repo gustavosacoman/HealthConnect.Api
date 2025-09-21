@@ -161,7 +161,7 @@ public class UserControllerTests
         var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
         var speciality = await responseSpeciality.Content.ReadFromJsonAsync<SpecialitySummaryDto>();
 
-        var expectedRoles = new List<string> { "Doctor" };
+        var expectedRoles = new List<string> { "doctor" };
 
         Assert.NotNull(doctor);
         Assert.Equal(newUser.Name, doctor.Name);
@@ -198,7 +198,7 @@ public class UserControllerTests
 
         var client = await response.Content.ReadFromJsonAsync<ClientDetailDto>();
 
-        var expectedRoles = new List<string> { "Patient" };
+        var expectedRoles = new List<string> { "patient" };
 
 
         Assert.NotNull(client);
@@ -281,7 +281,7 @@ public class UserControllerTests
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         var userEmail = "alice@example.com";
-        var roleName = "Admin";
+        var roleName = "admin";
 
         var userRoleRequestDto = new UserRoleRequestDto
         {
@@ -299,7 +299,7 @@ public class UserControllerTests
 
         var user = await responseUser.Content.ReadFromJsonAsync<UserSummaryDto>();
 
-        var expectedRoles = new List<string> { "Doctor", "Admin" };
+        var expectedRoles = new List<string> { "doctor", "admin" };
         Assert.NotNull(user);
         Assert.Equal(expectedRoles, user.Roles);
 
@@ -314,7 +314,7 @@ public class UserControllerTests
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var userEmail = "bruno@example.com";
-        var roleName = "Admin";
+        var roleName = "doctor";
 
         var userRoleRequestDto = new UserRoleRequestDto
         {
@@ -335,7 +335,7 @@ public class UserControllerTests
         responseUser.EnsureSuccessStatusCode();
 
         var user = await responseUser.Content.ReadFromJsonAsync<UserSummaryDto>();
-        var expectedRoles = new List<string> { "Doctor" };
+        var expectedRoles = new List<string> { "admin" };
 
         Assert.NotNull(user);
         Assert.Equal(expectedRoles, user.Roles);

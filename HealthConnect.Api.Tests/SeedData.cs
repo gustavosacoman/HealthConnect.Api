@@ -32,9 +32,9 @@ public static class SeedData
 
         var Roles = new List<Role>
         {
-            new Role { Id = Guid.Parse("223e4567-e89b-12d3-a456-426614174998"), Name = "Admin" },
-            new Role { Id = Guid.Parse("323e4567-e89b-12d3-a456-426614174997"), Name = "Doctor" },
-            new Role { Id = Guid.Parse("423e4567-e89b-12d3-a456-426614174999"), Name = "Patient" }
+            new Role { Id = Guid.Parse("223e4567-e89b-12d3-a456-426614174998"), Name = "admin" },
+            new Role { Id = Guid.Parse("323e4567-e89b-12d3-a456-426614174997"), Name = "doctor" },
+            new Role { Id = Guid.Parse("423e4567-e89b-12d3-a456-426614174999"), Name = "patient" }
         };
 
         var users = new List<User>

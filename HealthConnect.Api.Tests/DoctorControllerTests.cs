@@ -68,7 +68,7 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
 
         var doctorSummaryDto = await response.Content.ReadFromJsonAsync<DoctorSummaryDto>();
 
-        var expectedRoles = new List<string> { "Doctor" , "Admin"};
+        var expectedRoles = new List<string> { "doctor" , "admin"};
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
@@ -91,7 +91,7 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         response.EnsureSuccessStatusCode();
 
         var doctorDetail = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
-        var expectedRoles = new List<string> { "Doctor", "Admin" };
+        var expectedRoles = new List<string> { "doctor", "admin" };
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorDetail);
         Assert.Equal(doctorId, doctorDetail.Id);
