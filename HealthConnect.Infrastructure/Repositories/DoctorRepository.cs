@@ -14,26 +14,22 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
         await _appDbContext.Doctors.AddAsync(doctor);
     }
 
-    public async Task<IEnumerable<Doctor>> GetAllDoctors()
+    public IQueryable<Doctor> GetAllDoctors()
     {
-        return await _appDbContext.Doctors
-            .Include(d => d.Speciality)
-            .Include(d => d.User)
-            .ToListAsync();
+        return _appDbContext.Doctors.AsNoTracking();
     }
 
-    public async Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialityAsync(Guid specialityId)
+    public IQueryable<Doctor> GetAllDoctorsBySpecialityAsync(Guid specialityId)
     {
-        return await _appDbContext.Doctors.Where(d => d.SpecialityId == specialityId)
-            .Include(d => d.Speciality)
-            .Include(d => d.User)
-            .ToListAsync();
+        return _appDbContext.Doctors.AsNoTracking();
     }
 
     public async Task<Doctor?> GetDoctorById(Guid id)
     {
         return await _appDbContext.Doctors
             .Include(d => d.User)
+            .ThenInclude(U => U.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .Include(d => d.Speciality)
             .FirstOrDefaultAsync(d => d.Id == id && d.User != null);
     }
@@ -42,6 +38,9 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
     {
         return await _appDbContext.Doctors
             .Include(d => d.Speciality)
+            .Include(d => d.User)
+            .ThenInclude(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(d => d.RQE == rqe);
     }
 
