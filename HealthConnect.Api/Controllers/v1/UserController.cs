@@ -46,6 +46,7 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
+        Console.Write("teste remove: ->\n\n\n\n\n\n\n\n\n\n\n" + user.Roles);
         return Ok(user);
     }
 
@@ -113,5 +114,19 @@ public class UserController(IUserService userService) : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("add-role")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
 
+    public async Task<IActionResult> AddRoleToUser(UserRoleRequestDto userRoleRequestDto)
+    {
+        await _userService.AddRoleLinkToUserAsync(userRoleRequestDto);
+        return NoContent();
+    }
+
+    [HttpDelete("remove-role")]
+    public async Task<IActionResult> RemoveRoleFromUser(UserRoleRequestDto userRoleRequestDto)
+    {
+        await _userService.RemoveRoleLinkFromUserAsync(userRoleRequestDto);
+        return NoContent();
+    }
 }
