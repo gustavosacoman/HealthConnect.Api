@@ -75,7 +75,7 @@ public class UserControllerTests
     {
         var token = await AuthenticateAndGetTokenAsync();
 
-        _client.DefaultRequestHeaders.Authorization = 
+        _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var response = await _client.GetAsync("/api/v1/user/all");
@@ -92,7 +92,7 @@ public class UserControllerTests
     {
         var token = await AuthenticateAndGetTokenAsync();
 
-        _client.DefaultRequestHeaders.Authorization = 
+        _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         var userId = "123e4567-e89b-12d3-a456-426614174000";
         var response = await _client.GetAsync($"/api/v1/user/{userId}");
@@ -109,8 +109,8 @@ public class UserControllerTests
     public async Task GetUserByEmail_WhenCalledWithValidEmail_ReturnsUserAsync()
     {
 
-        var token = await   AuthenticateAndGetTokenAsync();
-        _client.DefaultRequestHeaders.Authorization = 
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var email = "bruno@example.com";
@@ -131,7 +131,7 @@ public class UserControllerTests
     {
         var token = await AuthenticateAndGetTokenAsync();
 
-        _client.DefaultRequestHeaders.Authorization = 
+        _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         var specialityId = "123e4567-e89b-12d3-a456-426614174888";
 
@@ -153,13 +153,15 @@ public class UserControllerTests
 
 
         var responseSpeciality = await _client.GetAsync($"/api/v1/speciality/{newUser.SpecialityId}");
-        
+
         response.EnsureSuccessStatusCode();
         responseSpeciality.EnsureSuccessStatusCode();
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
         var speciality = await responseSpeciality.Content.ReadFromJsonAsync<SpecialitySummaryDto>();
+
+        var expectedRoles = new List<string> { "Doctor" };
 
         Assert.NotNull(doctor);
         Assert.Equal(newUser.Name, doctor.Name);
@@ -171,7 +173,8 @@ public class UserControllerTests
         Assert.Equal(newUser.Biography, doctor.Biography);
         Assert.Equal(speciality.Name, doctor.Speciality);
         Assert.Equal(newUser.CPF, doctor.CPF);
-        
+        Assert.Equal(expectedRoles, doctor.Roles);
+
     }
     [Fact]
     public async Task CreateClient_ShouldCreateAUserAndAClient_WhenCalled()
@@ -195,6 +198,9 @@ public class UserControllerTests
 
         var client = await response.Content.ReadFromJsonAsync<ClientDetailDto>();
 
+        var expectedRoles = new List<string> { "Patient" };
+
+
         Assert.NotNull(client);
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equal(newUser.Name, client.Name);
@@ -202,6 +208,7 @@ public class UserControllerTests
         Assert.Equal(newUser.CPF, client.CPF);
         Assert.Equal(newUser.Phone, client.Phone);
         Assert.Equal(newUser.BirthDate, client.BirthDate);
+        Assert.Equal(expectedRoles, client.Roles);
     }
 
     [Fact]
@@ -243,7 +250,7 @@ public class UserControllerTests
         var userEmail = "carla@example.com";
         var userRQE = "RQE210987";
         var response = await _client.DeleteAsync($"/api/v1/user/{userEmail}");
-        
+
         response.EnsureSuccessStatusCode();
 
         var getResponse = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
@@ -255,7 +262,7 @@ public class UserControllerTests
         var content = await getResponse.Content.ReadAsStringAsync();
         var contentDoctor = await getResponseDoctor.Content.ReadAsStringAsync();
 
-        
+
         var errorResponse = JsonDocument.Parse(content).RootElement;
         var errorResponseDoctor = JsonDocument.Parse(contentDoctor).RootElement;
         Assert.Equal(404, errorResponse.GetProperty("StatusCode").GetInt32());
@@ -267,6 +274,72 @@ public class UserControllerTests
 
     }
 
-}
+    [Fact]
+    public async Task AddRoleToUser_ShouldAddALinkInUserRole_WhenCalled()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var userEmail = "alice@example.com";
+        var roleName = "Admin";
+
+        var userRoleRequestDto = new UserRoleRequestDto
+        {
+            Email = userEmail,
+            RoleName = roleName,
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/v1/user/add-role", userRoleRequestDto);
+        response.EnsureSuccessStatusCode();
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        
+        var responseUser = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
+        responseUser.EnsureSuccessStatusCode();
+
+        var user = await responseUser.Content.ReadFromJsonAsync<UserSummaryDto>();
+
+        var expectedRoles = new List<string> { "Doctor", "Admin" };
+        Assert.NotNull(user);
+        Assert.Equal(expectedRoles, user.Roles);
+
+
+    }
+
+    [Fact]
+    public async Task RemoveUserRole_ShouldRemoveTheRole_WhenCalled()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var userEmail = "bruno@example.com";
+        var roleName = "Admin";
+
+        var userRoleRequestDto = new UserRoleRequestDto
+        {
+            Email = userEmail,
+            RoleName = roleName,
+        };
+
+        var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/user/remove-role")
+        {
+            Content = JsonContent.Create(userRoleRequestDto)
+        };
+        var response = await _client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+        var responseUser = await _client.GetAsync($"/api/v1/user/by-email/{userEmail}");
+        responseUser.EnsureSuccessStatusCode();
+
+        var user = await responseUser.Content.ReadFromJsonAsync<UserSummaryDto>();
+        var expectedRoles = new List<string> { "Doctor" };
+
+        Assert.NotNull(user);
+        Assert.Equal(expectedRoles, user.Roles);
+    }
+ }
         
         
