@@ -22,6 +22,7 @@ public class RoleService(
         {
             throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
         }
+        roleName.ToLower();
 
         var role =  await _roleRepository.GetRoleByNameAsync(roleName) ?? 
                 throw new KeyNotFoundException($"Role with name '{roleName}' not found.");
@@ -76,7 +77,7 @@ public class RoleService(
         var newRole = new Role
         {
             Id = Guid.NewGuid(),
-            Name = roleRegistration.Name
+            Name = roleRegistration.Name.ToLower(),
         };
 
         await _roleRepository.CreateRoleAsync(newRole);
