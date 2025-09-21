@@ -22,9 +22,8 @@ public class RoleService(
         {
             throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
         }
-        roleName.ToLower();
 
-        var role =  await _roleRepository.GetRoleByNameAsync(roleName) ?? 
+        var role =  await _roleRepository.GetRoleByNameAsync(roleName.ToLower()) ?? 
                 throw new KeyNotFoundException($"Role with name '{roleName}' not found.");
 
         return _mapper.Map<RoleSummaryDto>(role);
@@ -68,7 +67,7 @@ public class RoleService(
             throw new ArgumentException("Role name cannot be null or empty.", nameof(roleRegistration.Name));
         }
 
-        var existingRole = await _roleRepository.GetRoleByNameAsync(roleRegistration.Name);
+        var existingRole = await _roleRepository.GetRoleByNameAsync(roleRegistration.Name.ToLower());
         if (existingRole != null)
         {
             throw new InvalidOperationException($"Role with name '{roleRegistration.Name}' already exists.");

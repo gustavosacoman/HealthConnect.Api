@@ -268,18 +268,18 @@ public class UserService(
         var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
             ?? throw new KeyNotFoundException($"User with ID {userRoleRequestDto.Email} not found.");
 
-        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName)
+        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName.ToLower())
             ?? throw new KeyNotFoundException($"Role with name {userRoleRequestDto.RoleName} not found.");
 
         var rolesExistInUser = await _roleRepository.GetRolesForUserAsync(user.Id);
 
-        if (rolesExistInUser.Any(r => r.Name == role.Name))
+        if (rolesExistInUser.Any(r => r.Name == role.Name.ToLower()))
         {
             throw new InvalidOperationException($"User with email {user.Email} already has the role {role.Name}.");
         }
 
-        if ((rolesExistInUser.Any(r => r.Name == "Patient") && role.Name == "Doctor") ||
-            (rolesExistInUser.Any(r => r.Name == "Doctor" && role.Name == "Patient")))
+        if ((rolesExistInUser.Any(r => r.Name.ToLower() == "patient") && role.Name.ToLower() == "doctor") ||
+            (rolesExistInUser.Any(r => r.Name.ToLower() == "doctor" && role.Name.ToLower() == "patient")))
         {
             throw new InvalidOperationException($"User with email {user.Email} cannot have both Patient and Doctor roles.");
         }
@@ -299,7 +299,7 @@ public class UserService(
         var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
             ?? throw new KeyNotFoundException($"User with email {userRoleRequestDto.Email} not found.");
 
-        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName)
+        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName.ToLower())
             ?? throw new KeyNotFoundException($"Role with name {userRoleRequestDto.RoleName} not found.");
 
         var rolesExistInUser = await _roleRepository.GetRolesForUserAsync(user.Id);

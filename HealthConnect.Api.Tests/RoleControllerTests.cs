@@ -148,6 +148,6 @@ public class RoleControllerTests : IClassFixture<CustomWebAppFactory>
         var createdRole = await getResponse.Content.ReadFromJsonAsync<RoleSummaryDto>();
         Assert.Equal(System.Net.HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(createdRole);
-        Assert.Equal("Nurse", createdRole.Name);
+        Assert.Equal("nurse", createdRole.Name);
     }
 }
