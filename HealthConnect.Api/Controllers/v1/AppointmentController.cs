@@ -1,5 +1,6 @@
 ﻿using HealthConnect.Application.Dtos.Appointment;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Domain.Constant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,6 @@ namespace HealthConnect.Api.Controllers.v1;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
-[Authorize]
 public class AppointmentController(IAppointmentService appointmentService) : ControllerBase
 {
     private readonly IAppointmentService _appointmentService = appointmentService;
@@ -17,6 +17,7 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPost("{clientId:guid}")]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
     public async Task<IActionResult> CreateAppointmentAsync(
         [FromRoute] Guid clientId,
         [FromBody] AppointmentRegistrationDto appointment)
@@ -33,6 +34,7 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("by-client/{clientId:guid}")]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> GetAppointmentsByClientIdAsync([FromRoute] Guid clientId)
     {
         var appointments = 
@@ -45,6 +47,7 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("by-doctor/{doctorId:guid}")]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> GetAppointmentsByDoctorIdAsync([FromRoute] Guid doctorId)
     {
         var appointments = 
@@ -56,6 +59,7 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
     public async Task<IActionResult> UpdateAppointmentId(
         [FromQuery] Guid Id,
         [FromBody] AppointmentUpdatingDto appointment)
@@ -67,6 +71,7 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(AppointmentDetailDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> GetAppointmentById(Guid id)
     {
         var appointment = await _appointmentService.GetAppointmentByIdAsync(id);
