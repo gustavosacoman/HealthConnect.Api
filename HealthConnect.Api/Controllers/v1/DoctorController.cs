@@ -1,5 +1,6 @@
 ﻿using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Domain.Constant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,6 @@ namespace HealthConnect.Api.Controllers.v1;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
-[Authorize]
 public class DoctorController(IDoctorService doctorService) : ControllerBase
 {
     private readonly IDoctorService _doctorService = doctorService;
@@ -25,6 +25,7 @@ public class DoctorController(IDoctorService doctorService) : ControllerBase
     [HttpGet("detail/{id:guid}")]
     [ProducesResponseType(typeof(DoctorSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
     public async Task<IActionResult> GetDoctorByIdDetail(Guid id)
     {
         var doctor = await _doctorService.GetDoctorByIdDetailAsync(id);
@@ -61,6 +62,7 @@ public class DoctorController(IDoctorService doctorService) : ControllerBase
     [HttpPatch]
     [ProducesResponseType(typeof(DoctorSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
     public async Task<IActionResult> UpdateDoctor(Guid id, DoctorUpdatingDto data)
     {
         var updatedDoctor = await _doctorService.UpdateDoctorAsync(id, data);

@@ -1,4 +1,4 @@
-﻿namespace HealthConnect.Application.Validators;
+﻿namespace HealthConnect.Application.Validators.UserDto;
 
 using FluentValidation;
 using HealthConnect.Application.Dtos.Users;

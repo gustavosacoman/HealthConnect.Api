@@ -1,6 +1,7 @@
 ﻿namespace HealthConnect.Domain.Models;
 
 using HealthConnect.Domain.Interfaces;
+using HealthConnect.Domain.Models.Roles;
 
 /// <summary>
 /// Represents a user in the HealthConnect system.
@@ -43,16 +44,18 @@ public class User : IAuditable, ISoftDeletable
     required public string Salt { get; set; }
 
     /// <summary>
+    /// Gets or sets the birth date of the user.
+    /// </summary>
+    public DateOnly BirthDate { get; set; }
+
+    /// <summary>
     /// Gets or sets the associated doctor information for the user, if applicable.
     /// </summary>
     public virtual Doctor? Doctor { get; set; }
 
     public virtual Client? Client { get; set; }
 
-    /// <summary>
-    /// Gets or sets the birth date of the user.
-    /// </summary>
-    public DateOnly BirthDate { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; }
 
     /// <summary>
     /// Gets or sets the date and time when the user was created.

@@ -22,8 +22,9 @@ public class DoctorDetailDto
     /// </summary>
     public string? Biography { get; init; }
 
-
     required public string Speciality { get; init; }
+
+    public IReadOnlyCollection<string> Roles { get; init; }
 
     /// <summary>
     /// Gets the unique identifier of the user.

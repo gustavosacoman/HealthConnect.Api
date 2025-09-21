@@ -1,5 +1,6 @@
 ﻿using HealthConnect.Application.Interfaces;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,13 @@ public static class SeedData
             new Speciality { Id = Guid.NewGuid(), Name = "Neurology" },
             new Speciality { Id = Guid.NewGuid(), Name = "Pediatrics" },
             new Speciality { Id = Guid.NewGuid(), Name = "Psychiatry" }
+        };
+
+        var Roles = new List<Role>
+        {
+            new Role { Id = Guid.Parse("223e4567-e89b-12d3-a456-426614174998"), Name = "admin" },
+            new Role { Id = Guid.Parse("323e4567-e89b-12d3-a456-426614174997"), Name = "doctor" },
+            new Role { Id = Guid.Parse("423e4567-e89b-12d3-a456-426614174999"), Name = "patient" }
         };
 
         var users = new List<User>
@@ -215,8 +223,21 @@ public static class SeedData
             }
         };
 
+        var userRoles = new List<UserRole>
+        {
+            new UserRole { UserId = users[0].Id, RoleId = Roles[1].Id },
+            new UserRole { UserId = users[1].Id, RoleId = Roles[1].Id }, 
+            new UserRole { UserId = users[1].Id, RoleId = Roles[0].Id }, 
+            new UserRole { UserId = users[2].Id, RoleId = Roles[1].Id },
+            new UserRole { UserId = users[3].Id, RoleId = Roles[2].Id },
+            new UserRole { UserId = users[4].Id, RoleId = Roles[2].Id },
+            new UserRole { UserId = users[5].Id, RoleId = Roles[2].Id } 
+        };
+
+        context.Roles.AddRange(Roles);
         context.Specialities.AddRange(specialities);
         context.Users.AddRange(users);
+        context.UserRoles.AddRange(userRoles);
         context.Doctors.AddRange(doctors);
         context.Clients.AddRange(clients);
         context.Availabilities.AddRange(availabilities);

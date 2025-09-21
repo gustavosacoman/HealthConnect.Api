@@ -4,6 +4,7 @@ using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Domain.Constant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Authorize]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await _userService.GetUserByIdAsync(id);
@@ -42,10 +43,11 @@ public class UserController(IUserService userService) : ControllerBase
     /// <returns>The user summary.</returns>
     [HttpGet("by-email/{email}")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
-    [Authorize]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
+        Console.Write("teste remove: ->\n\n\n\n\n\n\n\n\n\n\n" + user.Roles);
         return Ok(user);
     }
 
@@ -55,7 +57,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <returns>A list of user summaries.</returns>
     [HttpGet("all")]
     [ProducesResponseType(typeof(IEnumerable<UserSummaryDto>), StatusCodes.Status200OK)]
-    [Authorize]
+    [Authorize(Roles = $"{AppRoles.Admin}")]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsersAsync();
@@ -93,6 +95,7 @@ public class UserController(IUserService userService) : ControllerBase
     /// <returns>The updated user summary.</returns>
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(typeof(UserSummaryDto), StatusCodes.Status200OK)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserUpdatingDto data)
     {
         var user = await _userService.UpdateUserAsync(id, data);
@@ -107,11 +110,28 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpDelete("{email}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor},{AppRoles.Patient}")]
     public async Task<IActionResult> DeleteUser(string email)
     {
         await _userService.DeleteUserAsync(email);
         return NoContent();
     }
 
+    [HttpPost("add-role")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Authorize(Roles = $"{AppRoles.Admin}")]
 
+    public async Task<IActionResult> AddRoleToUser(UserRoleRequestDto userRoleRequestDto)
+    {
+        await _userService.AddRoleLinkToUserAsync(userRoleRequestDto);
+        return NoContent();
+    }
+
+    [HttpDelete("remove-role")]
+    [Authorize(Roles = $"{AppRoles.Admin}")]
+    public async Task<IActionResult> RemoveRoleFromUser(UserRoleRequestDto userRoleRequestDto)
+    {
+        await _userService.RemoveRoleLinkFromUserAsync(userRoleRequestDto);
+        return NoContent();
+    }
 }

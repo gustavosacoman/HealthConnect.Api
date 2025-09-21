@@ -5,6 +5,7 @@ using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +15,13 @@ using System.Text;
 public class AuthService(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
-    IConfiguration configuration) : IAuthService
+    IConfiguration configuration,
+    IRoleRepository roleRepository) : IAuthService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IConfiguration _configuration = configuration;
+    private readonly IRoleRepository _roleRepository = roleRepository;
 
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
     {
@@ -46,7 +49,9 @@ public class AuthService(
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
 
-        var token = GenerateToken(user);
+        var userRoles = await _roleRepository.GetRolesForUserAsync(user.Id);
+
+        var token = GenerateToken(user, userRoles);
 
         return new LoginResponseDto
         {
@@ -54,7 +59,7 @@ public class AuthService(
         };
     }
 
-    private string GenerateToken(User user)
+    private string GenerateToken(User user ,IEnumerable<Role> roles)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -69,6 +74,11 @@ public class AuthService(
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role.Name));
+        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

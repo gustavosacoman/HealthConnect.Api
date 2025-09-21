@@ -2,6 +2,7 @@
 
 using HealthConnect.Domain.Interfaces;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Roles;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -32,6 +33,10 @@ public class AppDbContext : DbContext
     public DbSet<Appointment> Appointments { get; set; }
 
     public DbSet<Speciality> Specialities { get; set; }
+
+    public DbSet<Role> Roles { get; set; }
+
+    public DbSet<UserRole> UserRoles { get; set; }
 
     /// <summary>
     /// Saves all changes made in this context to the database asynchronously.

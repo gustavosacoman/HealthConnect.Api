@@ -2,6 +2,8 @@
 
 using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Domain.Constant;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -12,6 +14,8 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
     private readonly ISpecialityService _specialityService = specialityService;
 
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSpecialityById(Guid id)
     {
         var speciality = await _specialityService.GetSpecialityById(id);
@@ -19,6 +23,8 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
     }
 
     [HttpGet("by-name/{name}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSpecialityByName(string name)
     {
         var speciality = await _specialityService.GetSpecialityByName(name);
@@ -26,6 +32,8 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
     }
 
     [HttpGet("all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllSpecialities()
     {
         var specialities = await _specialityService.GetAllSpecialities();
@@ -33,6 +41,9 @@ public class SpecialityController(ISpecialityService specialityService) : Contro
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = $"{AppRoles.Admin}")]
     public async Task<IActionResult> CreateSpeciality([FromBody] SpecialityRegistrationDto specialityDto)
     {
         var createdSpeciality = await _specialityService.CreateSpeciality(specialityDto);

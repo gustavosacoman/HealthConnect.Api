@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace HealthConnect.Application.Services;
 
@@ -19,8 +23,13 @@ public class DoctorService(
 
     public async Task<IEnumerable<DoctorSummaryDto>> GetAllDoctorsAsync()
     {
-        var doctors = await _doctorRepository.GetAllDoctors();
-        return _mapper.Map<IEnumerable<DoctorSummaryDto>>(doctors);
+        var queryable = _doctorRepository.GetAllDoctors();
+
+        var projectedQuery = queryable
+        .OrderBy(d => d.User.Name)
+        .ProjectTo<DoctorSummaryDto>(_mapper.ConfigurationProvider);
+
+        return await projectedQuery.ToListAsync();
     }
 
     public async Task<DoctorSummaryDto> GetDoctorByRQEAsync(string rqe)
@@ -78,10 +87,15 @@ public class DoctorService(
         {
             throw new NullReferenceException("Speciality ID cannot be empty.");
         }
-        var doctors = await _doctorRepository.GetAllDoctorsBySpecialityAsync(specialityId) ??
+
+        var queryable = _doctorRepository.GetAllDoctorsBySpecialityAsync(specialityId) ??
                 throw new ArgumentNullException("No doctors found for the given speciality.");
 
-        return _mapper.Map<IEnumerable<DoctorDetailDto>>(doctors);
+        var doctors = queryable
+            .OrderBy(d => d.User.Name)
+            .ProjectTo<DoctorDetailDto>(_mapper.ConfigurationProvider);
+
+        return await doctors.ToListAsync();
     }
 
     public async Task<DoctorSummaryDto> UpdateDoctorAsync(Guid id, DoctorUpdatingDto doctorUpdatingDto)
