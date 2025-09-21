@@ -34,4 +34,6 @@ public record UserSummaryDto
     /// Gets the birth date of the user.
     /// </summary>
     public DateOnly BirthDate { get; init; }
+
+    public IReadOnlyCollection<string> Roles { get; init; }
 }
