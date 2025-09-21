@@ -262,4 +262,57 @@ public class UserService(
 
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task AddRoleLinkToUserAsync(UserRoleRequestDto userRoleRequestDto)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
+            ?? throw new KeyNotFoundException($"User with ID {userRoleRequestDto.Email} not found.");
+
+        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName)
+            ?? throw new KeyNotFoundException($"Role with name {userRoleRequestDto.RoleName} not found.");
+
+        var rolesExistInUser = await _roleRepository.GetRolesForUserAsync(user.Id);
+
+        if (rolesExistInUser.Any(r => r.Name == role.Name))
+        {
+            throw new InvalidOperationException($"User with email {user.Email} already has the role {role.Name}.");
+        }
+
+        if ((rolesExistInUser.Any(r => r.Name == "Patient") && role.Name == "Doctor") ||
+            (rolesExistInUser.Any(r => r.Name == "Doctor" && role.Name == "Patient")))
+        {
+            throw new InvalidOperationException($"User with email {user.Email} cannot have both Patient and Doctor roles.");
+        }
+
+        var userRoleLink = new UserRole
+        {
+            User = user,
+            Role = role,
+        };
+
+        await _userRepository.AddUserRoleLinkAsync(userRoleLink);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task RemoveRoleLinkFromUserAsync(UserRoleRequestDto userRoleRequestDto)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
+            ?? throw new KeyNotFoundException($"User with email {userRoleRequestDto.Email} not found.");
+
+        var role = await _roleRepository.GetRoleByNameAsync(userRoleRequestDto.RoleName)
+            ?? throw new KeyNotFoundException($"Role with name {userRoleRequestDto.RoleName} not found.");
+
+        var rolesExistInUser = await _roleRepository.GetRolesForUserAsync(user.Id);
+
+        if (rolesExistInUser.Count() == 1)
+        {
+            throw new InvalidOperationException($"User with email {user.Email} must have at least one role.");
+        }
+
+        var userRoleLink = await _userRepository.GetUserRoleLink(user.Id, role.Id)
+            ?? throw new KeyNotFoundException($"Role link for user ID {user.Id} and role {role.Name} not found.");
+
+        await _userRepository.RemoveRoleLinkAsync(userRoleLink);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }
