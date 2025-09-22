@@ -22,6 +22,8 @@ public class Doctor: IAuditable, ISoftDeletable
 
     public ICollection<Availability>? Availabilities { get; set; }
 
+    public ICollection<DoctorCRM> DoctorCRMs { get; set; }
+
     required public Guid UserId { get; set; }
 
     public DateTime CreatedAt { get; set; }

@@ -38,6 +38,8 @@ public class AppDbContext : DbContext
 
     public DbSet<UserRole> UserRoles { get; set; }
 
+    public DbSet<DoctorCRM> DoctorCRMs { get; set; }
+
     /// <summary>
     /// Saves all changes made in this context to the database asynchronously.
     /// </summary>

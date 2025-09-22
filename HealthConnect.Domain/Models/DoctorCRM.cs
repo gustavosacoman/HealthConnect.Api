@@ -17,6 +17,8 @@ public class DoctorCRM : IAuditable, ISoftDeletable
 
     public string State { get; set; }
 
+    required public Doctor Doctor { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
