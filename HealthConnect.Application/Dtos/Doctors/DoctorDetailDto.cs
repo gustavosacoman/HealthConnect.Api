@@ -15,7 +15,9 @@ public class DoctorDetailDto
     /// <summary>
     /// Gets the CRM of the doctor.
     /// </summary>
-    required public string CRM { get; init; }
+    required public IReadOnlyCollection<string> CRM { get; init; }
+
+    required public IReadOnlyCollection<string> State { get; init; }
 
     /// <summary>
     /// Gets the biography of the doctor.
