@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.DoctorCRM;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
+using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,7 +18,7 @@ public class DoctorCRMService(
     IDoctorCRMRepository doctorCRMRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,
-    IDoctorRepository doctorRepository)
+    IDoctorRepository doctorRepository) : IDoctorCRMService
 {
     private readonly IDoctorCRMRepository _doctorCRMRepository = doctorCRMRepository;
     private readonly IMapper _mapper = mapper;
