@@ -13,9 +13,9 @@ public class DoctorCRM : IAuditable, ISoftDeletable
 
     public Guid DoctorId { get; set; }
 
-    public string CRMNumber { get; set; }
+    required public string CRMNumber { get; set; }
 
-    public string State { get; set; }
+    required public string State { get; set; }
 
     required public Doctor Doctor { get; set; }
 
