@@ -8,8 +8,6 @@ public class Doctor: IAuditable, ISoftDeletable
 
     required public string RQE { get; set; }
 
-    required public string CRM { get; set; }
-
     public string? Biography { get; set; }
 
     public Speciality Speciality { get; set; }
