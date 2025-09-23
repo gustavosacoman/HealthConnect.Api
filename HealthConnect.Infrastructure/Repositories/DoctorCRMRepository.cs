@@ -25,7 +25,7 @@ public class DoctorCRMRepository(AppDbContext appDbContext) : IDoctorCRMReposito
         return await _appDbContext.DoctorCRMs.FindAsync(id);
     }
 
-    public IQueryable<DoctorCRM> GetAllAsync()
+    public IQueryable<DoctorCRM> GetAllCRMAsync()
     {
         return _appDbContext.DoctorCRMs.AsNoTracking();
     }

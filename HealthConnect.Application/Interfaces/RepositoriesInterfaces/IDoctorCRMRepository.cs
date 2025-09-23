@@ -6,7 +6,7 @@ public interface IDoctorCRMRepository
 {
     Task<DoctorCRM?> GetCRMByCodeAndState(string code, string state);
 
-    IQueryable<DoctorCRM> GetAllAsync();
+    IQueryable<DoctorCRM> GetAllCRMAsync();
 
     Task<DoctorCRM?> GetByIdAsync(Guid id);
 
