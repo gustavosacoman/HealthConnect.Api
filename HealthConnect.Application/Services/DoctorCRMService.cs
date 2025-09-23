@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.DoctorCRM;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,5 +49,40 @@ public class DoctorCRMService(
         await _unitOfWork.SaveChangesAsync();
     }
 
-    
+    public async Task<DoctorCRMSummaryDto> GetCRMByCodeAndState(string crmNumber, string state)
+    {
+        if (string.IsNullOrWhiteSpace(crmNumber))
+        {
+            throw new ArgumentException("CRM number must be provided", nameof(crmNumber));
+        }
+        if (string.IsNullOrWhiteSpace(state))
+        {
+            throw new ArgumentException("State must be provided", nameof(state));
+        }
+
+        var crm = await _doctorCRMRepository.GetCRMByCodeAndState(crmNumber, state) ??
+            throw new KeyNotFoundException($"No CRM found with number {crmNumber} in state {state}");
+
+        return _mapper.Map<DoctorCRMSummaryDto>(crm);
+    }
+
+    public async Task<DoctorCRMSummaryDto> GetCRMByIdAsync(Guid id)
+    {
+        var crm = await _doctorCRMRepository.GetByIdAsync(id) ??
+            throw new KeyNotFoundException($"No CRM found with id {id}");
+        return _mapper.Map<DoctorCRMSummaryDto>(crm);
+    }
+
+    public async Task<IEnumerable<DoctorCRMSummaryDto>> GetAllCRMAsync()
+    {
+        var queriable = _doctorCRMRepository.GetAllCRMAsync();
+
+        var crms = queriable
+            .OrderBy(c => c.State)
+            .ThenBy(c => c.CRMNumber)
+            .ProjectTo<DoctorCRMSummaryDto>(_mapper.ConfigurationProvider);
+
+        return await crms.ToListAsync();
+    }
+
 }
