@@ -23,7 +23,7 @@ public class DoctorCRMConfiguration : IEntityTypeConfiguration<DoctorCRM>
 
         builder.Property(c => c.CRMNumber)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasMaxLength(6);
 
         builder.HasIndex(c => new { c.CRMNumber, c.State })
             .IsUnique();
