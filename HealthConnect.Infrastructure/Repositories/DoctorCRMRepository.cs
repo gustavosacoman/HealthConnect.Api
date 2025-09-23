@@ -14,7 +14,6 @@ public class DoctorCRMRepository(AppDbContext appDbContext) : IDoctorCRMReposito
 {
     private readonly AppDbContext _appDbContext = appDbContext;
 
-
     public async Task CreateCRMAsync(DoctorCRM doctorCRM)
     {
         await _appDbContext.DoctorCRMs.AddAsync(doctorCRM);
@@ -22,7 +21,10 @@ public class DoctorCRMRepository(AppDbContext appDbContext) : IDoctorCRMReposito
 
     public async Task<DoctorCRM?> GetByIdAsync(Guid id)
     {
-        return await _appDbContext.DoctorCRMs.FindAsync(id);
+        return await _appDbContext.DoctorCRMs
+            .Include(c => c.Doctor)
+            .ThenInclude(d => d.User)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public IQueryable<DoctorCRM> GetAllCRMAsync()
@@ -34,6 +36,8 @@ public class DoctorCRMRepository(AppDbContext appDbContext) : IDoctorCRMReposito
     {
         return await _appDbContext
             .DoctorCRMs
+            .Include(c => c.Doctor)
+            .ThenInclude(d => d.User)
             .FirstOrDefaultAsync(c => c.CRMNumber == code && c.State == state);
     }
 }
