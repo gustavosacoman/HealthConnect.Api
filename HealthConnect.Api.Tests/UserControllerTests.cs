@@ -3,6 +3,7 @@ using HealthConnect.Api.Tests;
 using HealthConnect.Application.Dtos;
 using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Dtos.Client;
+using HealthConnect.Application.Dtos.DoctorCRM;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Dtos.Users;
@@ -145,29 +146,34 @@ public class UserControllerTests
             BirthDate = new DateOnly(1990, 1, 1),
             RQE = "RQE123456",
             CRM = "CRM654321",
+            CRMState = "PR",
             Biography = "Experienced general practitioner with a passion for patient care.",
             SpecialityId = Guid.Parse("123e4567-e89b-12d3-a456-426614174888"),
         };
 
         var response = await _client.PostAsJsonAsync("/api/v1/user/doctor", newUser);
-
+        var responseCrm = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={newUser.CRM}&state={newUser.CRMState}");
 
         var responseSpeciality = await _client.GetAsync($"/api/v1/speciality/{newUser.SpecialityId}");
 
         response.EnsureSuccessStatusCode();
         responseSpeciality.EnsureSuccessStatusCode();
+        responseCrm.EnsureSuccessStatusCode();
 
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        
         var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
         var speciality = await responseSpeciality.Content.ReadFromJsonAsync<SpecialitySummaryDto>();
+        var crm = await responseCrm.Content.ReadFromJsonAsync<DoctorCRMSummaryDto>();
 
         var expectedRoles = new List<string> { "doctor" };
 
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(doctor);
         Assert.Equal(newUser.Name, doctor.Name);
         Assert.Equal(newUser.Email, doctor.Email);
-        Assert.Equal(newUser.CRM, doctor.CRM);
         Assert.Equal(newUser.RQE, doctor.RQE);
+        Assert.Equal(newUser.CRMState, crm.State);
+        Assert.Equal(newUser.CRM, crm.CRMNumber);
         Assert.Equal(newUser.BirthDate, doctor.BirthDate);
         Assert.Equal(newUser.Phone, doctor.Phone);
         Assert.Equal(newUser.Biography, doctor.Biography);
