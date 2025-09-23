@@ -109,7 +109,6 @@ public class DoctorService(
             ?? throw new KeyNotFoundException($"Doctor with ID {id} not found.");
 
         doctor.RQE = doctorUpdatingDto.RQE ?? doctor.RQE;
-        doctor.CRM = doctorUpdatingDto.CRM ?? doctor.CRM;
         doctor.Biography = doctorUpdatingDto.Biography ?? doctor.Biography;
 
         await _unitOfWork.SaveChangesAsync();
