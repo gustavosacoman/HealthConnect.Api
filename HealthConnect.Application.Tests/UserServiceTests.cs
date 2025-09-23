@@ -18,6 +18,7 @@ public class UserServiceTests
     private readonly Mock<IClientRepository> _clientMockRepository;
     private readonly Mock<ISpecialityRepository> _specialityMockRepository;
     private readonly Mock<IRoleRepository> _roleMockRepository;
+    private readonly Mock<IDoctorCRMRepository> _doctorCRMMockRepository;
 
     private readonly UserService _userService;
     public UserServiceTests()
@@ -30,6 +31,7 @@ public class UserServiceTests
         _clientMockRepository = new Mock<IClientRepository>();
         _specialityMockRepository = new Mock<ISpecialityRepository>();
         _roleMockRepository = new Mock<IRoleRepository>();
+        _doctorCRMMockRepository = new Mock<IDoctorCRMRepository>();
 
 
         _userService = new UserService(
@@ -40,7 +42,8 @@ public class UserServiceTests
             _doctorRepository.Object,
             _clientMockRepository.Object,
             _specialityMockRepository.Object,
-            _roleMockRepository.Object
+            _roleMockRepository.Object,
+            _doctorCRMMockRepository.Object
         );
     }
 
@@ -261,7 +264,6 @@ public class UserServiceTests
         var doctor = new Doctor
         {
             Id = Guid.NewGuid(),
-            CRM = "CRM123456",
             RQE = "RQE654321",
             Biography = "Experienced general practitioner with a passion for patient care.",
             SpecialityId = Guid.NewGuid(),
@@ -269,7 +271,6 @@ public class UserServiceTests
             User = existingUser,
             CreatedAt = DateTime.UtcNow,
             DeletedAt = null,
-
         };
 
         existingUser.Doctor = doctor;
