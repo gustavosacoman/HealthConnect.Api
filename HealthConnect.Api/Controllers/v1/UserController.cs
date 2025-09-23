@@ -47,7 +47,6 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
-        Console.Write("teste remove: ->\n\n\n\n\n\n\n\n\n\n\n" + user.Roles);
         return Ok(user);
     }
 
