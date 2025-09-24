@@ -50,6 +50,7 @@ public static class DependencyInjection
         {
             cfg.AddProfile<ClientMapper>();
             cfg.AddProfile<DoctorMapper>();
+            cfg.AddProfile<DoctorCRMMapper>();
             cfg.AddProfile<UserMapper>();
             cfg.AddProfile<AvailabilityMapper>();
             cfg.AddProfile<AppointmentMapper>();
