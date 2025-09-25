@@ -236,9 +236,10 @@ public static class SeedData
 
         var CRMs = new List<DoctorCRM> 
         {
-            new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "123456", State = "PR", Doctor = doctors[0] },
-            new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "654321", State = "PR", Doctor = doctors[1] },
-            new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "789012", State = "PR", Doctor = doctors[2] },
+            new DoctorCRM { Id = Guid.Parse("323e4567-e89b-12d3-a456-426614174825"),
+                CRMNumber = "123456", State = "PR", Doctor = doctors[0], DoctorId = doctors[0].Id },
+            new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "654321", State = "PR", Doctor = doctors[1], DoctorId = doctors[1].Id },
+            new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "789012", State = "PR", Doctor = doctors[2], DoctorId = doctors[1].Id },
         };
         
         context.Roles.AddRange(Roles);

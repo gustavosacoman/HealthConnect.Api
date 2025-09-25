@@ -145,17 +145,17 @@ public class UserControllerTests
             Phone = "1234567890",
             BirthDate = new DateOnly(1990, 1, 1),
             RQE = "RQE123456",
-            CRM = "CRM654321",
+            CRM = "654381",
             CRMState = "PR",
             Biography = "Experienced general practitioner with a passion for patient care.",
             SpecialityId = Guid.Parse("123e4567-e89b-12d3-a456-426614174888"),
         };
 
         var response = await _client.PostAsJsonAsync("/api/v1/user/doctor", newUser);
-        var responseCrm = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={newUser.CRM}&state={newUser.CRMState}");
+        
 
         var responseSpeciality = await _client.GetAsync($"/api/v1/speciality/{newUser.SpecialityId}");
-
+        var responseCrm = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={newUser.CRM}&state={newUser.CRMState}");
         response.EnsureSuccessStatusCode();
         responseSpeciality.EnsureSuccessStatusCode();
         responseCrm.EnsureSuccessStatusCode();

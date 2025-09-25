@@ -67,7 +67,7 @@ public class DoctorCRMControllerTests : IClassFixture<CustomWebAppFactory>
 
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _client.GetAsync("/api/v1/DoctorCRM/all");
+        var response = await _client.GetAsync("/api/v1/doctorcrm/all");
         response.EnsureSuccessStatusCode();
 
         var crms = await response.Content.ReadFromJsonAsync<IEnumerable<DoctorCRMSummaryDto>>();
@@ -75,5 +75,68 @@ public class DoctorCRMControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(crms);
         Assert.Equal(3, crms.Count());
+    }
+    
+    [Fact]
+    public async Task GetCRMByCodeAndState_ShouldReturnACRM_WhenCalledWithValidParameters()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var crmNumber = "123456";
+        var state = "PR";
+        
+        var response = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={crmNumber}&state={state}");
+        response.EnsureSuccessStatusCode();
+        
+        var crm = await response.Content.ReadFromJsonAsync<DoctorCRMSummaryDto>();
+        
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(crm);
+        Assert.Equal(crmNumber, crm.CRMNumber);
+        Assert.Equal(state, crm.State);
+    }
+    [Fact]
+    public async Task GetCRMByIdAsync_ShouldReturnACRM_WhenCalledWithValidId()
+    {
+
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var crmId = Guid.Parse("323e4567-e89b-12d3-a456-426614174825");
+
+        var response = await _client.GetAsync($"/api/v1/doctorcrm/{crmId}");
+        response.EnsureSuccessStatusCode();
+
+        var crm = await response.Content.ReadFromJsonAsync<DoctorCRMSummaryDto>();
+
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(crm);
+        Assert.Equal(crmId, crm.Id);
+    }
+    [Fact]
+    public async Task CreateCRMAsync_ShouldCreateDoctorCRM_WhenCalled()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var newCRM = new DoctorCRMRegistrationDto
+        {
+            DoctorId = Guid.Parse("123e4567-e89b-12d3-a456-426614174001"),
+            CRMNumber = "987654",
+            State = "RJ"
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/v1/doctorcrm", newCRM);
+        response.EnsureSuccessStatusCode();
+        var responseCRM = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={newCRM.CRMNumber}&state={newCRM.State}");
+        responseCRM.EnsureSuccessStatusCode();
+
+        var createdCRM = await responseCRM.Content.ReadFromJsonAsync<DoctorCRMSummaryDto>();
+
+        Assert.Equal(System.Net.HttpStatusCode.Created, response.StatusCode);
+        Assert.NotNull(response.Headers.Location);
+        Assert.Equal(newCRM.CRMNumber, createdCRM.CRMNumber);
+        Assert.Equal(newCRM.State, createdCRM.State);
     }
 }
