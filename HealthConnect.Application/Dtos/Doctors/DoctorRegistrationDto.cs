@@ -19,6 +19,8 @@ public record DoctorRegistrationDto
 
     required public string CRM { get; init; }
 
+    required public string CRMState { get; init; }
+
     public Guid SpecialityId { get; init; }
 
     public string? Biography { get; init; }

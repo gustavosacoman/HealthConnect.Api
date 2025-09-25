@@ -8,8 +8,6 @@ public class Doctor: IAuditable, ISoftDeletable
 
     required public string RQE { get; set; }
 
-    required public string CRM { get; set; }
-
     public string? Biography { get; set; }
 
     public Speciality Speciality { get; set; }
@@ -21,6 +19,8 @@ public class Doctor: IAuditable, ISoftDeletable
     required public virtual User User { get; set; }
 
     public ICollection<Availability>? Availabilities { get; set; }
+
+    public ICollection<DoctorCRM> DoctorCRMs { get; set; }
 
     required public Guid UserId { get; set; }
 

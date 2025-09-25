@@ -30,6 +30,7 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
             .Include(d => d.User)
             .ThenInclude(U => U.UserRoles)
             .ThenInclude(ur => ur.Role)
+            .Include(d => d.DoctorCRMs)
             .Include(d => d.Speciality)
             .FirstOrDefaultAsync(d => d.Id == id && d.User != null);
     }
@@ -41,6 +42,7 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
             .Include(d => d.User)
             .ThenInclude(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
+            .Include(d => d.DoctorCRMs)
             .FirstOrDefaultAsync(d => d.RQE == rqe);
     }
 

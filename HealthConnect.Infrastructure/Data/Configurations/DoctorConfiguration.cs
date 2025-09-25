@@ -18,11 +18,6 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.HasIndex(d => d.CRM)
-            .IsUnique();
-        builder.Property(d => d.CRM)
-            .IsRequired()
-            .HasMaxLength(20);
         builder.HasIndex(d => d.UserId)
             .IsUnique();
 

@@ -82,7 +82,8 @@ public static class DbInitializer
                 CPF = "12345678901",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12345",
-                CRM = "CRM67890",
+                CRM = "000001",
+                CRMState = "PR",
                 SpecialityId = cardiologySpecialty.Id,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
@@ -98,7 +99,8 @@ public static class DbInitializer
                 CPF = "12345678950",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12369",
-                CRM = "CRM67823",
+                CRM = "000000",
+                CRMState = "PR",
                 SpecialityId = cardiologySpecialty.Id,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
@@ -114,7 +116,8 @@ public static class DbInitializer
                 CPF = "12345678980",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12387",
-                CRM = "CRM67882",
+                CRM = "000002",
+                CRMState = "PR",
                 SpecialityId = cardiologySpecialty.Id,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };

@@ -29,7 +29,8 @@ public class UserRegistrationDtoValidatorTests
             Password = "ValidPassword123@",
             CPF = "12345678901",
             BirthDate = new DateOnly(1990, 1, 1),
-            CRM = "12345",
+            CRMState = "SP",
+            CRM = "123456",
             RQE = "67890",
             SpecialityId = SpecialityId
         };
@@ -51,7 +52,8 @@ public class UserRegistrationDtoValidatorTests
             Password = "ValidPassword123@",
             CPF = "12345678901",
             BirthDate = new DateOnly(1990, 1, 1),
-            CRM = "12345",
+            CRM = "123456",
+            CRMState = "SP",
             RQE = "67890",
             SpecialityId = SpecialityId
         };
@@ -76,7 +78,8 @@ public class UserRegistrationDtoValidatorTests
             Phone = "1234567890",
             BirthDate = new DateOnly(1990, 1, 1),
             Email = invalidEmail,
-            CRM = "12345",
+            CRM = "123456",
+            CRMState = "SP",
             RQE = "67890",
             SpecialityId = SpecialityId
         };

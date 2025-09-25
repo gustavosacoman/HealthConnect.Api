@@ -21,7 +21,8 @@ public class UserService(
     IDoctorRepository doctorRepository,
     IClientRepository clientRepository,
     ISpecialityRepository specialityRepository,
-    IRoleRepository roleRepository) : IUserService
+    IRoleRepository roleRepository,
+    IDoctorCRMRepository doctorCRMRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -31,6 +32,7 @@ public class UserService(
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly ISpecialityRepository _specialityRepository = specialityRepository;
     private readonly IRoleRepository _roleRepository = roleRepository;
+    private readonly IDoctorCRMRepository _doctorCRMRepository = doctorCRMRepository;
 
     /// <summary>
     /// Gets a user by their unique identifier.
@@ -135,11 +137,27 @@ public class UserService(
             User = user,
             UserId = user.Id,
             RQE = data.RQE,
-            CRM = data.CRM,
             Biography = data.Biography,
             Speciality = speciality,
             SpecialityId = speciality.Id,
         };
+
+        var existCRM = await _doctorCRMRepository.GetCRMByCodeAndState(data.CRM, data.CRMState);
+
+        if (existCRM != null)
+        {
+            throw new InvalidOperationException($"CRM {data.CRM} for state {data.CRMState} is already registered.");
+        }
+
+        var newCRM = new DoctorCRM
+        {
+            Id = Guid.NewGuid(),
+            CRMNumber = data.CRM,
+            State = data.CRMState,
+            Doctor = doctor,
+            DoctorId = doctor.Id,
+        };
+
         var newUserRole = new UserRole
         {
             User = user,
@@ -149,6 +167,7 @@ public class UserService(
         await _roleRepository.CreateUserRoleAsync(newUserRole);
         await _userRepository.CreateUserAsync(user);
         await _doctorRepository.CreateDoctor(doctor);
+        await _doctorCRMRepository.CreateCRMAsync(newCRM);
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<DoctorDetailDto>(doctor);
