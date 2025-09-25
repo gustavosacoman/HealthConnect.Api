@@ -167,6 +167,7 @@ public class UserService(
         await _roleRepository.CreateUserRoleAsync(newUserRole);
         await _userRepository.CreateUserAsync(user);
         await _doctorRepository.CreateDoctor(doctor);
+        await _doctorCRMRepository.CreateCRMAsync(newCRM);
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<DoctorDetailDto>(doctor);
