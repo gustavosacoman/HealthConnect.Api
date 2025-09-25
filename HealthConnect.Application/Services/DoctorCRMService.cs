@@ -35,7 +35,8 @@ public class DoctorCRMService(
                 $" with a state {doctorCRMDto.State} already exist in database");
         }
 
-        var doctor = await _doctorRepository.GetDoctorById(doctorCRMDto.DoctorId);
+        var doctor = await _doctorRepository.GetDoctorById(doctorCRMDto.DoctorId) 
+            ??  throw new KeyNotFoundException($"No doctor found with id {doctorCRMDto.DoctorId}");
 
         var newDoctorCRM = new DoctorCRM
         {
