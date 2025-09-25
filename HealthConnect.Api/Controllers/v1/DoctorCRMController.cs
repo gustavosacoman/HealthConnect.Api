@@ -44,7 +44,7 @@ public class DoctorCRMController(IDoctorCRMService doctorCRMService) : Controlle
     public async Task<IActionResult> CreateCRMAsync([FromBody] DoctorCRMRegistrationDto doctorCRMDto)
     {
         await _doctorCRMService.CreateCRMAsync(doctorCRMDto);
-        return CreatedAtAction(nameof(GetCRMByIdAsync), new { id = doctorCRMDto.DoctorId }, doctorCRMDto);
+        return CreatedAtAction(nameof(GetCRMByCodeAndState), new { CRMNumber = doctorCRMDto.CRMNumber, state = doctorCRMDto.State }, null);
     }
 
 }
