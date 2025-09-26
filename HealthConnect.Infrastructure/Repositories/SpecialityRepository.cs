@@ -1,7 +1,7 @@
 ﻿namespace HealthConnect.Infrastructure.Repositories;
 
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
-using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Specialities;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 public class SpecialityRepository(AppDbContext appDbContext) : ISpecialityRepository

@@ -1,6 +1,7 @@
 ﻿using HealthConnect.Application.Interfaces;
 using HealthConnect.Domain.Models;
 using HealthConnect.Domain.Models.Roles;
+using HealthConnect.Domain.Models.Specialities;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

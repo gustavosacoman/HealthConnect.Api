@@ -1,4 +1,4 @@
-﻿using HealthConnect.Domain.Models;
+﻿using HealthConnect.Domain.Models.Specialities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
