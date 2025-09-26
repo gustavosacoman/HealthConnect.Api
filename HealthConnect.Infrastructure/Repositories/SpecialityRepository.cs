@@ -31,11 +31,6 @@ public class SpecialityRepository(AppDbContext appDbContext) : ISpecialityReposi
             .ToListAsync();
     }
 
-    public async Task CreateDoctorSpeciality(DoctorSpeciality doctorSpeciality)
-    {
-        await _appDbContext.DoctorSpecialities.AddAsync(doctorSpeciality);
-    }
-
     public async Task CreateSpecialityAsync(Speciality speciality)
     {
         await _appDbContext.Specialities.AddAsync(speciality);
