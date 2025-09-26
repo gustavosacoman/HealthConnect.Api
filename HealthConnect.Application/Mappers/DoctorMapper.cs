@@ -10,19 +10,31 @@ public class DoctorMapper : Profile
     {
         this.CreateMap<Doctor, DoctorSummaryDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
-            .ForMember(dest => dest.CRM, opt => opt.MapFrom(opt => opt.DoctorCRMs.Select(crm => crm.CRMNumber).ToList()))
-            .ForMember(dest => dest.State, opt => opt.MapFrom(opt => opt.DoctorCRMs.Select(crm => crm.State).ToList()))
-            .ForMember(dest => dest.Speciality, opt => opt.MapFrom(src => src.Speciality.Name))
+            .ForMember(dest => dest.Specialities, opt => opt.MapFrom(src => src.DoctorSpecialities.Select(ds => new DoctorSpecialityDetailDto
+            {
+                SpecialityName = ds.Speciality.Name,
+                RqeNumber = ds.RqeNumber,
+            }).ToList()))
+            .ForMember(dest => dest.CRMs, opt => opt.MapFrom(src => src.DoctorCRMs.Select(crm => new DoctorCrmDetailDto
+            {
+                CrmNumber = crm.CRMNumber,
+                State = crm.State,
+            }).ToList()))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.User.UserRoles.Select(ur => ur.Role.Name).ToList()));
         this.CreateMap<Doctor, DoctorDetailDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.RQE, opt => opt.MapFrom(opt => opt.RQE))
-            .ForMember(dest => dest.CRM, opt => opt.MapFrom(opt => opt.DoctorCRMs.Select(crm => crm.CRMNumber).ToList()))
-            .ForMember(dest => dest.State, opt => opt.MapFrom(opt => opt.DoctorCRMs.Select(crm => crm.State).ToList()))
-            .ForMember(dest => dest.Speciality, opt => opt .MapFrom(src => src.Speciality.Name))
+            .ForMember(dest => dest.Specialities, opt => opt.MapFrom(src => src.DoctorSpecialities.Select(ds => new DoctorSpecialityDetailDto
+            {
+                SpecialityName = ds.Speciality.Name,
+                RqeNumber = ds.RqeNumber,
+            }).ToList()))
+            .ForMember(dest => dest.CRMs, opt => opt.MapFrom(src => src.DoctorCRMs.Select(crm => new DoctorCrmDetailDto
+            {
+                CrmNumber = crm.CRMNumber,
+                State = crm.State,
+            }).ToList()))
             .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
