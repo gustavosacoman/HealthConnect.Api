@@ -31,6 +31,14 @@ public class SpecialityRepository(AppDbContext appDbContext) : ISpecialityReposi
             .ToListAsync();
     }
 
+    public async Task<DoctorSpeciality> GetDoctorSpecialityByRqe(string rqeNumber)
+    {
+        return await _appDbContext.DoctorSpecialities
+            .Include(ds => ds.Doctor)
+            .Include(ds => ds.Speciality)
+            .FirstOrDefaultAsync(ds => ds.Doctor.RQE == rqeNumber);
+    }
+
     public async Task CreateSpecialityAsync(Speciality speciality)
     {
         await _appDbContext.Specialities.AddAsync(speciality);

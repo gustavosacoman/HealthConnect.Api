@@ -16,4 +16,6 @@ public interface ISpecialityRepository
     public Task CreateSpecialityAsync(Speciality speciality);
 
     public Task<Speciality> GetSpecialityByNameAsync(string name);
+
+    public Task<DoctorSpeciality> GetDoctorSpecialityByRqe(string rqeNumber);
 }
