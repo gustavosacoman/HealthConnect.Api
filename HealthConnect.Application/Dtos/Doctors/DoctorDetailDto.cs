@@ -10,21 +10,19 @@ public class DoctorDetailDto
     /// <summary>
     /// Gets the RQE of the doctor.
     /// </summary>
-    required public string RQE { get; init; }
+    required public IReadOnlyCollection<string> RQE { get; init; }
+
+    required public IReadOnlyCollection<string> Speciality { get; init; }
 
     /// <summary>
     /// Gets the CRM of the doctor.
     /// </summary>
-    required public IReadOnlyCollection<string> CRM { get; init; }
-
-    required public IReadOnlyCollection<string> State { get; init; }
+    required public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
 
     /// <summary>
     /// Gets the biography of the doctor.
     /// </summary>
     public string? Biography { get; init; }
-
-    required public string Speciality { get; init; }
 
     public IReadOnlyCollection<string> Roles { get; init; }
 
