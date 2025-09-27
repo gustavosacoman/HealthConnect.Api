@@ -24,6 +24,7 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
     /// <summary>
     /// Disposes the database context asynchronously.
     /// </summary>
+    /// <returns>A <see cref="ValueTask"/> that represents the asynchronous dispose operation.</returns>
     public async ValueTask DisposeAsync()
     {
         await _appDbContext.DisposeAsync();
