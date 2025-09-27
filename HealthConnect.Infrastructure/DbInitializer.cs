@@ -2,6 +2,7 @@
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Role;
 using HealthConnect.Application.Dtos.Speciality;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
@@ -136,6 +137,16 @@ public static class DbInitializer
                 Phone = "12345678901",
             };
             await userService.CreateClientAsync(client);
+        }
+
+        var user = await userService.GetUserByEmailAsync(doctorEmail);
+        if (user != null && !await context.UserRoles.AnyAsync(ur => ur.UserId == user.Id && ur.Role.Name == "admin"))
+        {
+            var adminRole = await roleService.GetRoleByNameAsync("admin");
+            if (adminRole != null)
+            {
+                await userService.AddRoleLinkToUserAsync(new UserRoleRequestDto { Email = doctorEmail, RoleName = "admin"});
+            }
         }
     }
 }
