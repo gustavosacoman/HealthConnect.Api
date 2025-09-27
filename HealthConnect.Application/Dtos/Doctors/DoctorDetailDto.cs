@@ -1,5 +1,8 @@
 ﻿namespace HealthConnect.Application.Dtos.Doctors;
 
+/// <summary>
+/// Data Transfer Object containing detailed information about a doctor.
+/// </summary>
 public class DoctorDetailDto
 {
     /// <summary>
@@ -7,10 +10,19 @@ public class DoctorDetailDto
     /// </summary>
     public Guid Id { get; init; }
 
+    /// <summary>
+    /// Gets the collection of the doctor's specialities.
+    /// </summary>
     required public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
 
+    /// <summary>
+    /// Gets the collection of the doctor's CRMs (Regional Medical Council registrations).
+    /// </summary>
     required public IReadOnlyCollection<DoctorCrmDetailDto> CRMs { get; init; }
 
+    /// <summary>
+    /// Gets the sex of the doctor.
+    /// </summary>
     public string Sex { get; init; }
 
     /// <summary>

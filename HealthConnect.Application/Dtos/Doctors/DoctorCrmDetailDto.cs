@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HealthConnect.Application.Dtos.Doctors;
 
-namespace HealthConnect.Application.Dtos.Doctors;
-
+/// <summary>
+/// Represents the CRM details of a doctor, including CRM number and state.
+/// </summary>
 public record DoctorCrmDetailDto
 {
-    public string CrmNumber { get; init; }
-    public string State { get; init; }
+    /// <summary>
+    /// Gets the CRM number of the doctor.
+    /// </summary>
+    required public string CrmNumber { get; init; }
+
+    /// <summary>
+    /// Gets the state associated with the CRM number.
+    /// </summary>
+    required public string State { get; init; }
 }

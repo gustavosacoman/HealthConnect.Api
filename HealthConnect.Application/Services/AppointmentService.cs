@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using HealthConnect.Application.Dtos.Appointment;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
@@ -6,8 +8,9 @@ using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 
-namespace HealthConnect.Application.Services;
-
+/// <summary>
+/// Provides handling of appoitments business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class AppointmentService(
     IAppointmentRepository appointmentRepository,
     IUnitOfWork unitOfWork,
@@ -24,6 +27,7 @@ public class AppointmentService(
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
+    /// <inheritdoc/>
     public async Task<AppointmentDetailDto> CreateAppointmentAsync(Guid clientId, AppointmentRegistrationDto appointment)
     {
         var availability = await _availabilityRepository.GetAvailabilityByIdAsync(appointment.AvailabilityId) ??
@@ -67,21 +71,23 @@ public class AppointmentService(
         var getAppointment = await _appointmentRepository.GetAppointmentByIdQueryAsync<AppointmentDetailDto>(newAppointment.Id);
 
         return getAppointment;
-
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByClientIdAsync(Guid clientId)
     {
         var appointments = await _appointmentRepository.GetAppointmentsByClientIdAsync(clientId);
         return _mapper.Map<IEnumerable<AppointmentDetailDto>>(appointments);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByDoctorIdAsync(Guid doctorId)
     {
         var appointments = await _appointmentRepository.GetAppointmentsByDoctorIdAsync(doctorId);
         return _mapper.Map<IEnumerable<AppointmentDetailDto>>(appointments);
     }
 
+    /// <inheritdoc/>
     public async Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id)
     {
         var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
@@ -92,9 +98,10 @@ public class AppointmentService(
         return _mapper.Map<AppointmentDetailDto>(existingAppointment);
     }
 
-    public async Task UpdateAppointmentId(Guid Id, AppointmentUpdatingDto appointment)
+    /// <inheritdoc/>
+    public async Task UpdateAppointmentId(Guid id, AppointmentUpdatingDto appointment)
     {
-        var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(Id);
+        var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
         if (existingAppointment == null)
         {
             throw new KeyNotFoundException("Appointment not found.");
@@ -105,5 +112,4 @@ public class AppointmentService(
         existingAppointment.UpdatedAt = DateTime.UtcNow;
         await _unitOfWork.SaveChangesAsync();
     }
-
 }

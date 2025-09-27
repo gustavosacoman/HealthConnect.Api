@@ -4,8 +4,14 @@ using AutoMapper;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Domain.Models;
 
+/// <summary>
+/// AutoMapper profile for mapping <see cref="Doctor"/> domain models to DTOs.
+/// </summary>
 public class DoctorMapper : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DoctorMapper"/> class and configures mappings.
+    /// </summary>
     public DoctorMapper()
     {
         this.CreateMap<Doctor, DoctorSummaryDto>()

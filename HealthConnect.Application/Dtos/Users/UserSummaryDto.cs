@@ -35,5 +35,4 @@ public record UserSummaryDto
     /// </summary>
     public DateOnly BirthDate { get; init; }
 
-    public IReadOnlyCollection<string> Roles { get; init; }
 }

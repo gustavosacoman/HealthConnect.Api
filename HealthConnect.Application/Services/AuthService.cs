@@ -12,6 +12,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+/// <summary>
+/// Provides handling of auth business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class AuthService(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
@@ -23,6 +26,7 @@ public class AuthService(
     private readonly IConfiguration _configuration = configuration;
     private readonly IRoleRepository _roleRepository = roleRepository;
 
+    /// <inheritdoc/>
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
     {
         if (request == null)
@@ -72,7 +76,7 @@ public class AuthService(
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
         foreach (var role in roles)

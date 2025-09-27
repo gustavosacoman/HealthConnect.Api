@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HealthConnect.Application.Dtos.Speciality;
 
-namespace HealthConnect.Application.Dtos.Speciality;
-
+/// <summary>
+/// Represents the registration information for a doctor's speciality.
+/// </summary>
 public record DoctorSpecialityRegistration
 {
-    public string RQENumber { get; init; }
+    /// <summary>
+    /// Gets the RQE (Registro de Qualificação de Especialidade) number associated with the doctor's speciality.
+    /// </summary>
+    required public string RQENumber { get; init; }
 }
