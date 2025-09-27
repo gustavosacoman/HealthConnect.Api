@@ -84,7 +84,7 @@ public static class DbInitializer
                 RQE = "RQE12345",
                 CRM = "000001",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
@@ -101,7 +101,7 @@ public static class DbInitializer
                 RQE = "RQE12369",
                 CRM = "000000",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
@@ -118,7 +118,7 @@ public static class DbInitializer
                 RQE = "RQE12387",
                 CRM = "000002",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
