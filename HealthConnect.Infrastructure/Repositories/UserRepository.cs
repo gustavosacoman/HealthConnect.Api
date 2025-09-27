@@ -18,11 +18,11 @@ public class UserRepository(
     /// <summary>
     /// Asynchronously adds a new user to the database.
     /// </summary>
-    /// <param name="User">The User object to be created.</param>
+    /// <param name="user">The User object to be created.</param>
     /// <returns>A Task that represents the asynchronous add operation.</returns>
-    public async Task CreateUserAsync(User User)
+    public async Task CreateUserAsync(User user)
     {
-        await _appDbContext.Users.AddAsync(User);
+        await _appDbContext.Users.AddAsync(user);
     }
 
     /// <inheritdoc/>
@@ -35,21 +35,21 @@ public class UserRepository(
     }
 
     /// <inheritdoc/>
-    public async Task<User?> GetUserByEmailAsync(string Email)
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _appDbContext.Users.Include(u => u.Doctor)
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.Email == Email);
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     /// <inheritdoc/>
-    public async Task<User?> GetUserByIdAsync(Guid Id)
+    public async Task<User?> GetUserByIdAsync(Guid id)
     {
         return await _appDbContext.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.Id == Id);
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     /// <inheritdoc/>
