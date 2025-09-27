@@ -46,6 +46,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Salt)
             .IsRequired();
 
+        builder.Property(u => u.Sex)
+               .IsRequired()
+               .HasConversion<string>()
+               .HasMaxLength(20);
+
         builder.Property(u => u.BirthDate)
             .IsRequired()
             .HasColumnType("date");
