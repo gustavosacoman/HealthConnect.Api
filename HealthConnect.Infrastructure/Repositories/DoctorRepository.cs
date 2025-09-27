@@ -38,6 +38,18 @@ public class DoctorRepository(AppDbContext appDbContext) : IDoctorRepository
             .FirstOrDefaultAsync(d => d.Id == id && d.User != null);
     }
 
+    public async Task<Doctor?> GetDoctorByUserId(Guid userId)
+    {
+        return await _appDbContext.Doctors
+            .Include(d => d.User)
+                .ThenInclude(U => U.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .Include(d => d.DoctorCRMs)
+            .Include(d => d.DoctorSpecialities)
+                .ThenInclude(ds => ds.Speciality)
+            .FirstOrDefaultAsync(d => d.UserId == userId);
+    }
+
     public async Task<Doctor?> GetDoctorByRQE(string rqe)
     {
         return await _appDbContext.Doctors
