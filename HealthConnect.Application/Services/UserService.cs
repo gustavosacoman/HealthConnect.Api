@@ -23,7 +23,8 @@ public class UserService(
     IClientRepository clientRepository,
     ISpecialityRepository specialityRepository,
     IRoleRepository roleRepository,
-    IDoctorCRMRepository doctorCRMRepository) : IUserService
+    IDoctorCRMRepository doctorCRMRepository)
+    : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -35,11 +36,7 @@ public class UserService(
     private readonly IRoleRepository _roleRepository = roleRepository;
     private readonly IDoctorCRMRepository _doctorCRMRepository = doctorCRMRepository;
 
-    /// <summary>
-    /// Gets a user by their unique identifier.
-    /// </summary>
-    /// <param name="Id">The user ID.</param>
-    /// <returns>The user summary DTO.</returns>
+    /// <inheritdoc/>
     public async Task<UserSummaryDto> GetUserByIdAsync(Guid Id)
     {
         if (Id == Guid.Empty)
@@ -53,11 +50,7 @@ public class UserService(
             ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
     }
 
-    /// <summary>
-    /// Gets a user by their email address.
-    /// </summary>
-    /// <param name="Email">The user's email.</param>
-    /// <returns>The user summary DTO.</returns>
+    /// <inheritdoc/>
     public async Task<UserSummaryDto> GetUserByEmailAsync(string Email)
     {
         if (string.IsNullOrWhiteSpace(Email))
@@ -71,16 +64,14 @@ public class UserService(
             ?? throw new KeyNotFoundException($"User with email {Email} not found.");
     }
 
-    /// <summary>
-    /// Gets all users.
-    /// </summary>
-    /// <returns>A collection of user summary DTOs.</returns>
+    /// <inheritdoc/>
     public async Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync()
     {
         var users = await _userRepository.GetAllUsersAsync();
         return _mapper.Map<IEnumerable<UserSummaryDto>>(users);
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorDetailDto> GetDoctorByEmailAsync(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -93,11 +84,8 @@ public class UserService(
         return _mapper.Map<DoctorDetailDto>(user.Doctor)
             ?? throw new KeyNotFoundException($"No doctor profile found for user with email {email}.");
     }
-    /// <summary>
-    /// Creates a new doctor user in the system.
-    /// </summary>
-    /// <param name="data">The doctor registration data.</param>
-    /// <returns>The summary DTO of the created user.</returns>
+
+    /// <inheritdoc/>
     public async Task<DoctorDetailDto> CreateDoctorAsync(DoctorRegistrationDto data)
     {
         if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
@@ -188,6 +176,7 @@ public class UserService(
         return _mapper.Map<DoctorDetailDto>(doctor);
     }
 
+    /// <inheritdoc/>
     public async Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data)
     {
         if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
@@ -233,12 +222,7 @@ public class UserService(
         return _mapper.Map<ClientDetailDto>(client);
     }
 
-    /// <summary>
-    /// Updates an existing user.
-    /// </summary>
-    /// <param name="Id">The user ID.</param>AutoMapperMappingException: Missing type map configuration 
-    /// <param name="data">The user update data.</param>
-    /// <returns>The updated user summary DTO.</returns>
+    /// <inheritdoc/>
     public async Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data)
     {
         if (Id == Guid.Empty)
@@ -268,11 +252,7 @@ public class UserService(
         return _mapper.Map<UserSummaryDto>(user);
     }
 
-    /// <summary>
-    /// Deletes a user by their email address.
-    /// </summary>
-    /// <param name="email">The user's email.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <inheritdoc/>
     public async Task DeleteUserAsync(string email)
     {
         if (string.IsNullOrEmpty(email))
@@ -298,6 +278,7 @@ public class UserService(
         await _unitOfWork.SaveChangesAsync();
     }
 
+    /// <inheritdoc/>
     public async Task AddRoleLinkToUserAsync(UserRoleRequestDto userRoleRequestDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
@@ -314,7 +295,7 @@ public class UserService(
         }
 
         if ((rolesExistInUser.Any(r => r.Name.ToLower() == "patient") && role.Name.ToLower() == "doctor") ||
-            (rolesExistInUser.Any(r => r.Name.ToLower() == "doctor" && role.Name.ToLower() == "patient")))
+            rolesExistInUser.Any(r => r.Name.ToLower() == "doctor" && role.Name.ToLower() == "patient"))
         {
             throw new InvalidOperationException($"User with email {user.Email} cannot have both Patient and Doctor roles.");
         }
@@ -329,6 +310,7 @@ public class UserService(
         await _unitOfWork.SaveChangesAsync();
     }
 
+    /// <inheritdoc/>
     public async Task RemoveRoleLinkFromUserAsync(UserRoleRequestDto userRoleRequestDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(userRoleRequestDto.Email)
@@ -347,7 +329,7 @@ public class UserService(
         var userRoleLink = await _userRepository.GetUserRoleLink(user.Id, role.Id)
             ?? throw new KeyNotFoundException($"Role link for user ID {user.Id} and role {role.Name} not found.");
 
-        await _userRepository.RemoveRoleLinkAsync(userRoleLink);
+        _userRepository.RemoveRoleLinkAsync(userRoleLink);
         await _unitOfWork.SaveChangesAsync();
     }
 }
