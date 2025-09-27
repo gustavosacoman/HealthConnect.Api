@@ -20,7 +20,7 @@ public class Role : IAuditable, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of user roles associated with this role.
     /// </summary>
-    public ICollection<UserRole>? UserRoles { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
     /// <summary>
     /// Gets or sets the date and time when the role was created.

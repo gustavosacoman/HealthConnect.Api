@@ -26,7 +26,7 @@ public class Doctor : IAuditable, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of doctor specialities.
     /// </summary>
-    public ICollection<DoctorSpeciality>? DoctorSpecialities { get; set; }
+    public ICollection<DoctorSpeciality> DoctorSpecialities { get; set; } = new List<DoctorSpeciality>();
 
     // public string ProfilePicture { get; set; }
 
@@ -38,12 +38,12 @@ public class Doctor : IAuditable, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of availabilities for the doctor.
     /// </summary>
-    public ICollection<Availability>? Availabilities { get; set; }
+    public ICollection<Availability> Availabilities { get; set; } = new List<Availability>();
 
     /// <summary>
     /// Gets or sets the collection of doctor CRM records.
     /// </summary>
-    public ICollection<DoctorCRM>? DoctorCRMs { get; set; }
+    public ICollection<DoctorCRM> DoctorCRMs { get; set; } = new List<DoctorCRM>();
 
     /// <summary>
     /// Gets or sets the user identifier associated with the doctor.

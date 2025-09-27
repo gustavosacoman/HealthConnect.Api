@@ -20,7 +20,7 @@ public class Speciality : IAuditable, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of doctor specialities associated with this speciality.
     /// </summary>
-    public ICollection<DoctorSpeciality>? DoctorSpecialities { get; set; }
+    public ICollection<DoctorSpeciality> DoctorSpecialities { get; set; } = new List<DoctorSpeciality>();
 
     /// <summary>
     /// Gets or sets the description of the speciality.

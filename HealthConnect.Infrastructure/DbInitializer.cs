@@ -69,7 +69,7 @@ public static class DbInitializer
 
             if (specialits == null)
             {
-                var newSpecialist = new SpecialityRegistrationDto(name);
+                var newSpecialist = new SpecialityRegistrationDto { Name = name };
 
                 await specialityService.CreateSpeciality(newSpecialist);
                 await context.SaveChangesAsync();

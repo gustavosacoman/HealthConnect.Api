@@ -23,5 +23,5 @@ public enum AppointmentStatus
     /// <summary>
     /// The appointment was cancelled by the doctor.
     /// </summary>
-    CancelledByDoctor
+    CancelledByDoctor,
 }
