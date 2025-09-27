@@ -98,6 +98,18 @@ public class DoctorService(
         return await doctors.ToListAsync();
     }
 
+    public async Task<DoctorDetailDto> GetDoctoDetailByUserIdAsync(Guid userId)
+    {
+        if (userId == Guid.Empty)
+        {
+            throw new NullReferenceException("User ID cannot be empty.");
+        }
+
+        var doctor = await _doctorRepository.GetDoctorByUserId(userId)
+            ?? throw new KeyNotFoundException($"Doctor with User ID {userId} not found.");
+        return _mapper.Map<DoctorDetailDto>(doctor);
+    }
+
     public async Task<DoctorSummaryDto> UpdateDoctorAsync(Guid id, DoctorUpdatingDto doctorUpdatingDto)
     {
         if (id == Guid.Empty)

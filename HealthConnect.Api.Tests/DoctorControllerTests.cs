@@ -180,4 +180,23 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(3, doctors.Count());
     }
 
+    [Fact]
+    public async Task GetDoctorDetailByUserId_ShouldReturnADoctorDetail_WhenCalled()
+    {
+        var token = await AuthenticateAndGetTokenAsync();
+
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var userId = Guid.Parse("123e4567-e89b-12d3-a456-426614174000");
+
+        var response = await _client.GetAsync($"/api/v1/doctor/detail/by-userid/{userId}");
+        response.EnsureSuccessStatusCode();
+
+        var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
+
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(doctor);
+        Assert.Equal(userId, doctor.UserId);
+    }
 }

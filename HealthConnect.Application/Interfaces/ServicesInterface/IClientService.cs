@@ -8,7 +8,7 @@ public interface IClientService
 
     public Task<ClientSummaryDto> GetClientByIdAsync(Guid clientId);
 
-    public Task<ClientSummaryDto> GetClientByUserIdAsync(Guid userId);
+    public Task<ClientDetailDto> GetClientByUserIdAsync(Guid userId);
 
     public Task<IEnumerable<ClientSummaryDto>> GetAllClientsAsync();
 }

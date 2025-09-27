@@ -106,7 +106,7 @@ public class ClientControllerTests
         var response = await _client.GetAsync($"/api/v1/client/user/{userId}");
         response.EnsureSuccessStatusCode();
 
-        var clientSummary = await response.Content.ReadFromJsonAsync<ClientSummaryDto>();
+        var clientSummary = await response.Content.ReadFromJsonAsync<ClientDetailDto>();
 
         Assert.NotNull(clientSummary);
         Assert.Equal("Daniela Pereira", clientSummary.Name);

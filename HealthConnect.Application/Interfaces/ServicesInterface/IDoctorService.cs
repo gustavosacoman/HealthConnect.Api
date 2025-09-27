@@ -15,4 +15,6 @@ public interface IDoctorService
     public Task<DoctorSummaryDto> UpdateDoctorAsync(Guid id, DoctorUpdatingDto doctorUpdatingDto);
 
     public Task<IEnumerable<DoctorDetailDto>> GetAllDoctorsBySpecialityAsync(Guid specialityId);
+
+    public Task<DoctorDetailDto> GetDoctoDetailByUserIdAsync(Guid userId);
 }
