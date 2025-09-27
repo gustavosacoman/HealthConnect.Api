@@ -18,7 +18,5 @@ public record DoctorSummaryDto
 
     public IReadOnlyCollection<DoctorCrmDetailDto> CRMs { get; init; }
 
-    public IReadOnlyCollection<string> Roles { get; init; }
-
     //public string ProfilePicture { get; init; }
 }
