@@ -43,9 +43,9 @@ public static class DbInitializer
 
         var rolesList = new List<RoleRegistrationDto>
         {
-            new RoleRegistrationDto { Name = "Admin" },
-            new RoleRegistrationDto { Name = "Doctor" },
-            new RoleRegistrationDto { Name = "Patient" },
+            new RoleRegistrationDto { Name = "admin" },
+            new RoleRegistrationDto { Name = "doctor" },
+            new RoleRegistrationDto { Name = "patient" },
         };
 
         foreach (var role in rolesList)
