@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.DoctorCRM;
 using HealthConnect.Application.Interfaces;
@@ -6,14 +8,10 @@ using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Application.Services;
-
+/// <summary>
+/// Provides handling of patients business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class DoctorCRMService(
     IDoctorCRMRepository doctorCRMRepository,
     IMapper mapper,
