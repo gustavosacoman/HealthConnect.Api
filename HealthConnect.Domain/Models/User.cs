@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Domain.Models;
 
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Interfaces;
 using HealthConnect.Domain.Models.Roles;
 
@@ -17,6 +18,8 @@ public class User : IAuditable, ISoftDeletable
     /// Gets or sets the name of the user.
     /// </summary>
     required public string Name { get; set; }
+
+    required public Sex Sex { get; set; }
 
     /// <summary>
     /// Gets or sets the email address of the user.

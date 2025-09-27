@@ -1,4 +1,6 @@
-﻿namespace HealthConnect.Application.Dtos.Doctors;
+﻿using HealthConnect.Domain.Enum;
+
+namespace HealthConnect.Application.Dtos.Doctors;
 
 public record DoctorRegistrationDto
 {
@@ -24,6 +26,8 @@ public record DoctorRegistrationDto
     required public string CRMState { get; init; }
 
     public string? Biography { get; init; }
+
+    required public Sex Sex { get; init; }
 
     //public string ProfilePicture { get; init; }
 }

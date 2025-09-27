@@ -21,7 +21,8 @@ public class DoctorMapper : Profile
                 State = crm.State,
             }).ToList()))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
-            .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography));
+            .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
+            .ForMember(dest => dest.Sex, opt => opt.MapFrom(src => src.User.Sex.ToString()));
         this.CreateMap<Doctor, DoctorDetailDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Specialities, opt => opt.MapFrom(src => src.DoctorSpecialities.Select(ds => new DoctorSpecialityDetailDto
@@ -40,6 +41,7 @@ public class DoctorMapper : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
             .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.User.CPF))
-            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.User.BirthDate));
+            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.User.BirthDate))
+            .ForMember(dest => dest.Sex, opt => opt.MapFrom(src => src.User.Sex.ToString()));
     }
 }

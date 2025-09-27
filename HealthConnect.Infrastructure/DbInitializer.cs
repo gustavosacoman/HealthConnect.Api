@@ -5,6 +5,7 @@ using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Infrastructure.Data;
@@ -86,6 +87,7 @@ public static class DbInitializer
                 Phone = "12345678901",
                 CRM = "000001",
                 CRMState = "PR",
+                Sex = Sex.Male,
                 Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
@@ -104,6 +106,7 @@ public static class DbInitializer
                 Phone = "12345678902",
                 CRM = "000000",
                 CRMState = "PR",
+                Sex = Sex.Female,
                 Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
@@ -122,6 +125,7 @@ public static class DbInitializer
                 Phone = "12345678903",
                 CRM = "000002",
                 CRMState = "PR",
+                Sex = Sex.Male,
                 Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
@@ -136,6 +140,7 @@ public static class DbInitializer
                 Email = "julia@admin.com",
                 Password = "Client@123",
                 CPF = "10987654321",
+                Sex = Sex.Female,
                 BirthDate = new DateOnly(1990, 5, 15),
                 Phone = "12345678901",
             };

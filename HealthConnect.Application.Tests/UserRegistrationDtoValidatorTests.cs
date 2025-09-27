@@ -4,6 +4,7 @@ using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Validators;
 using HealthConnect.Application.Validators.DoctorDto;
+using HealthConnect.Domain.Enum;
 
 namespace HealthConnect.Application.Tests;
 
@@ -31,6 +32,7 @@ public class UserRegistrationDtoValidatorTests
             BirthDate = new DateOnly(1990, 1, 1),
             CRMState = "SP",
             CRM = "123456",
+            Sex = Sex.Male,
             RQE = "67890",
             Speciality = "Cardiology",
         };
@@ -54,6 +56,7 @@ public class UserRegistrationDtoValidatorTests
             BirthDate = new DateOnly(1990, 1, 1),
             CRM = "123456",
             CRMState = "SP",
+            Sex = Sex.Female,
             RQE = "67890",
             Speciality = "Cardiology",
         };
@@ -80,6 +83,7 @@ public class UserRegistrationDtoValidatorTests
             Email = invalidEmail,
             CRM = "123456",
             CRMState = "SP",
+            Sex = Sex.Female,
             RQE = "67890",
             Speciality = "Cardiology",
         };

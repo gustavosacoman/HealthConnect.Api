@@ -131,6 +131,7 @@ public class UserService(
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
             UserRoles = new List<UserRole>(),
+            Sex = data.Sex,
         };
         var doctor = new Doctor
         {
@@ -209,6 +210,7 @@ public class UserService(
             HashedPassword = _passwordHasher.HashPassword(data.Password, salt),
             BirthDate = data.BirthDate,
             UserRoles = new List<UserRole>(),
+            Sex = data.Sex,
         };
         var client = new Client
         {
