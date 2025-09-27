@@ -1,4 +1,6 @@
-﻿namespace HealthConnect.Application.Dtos.Availability;
+﻿using HealthConnect.Application.Dtos.Doctors;
+
+namespace HealthConnect.Application.Dtos.Availability;
 
 public record AvailabilitySummaryDto
 {
@@ -10,7 +12,7 @@ public record AvailabilitySummaryDto
 
     public string Specialty { get; init; }
 
-    public string RQE { get; init; }
+    required public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
 
     public DateTime SlotDateTime { get; init; }
 

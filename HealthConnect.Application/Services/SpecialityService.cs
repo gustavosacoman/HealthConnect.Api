@@ -4,6 +4,7 @@ using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Specialities;
 using System.Runtime.InteropServices;
 
 namespace HealthConnect.Application.Services;

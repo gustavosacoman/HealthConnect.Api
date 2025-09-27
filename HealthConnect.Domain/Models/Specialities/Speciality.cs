@@ -1,6 +1,6 @@
 ﻿using HealthConnect.Domain.Interfaces;
 
-namespace HealthConnect.Domain.Models;
+namespace HealthConnect.Domain.Models.Specialities;
 
 public class Speciality : IAuditable, ISoftDeletable
 {
@@ -9,7 +9,9 @@ public class Speciality : IAuditable, ISoftDeletable
 
     required public string Name { get; set; }
 
-    public ICollection<Doctor> Doctors { get; set; }
+    public ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
+
+    public string? Description { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

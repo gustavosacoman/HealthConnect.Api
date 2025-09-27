@@ -2,6 +2,7 @@
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Role;
 using HealthConnect.Application.Dtos.Speciality;
+using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
@@ -43,9 +44,9 @@ public static class DbInitializer
 
         var rolesList = new List<RoleRegistrationDto>
         {
-            new RoleRegistrationDto { Name = "Admin" },
-            new RoleRegistrationDto { Name = "Doctor" },
-            new RoleRegistrationDto { Name = "Patient" },
+            new RoleRegistrationDto { Name = "admin" },
+            new RoleRegistrationDto { Name = "doctor" },
+            new RoleRegistrationDto { Name = "patient" },
         };
 
         foreach (var role in rolesList)
@@ -82,9 +83,10 @@ public static class DbInitializer
                 CPF = "12345678901",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12345",
+                Phone = "12345678901",
                 CRM = "000001",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
@@ -99,9 +101,10 @@ public static class DbInitializer
                 CPF = "12345678950",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12369",
+                Phone = "12345678902",
                 CRM = "000000",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
@@ -116,9 +119,10 @@ public static class DbInitializer
                 CPF = "12345678980",
                 BirthDate = new DateOnly(1980, 1, 1),
                 RQE = "RQE12387",
+                Phone = "12345678903",
                 CRM = "000002",
                 CRMState = "PR",
-                SpecialityId = cardiologySpecialty.Id,
+                Speciality = cardiologySpecialty.Name,
                 Biography = "Experienced cardiologist with over 10 years in practice.",
             };
             await userService.CreateDoctorAsync(doctor);
@@ -136,6 +140,16 @@ public static class DbInitializer
                 Phone = "12345678901",
             };
             await userService.CreateClientAsync(client);
+        }
+
+        var user = await userService.GetUserByEmailAsync(doctorEmail);
+        if (user != null && !await context.UserRoles.AnyAsync(ur => ur.UserId == user.Id && ur.Role.Name == "admin"))
+        {
+            var adminRole = await roleService.GetRoleByNameAsync("admin");
+            if (adminRole != null)
+            {
+                await userService.AddRoleLinkToUserAsync(new UserRoleRequestDto { Email = doctorEmail, RoleName = "admin"});
+            }
         }
     }
 }

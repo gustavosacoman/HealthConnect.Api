@@ -1,6 +1,7 @@
 ﻿namespace HealthConnect.Domain.Models;
 
 using HealthConnect.Domain.Interfaces;
+using HealthConnect.Domain.Models.Specialities;
 
 public class Doctor: IAuditable, ISoftDeletable
 {
@@ -10,9 +11,7 @@ public class Doctor: IAuditable, ISoftDeletable
 
     public string? Biography { get; set; }
 
-    public Speciality Speciality { get; set; }
-
-    public Guid SpecialityId { get; set; }
+    public ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
 
     //public string ProfilePicture { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace HealthConnect.Infrastructure.Data.Configurations;
 
-using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Specialities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

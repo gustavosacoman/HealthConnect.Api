@@ -3,6 +3,7 @@
 using HealthConnect.Domain.Interfaces;
 using HealthConnect.Domain.Models;
 using HealthConnect.Domain.Models.Roles;
+using HealthConnect.Domain.Models.Specialities;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -39,6 +40,8 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
 
     public DbSet<DoctorCRM> DoctorCRMs { get; set; }
+
+    public DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
 
     /// <summary>
     /// Saves all changes made in this context to the database asynchronously.

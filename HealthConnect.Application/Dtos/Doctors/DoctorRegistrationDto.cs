@@ -13,6 +13,8 @@ public record DoctorRegistrationDto
 
     required public string CPF { get; init; }
 
+    required public string Speciality { get; init; }
+
     required public DateOnly BirthDate { get; init; }
 
     required public string RQE { get; init; }
@@ -20,8 +22,6 @@ public record DoctorRegistrationDto
     required public string CRM { get; init; }
 
     required public string CRMState { get; init; }
-
-    public Guid SpecialityId { get; init; }
 
     public string? Biography { get; init; }
 

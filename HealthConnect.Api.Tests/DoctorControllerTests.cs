@@ -73,7 +73,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
         Assert.Equal(doctorId, doctorSummaryDto.Id);
-        Assert.Equal(expectedRoles, doctorSummaryDto.Roles);
     }
 
     [Fact]
@@ -96,7 +95,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.NotNull(doctorDetail);
         Assert.Equal(doctorId, doctorDetail.Id);
         Assert.NotNull(doctorDetail.UserId);
-        Assert.Equal(doctorDetail.Roles, expectedRoles);
 
     }
 
@@ -108,16 +106,17 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-        var rqe = "RQE987654";
+        var rqe = "987654";
         var response = await _client.GetAsync($"/api/v1/doctor/by-rqe/{rqe}");
 
         response.EnsureSuccessStatusCode();
 
         var doctorSummaryDto = await response.Content.ReadFromJsonAsync<DoctorSummaryDto>();
+        var specialityDetail = doctorSummaryDto.Specialities.First();
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
-        Assert.Equal(rqe, doctorSummaryDto.RQE);
+        Assert.Equal(rqe, specialityDetail.RqeNumber);
     }
 
     [Fact]

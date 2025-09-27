@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HealthConnect.Application.Dtos.Speciality;
-using HealthConnect.Domain.Models;
+using HealthConnect.Domain.Models.Specialities;
 
 namespace HealthConnect.Application.Mappers;
 

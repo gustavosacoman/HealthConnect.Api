@@ -12,17 +12,11 @@ public record DoctorSummaryDto
 
     public string Name { get; init; }
 
-    required public string RQE { get; init; }
-
-    required public string Speciality { get; init; }
-
     public string? Biography { get; init; }
 
-    required public IReadOnlyCollection<string> CRM { get; init; }
+    public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
 
-    required public IReadOnlyCollection<string> State { get; init; }
-
-    public IReadOnlyCollection<string> Roles { get; init; }
+    public IReadOnlyCollection<DoctorCrmDetailDto> CRMs { get; init; }
 
     //public string ProfilePicture { get; init; }
 }

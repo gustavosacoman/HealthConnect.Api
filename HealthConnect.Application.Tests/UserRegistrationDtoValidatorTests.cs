@@ -32,7 +32,7 @@ public class UserRegistrationDtoValidatorTests
             CRMState = "SP",
             CRM = "123456",
             RQE = "67890",
-            SpecialityId = SpecialityId
+            Speciality = "Cardiology",
         };
 
         var result = _validator.TestValidate(dto);
@@ -55,7 +55,7 @@ public class UserRegistrationDtoValidatorTests
             CRM = "123456",
             CRMState = "SP",
             RQE = "67890",
-            SpecialityId = SpecialityId
+            Speciality = "Cardiology",
         };
 
         var result = _validator.TestValidate(dto);
@@ -81,7 +81,7 @@ public class UserRegistrationDtoValidatorTests
             CRM = "123456",
             CRMState = "SP",
             RQE = "67890",
-            SpecialityId = SpecialityId
+            Speciality = "Cardiology",
         };
 
         var result = _validator.TestValidate(dto);

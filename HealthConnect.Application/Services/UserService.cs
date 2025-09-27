@@ -9,6 +9,7 @@ using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 using HealthConnect.Domain.Models.Roles;
+using HealthConnect.Domain.Models.Specialities;
 
 /// <summary>
 /// Provides handling of user business rules for retrieval, creation, update, and deletion.
@@ -109,10 +110,10 @@ public class UserService(
             throw new InvalidOperationException($"Doctor with RQE {data.RQE} already exists.");
         }
 
-        var speciality = await _specialityRepository.GetSpecialityByIdAsync(data.SpecialityId);
+        var speciality = await _specialityRepository.GetSpecialityByNameAsync(data.Speciality);
         if (speciality == null)
         {
-            throw new KeyNotFoundException($"Speciality with ID {data.SpecialityId} not found.");
+            throw new KeyNotFoundException($"Speciality with name {data.Speciality} not found.");
         }
 
         var doctorRole = await _roleRepository.GetRoleByNameAsync("Doctor") ?? 
@@ -138,8 +139,20 @@ public class UserService(
             UserId = user.Id,
             RQE = data.RQE,
             Biography = data.Biography,
+        };
+
+        var existRqe = await _specialityRepository.GetDoctorSpecialityByRqe(data.RQE);
+
+        if (existRqe != null)
+        {
+            throw new InvalidOperationException($"Doctor with RQE {data.RQE} is already linked to a speciality.");
+        }
+
+        var doctorSpeciality = new DoctorSpeciality
+        {
+            Doctor = doctor,
             Speciality = speciality,
-            SpecialityId = speciality.Id,
+            RqeNumber = data.RQE,
         };
 
         var existCRM = await _doctorCRMRepository.GetCRMByCodeAndState(data.CRM, data.CRMState);
@@ -168,6 +181,7 @@ public class UserService(
         await _userRepository.CreateUserAsync(user);
         await _doctorRepository.CreateDoctor(doctor);
         await _doctorCRMRepository.CreateCRMAsync(newCRM);
+        await _doctorRepository.AddDoctorLinkToSpeciality(doctorSpeciality);
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<DoctorDetailDto>(doctor);

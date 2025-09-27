@@ -33,9 +33,5 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .WithOne(u => u.Doctor)
             .HasForeignKey<Doctor>(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(d => d.Speciality)
-            .WithMany(s => s.Doctors)
-            .HasForeignKey(d => d.SpecialityId);
     }
 }

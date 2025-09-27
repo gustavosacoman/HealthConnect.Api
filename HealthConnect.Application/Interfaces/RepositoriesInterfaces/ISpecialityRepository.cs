@@ -1,4 +1,4 @@
-﻿using HealthConnect.Domain.Models;
+﻿using HealthConnect.Domain.Models.Specialities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,4 +16,6 @@ public interface ISpecialityRepository
     public Task CreateSpecialityAsync(Speciality speciality);
 
     public Task<Speciality> GetSpecialityByNameAsync(string name);
+
+    public Task<DoctorSpeciality> GetDoctorSpecialityByRqe(string rqeNumber);
 }

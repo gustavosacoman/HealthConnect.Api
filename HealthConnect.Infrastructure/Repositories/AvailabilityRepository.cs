@@ -40,7 +40,12 @@ public class AvailabilityRepository(
 
     public async Task<Availability> GetAvailabilityByIdAsync(Guid id)
     {
-        return await _appDbContext.Availabilities.FindAsync(id);
+        return await _appDbContext.Availabilities
+            .Include(a => a.Doctor)
+                .ThenInclude(d => d.DoctorSpecialities)
+                .ThenInclude(ds => ds.Speciality)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
     }
 
     /// <summary>
@@ -58,6 +63,8 @@ public class AvailabilityRepository(
     {
         return _appDbContext.Availabilities.Where(a => a.DoctorId == doctorId && a.SlotDateTime == slotDateTime)
             .OrderBy(a => a.SlotDateTime)
+            .Include(a => a.Doctor)
+                .ThenInclude(d => d.DoctorSpecialities)
             .FirstOrDefaultAsync();
     }
 }

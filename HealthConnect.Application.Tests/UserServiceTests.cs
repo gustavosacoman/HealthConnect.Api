@@ -266,7 +266,6 @@ public class UserServiceTests
             Id = Guid.NewGuid(),
             RQE = "RQE654321",
             Biography = "Experienced general practitioner with a passion for patient care.",
-            SpecialityId = Guid.NewGuid(),
             UserId = Guid.Parse("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
             User = existingUser,
             CreatedAt = DateTime.UtcNow,
