@@ -10,7 +10,7 @@ using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
-/// Provides handling of patients business rules for retrieval, creation, update, and deletion.
+/// Provides handling of doctorCrmS business rules for retrieval, creation, update, and deletion.
 /// </summary>
 public class DoctorCRMService(
     IDoctorCRMRepository doctorCRMRepository,
