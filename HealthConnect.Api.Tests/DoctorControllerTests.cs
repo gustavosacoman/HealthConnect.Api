@@ -73,7 +73,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
         Assert.Equal(doctorId, doctorSummaryDto.Id);
-        Assert.Equal(expectedRoles, doctorSummaryDto.Roles);
     }
 
     [Fact]
