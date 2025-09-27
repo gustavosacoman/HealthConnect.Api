@@ -116,14 +116,14 @@ public static class SeedData
             {
                 Id = Guid.NewGuid(),
                 UserId = users[0].Id,
-                RQE = "RQE654321",
+                RQE = "654321",
                 User = users[0]
             },
             new Doctor
             {
                 Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174001"),
                 UserId = users[1].Id,
-                RQE = "RQE987654",
+                RQE = "987654",
                 User = users[1]
 
             },
@@ -131,7 +131,7 @@ public static class SeedData
             {
                 Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174010"),
                 UserId = users[2].Id,
-                RQE = "RQE210987",
+                RQE = "210987",
                 User = users[2]
             },
 
