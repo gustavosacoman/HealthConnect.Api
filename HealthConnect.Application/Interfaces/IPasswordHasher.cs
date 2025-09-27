@@ -19,5 +19,12 @@ public interface IPasswordHasher
     /// <returns>The hashed password as a string.</returns>
     string HashPassword(string password, string salt);
 
+    /// <summary>
+    /// Verifies that the specified password matches the stored hash and salt.
+    /// </summary>
+    /// <param name="password">The password to verify.</param>
+    /// <param name="storedHash">The stored hashed password.</param>
+    /// <param name="storedSalt">The stored salt used for hashing.</param>
+    /// <returns><c>true</c> if the password is valid; otherwise, <c>false</c>.</returns>
     bool VerifyPassword(string password, string storedHash, string storedSalt);
 }
