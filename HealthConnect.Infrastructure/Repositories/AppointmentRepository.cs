@@ -12,7 +12,10 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 /// <param name="appDbContext">Attribute to access the database.</param>
 /// <param name="mapper">attribute to mapper configratuion.</param>
-public class AppointmentRepository(AppDbContext appDbContext, IMapper mapper) : IAppointmentRepository
+public class AppointmentRepository(
+    AppDbContext appDbContext,
+    IMapper mapper)
+    : IAppointmentRepository
 {
     private readonly AppDbContext _appDbConxtext = appDbContext;
     private readonly IMapper _mapper = mapper;
@@ -30,7 +33,7 @@ public class AppointmentRepository(AppDbContext appDbContext, IMapper mapper) : 
     }
 
     /// <inheritdoc/>
-    public async Task<Appointment> GetAppointmentByIdAsync(Guid id)
+    public async Task<Appointment?> GetAppointmentByIdAsync(Guid id)
     {
         return await _appDbConxtext.Appointments.FindAsync(id);
     }
