@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 /// <summary>
 /// Repository for managing Speciality entities.
 /// </summary>
-public class SpecialityRepository(AppDbContext appDbContext) : ISpecialityRepository
+public class SpecialityRepository(
+    AppDbContext appDbContext)
+    : ISpecialityRepository
 {
     private readonly AppDbContext _appDbContext = appDbContext;
 
