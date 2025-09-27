@@ -39,8 +39,9 @@ public class DoctorRegistrationDtoValidator : AbstractValidator<DoctorRegistrati
         RuleFor(x => x.CRMState)
             .NotEmpty().WithMessage("CRM State is required.")
             .Length(2).WithMessage("CRM State must be exactly 2 characters.");
-        RuleFor(x => x.SpecialityId)
-            .NotEmpty().WithMessage("Speciality is required.");
+        RuleFor(x => x.RQE)
+            .NotEmpty().WithMessage("Speciality is required.")
+            .MaximumLength(9).WithMessage("Speciality must not exceed 9 characters.");
         RuleFor(x => x.Biography)
               .MaximumLength(3500).WithMessage("Biography must not exceed 3500 characters.");
     }
