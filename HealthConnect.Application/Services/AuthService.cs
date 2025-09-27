@@ -19,7 +19,8 @@ public class AuthService(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     IConfiguration configuration,
-    IRoleRepository roleRepository) : IAuthService
+    IRoleRepository roleRepository)
+    : IAuthService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
@@ -63,7 +64,7 @@ public class AuthService(
         };
     }
 
-    private string GenerateToken(User user ,IEnumerable<Role> roles)
+    private string GenerateToken(User user, IEnumerable<Role> roles)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 

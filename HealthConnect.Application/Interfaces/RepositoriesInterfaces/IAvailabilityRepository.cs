@@ -35,7 +35,7 @@ public interface IAvailabilityRepository
     /// </summary>
     /// <param name="id">The unique identifier of the availability.</param>
     /// <returns>The availability.</returns>
-    Task<Availability> GetAvailabilityByIdAsync(Guid id);
+    Task<Availability?> GetAvailabilityByIdAsync(Guid id);
 
     /// <summary>
     /// Gets all availabilities for a doctor, projected to the specified type.

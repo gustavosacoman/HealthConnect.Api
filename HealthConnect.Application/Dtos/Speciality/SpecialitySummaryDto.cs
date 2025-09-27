@@ -13,5 +13,5 @@ public record SpecialitySummaryDto
     /// <summary>
     /// Gets the name of the speciality.
     /// </summary>
-    public string Name { get; init; }
+    required public string Name { get; init; }
 }

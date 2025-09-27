@@ -34,7 +34,7 @@ public interface IAppointmentService
     /// </summary>
     /// <param name="id">The unique identifier of the appointment.</param>
     /// <param name="appointment">The appointment update details.</param>
-    /// <returns>< <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>The <see cref="Task"/> representing the asynchronous operation.</returns>
     Task UpdateAppointmentId(Guid id, AppointmentUpdatingDto appointment);
 
     /// <summary>

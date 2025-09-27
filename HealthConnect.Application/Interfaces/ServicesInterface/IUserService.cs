@@ -46,10 +46,10 @@ public interface IUserService
     /// <summary>
     /// Updates an existing user.
     /// </summary>
-    /// <param name="Id">The unique identifier of the user to update.</param>
+    /// <param name="id">The unique identifier of the user to update.</param>
     /// <param name="data">The updated user data.</param>
     /// <returns>The summary information of the updated user.</returns>
-    Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data);
+    Task<UserSummaryDto> UpdateUserAsync(Guid id, UserUpdatingDto data);
 
     /// <summary>
     /// Deletes a user by their email address.

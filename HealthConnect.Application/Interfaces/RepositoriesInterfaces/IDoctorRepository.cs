@@ -53,7 +53,6 @@ public interface IDoctorRepository
     /// Removes a link between a doctor and a speciality.
     /// </summary>
     /// <param name="doctorSpeciality">The doctor-speciality link to remove.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     void RemoveDoctorLinkToSpeciality(DoctorSpeciality doctorSpeciality);
 
     /// <summary>

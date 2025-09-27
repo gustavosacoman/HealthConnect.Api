@@ -70,7 +70,7 @@ public class AppointmentService(
 
         var getAppointment = await _appointmentRepository.GetAppointmentByIdQueryAsync<AppointmentDetailDto>(newAppointment.Id);
 
-        return getAppointment;
+        return getAppointment!;
     }
 
     /// <inheritdoc/>
@@ -95,6 +95,7 @@ public class AppointmentService(
         {
             throw new KeyNotFoundException("Appointment not found.");
         }
+
         return _mapper.Map<AppointmentDetailDto>(existingAppointment);
     }
 

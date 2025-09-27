@@ -10,7 +10,7 @@ public interface ISpecialityRepository
     /// <summary>
     /// Gets a <see cref="Speciality"/> by its unique identifier.
     /// </summary>
-    /// <param name="Id">The unique identifier of the speciality.</param>
+    /// <param name="id">The unique identifier of the speciality.</param>
     /// <returns>The <see cref="Speciality"/> if found; otherwise, null.</returns>
     public Task<Speciality?> GetSpecialityByIdAsync(Guid id);
 

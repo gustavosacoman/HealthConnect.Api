@@ -23,7 +23,7 @@ public class DoctorDetailDto
     /// <summary>
     /// Gets the sex of the doctor.
     /// </summary>
-    public string Sex { get; init; }
+    required public string Sex { get; init; }
 
     /// <summary>
     /// Gets the biography of the doctor.

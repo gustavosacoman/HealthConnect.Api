@@ -56,7 +56,7 @@ public class DoctorService(
             throw new NullReferenceException("ID cannot be empty.");
         }
 
-       var doctor = await  _doctorRepository.GetDoctorById(id)
+       var doctor = await _doctorRepository.GetDoctorById(id)
             ?? throw new KeyNotFoundException($"Doctor with ID {id} not found.");
 
        if (doctor.UserId == Guid.Empty)
@@ -78,7 +78,7 @@ public class DoctorService(
         var doctor = await _doctorRepository.GetDoctorById(id)
              ?? throw new KeyNotFoundException($"Doctor with ID {id} not found.");
 
-        if (doctor.UserId == null)
+        if (doctor.UserId == Guid.Empty)
         {
             throw new InvalidOperationException($"Doctor with ID {id} does not have an associated user.");
         }

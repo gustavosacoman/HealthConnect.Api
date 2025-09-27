@@ -10,7 +10,7 @@ public interface IClientRepository
     /// <summary>
     /// Retrieves a <see cref="Client"/> by its unique identifier.
     /// </summary>
-    /// <param name="Id">The unique identifier of the client.</param>
+    /// <param name="id">The unique identifier of the client.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the client if found; otherwise, null.</returns>
     public Task<Client?> GetClientByIdAsync(Guid id);
 

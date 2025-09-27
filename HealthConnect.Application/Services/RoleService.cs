@@ -28,7 +28,7 @@ public class RoleService(
             throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
         }
 
-        var role =  await _roleRepository.GetRoleByNameAsync(roleName.ToLower()) ?? 
+        var role = await _roleRepository.GetRoleByNameAsync(roleName.ToLower()) ??
                 throw new KeyNotFoundException($"Role with name '{roleName}' not found.");
 
         return _mapper.Map<RoleSummaryDto>(role);
@@ -49,7 +49,7 @@ public class RoleService(
             throw new ArgumentException("Role ID cannot be empty.", nameof(roleId));
         }
 
-        var role = await _roleRepository.GetRoleByIdAsync(roleId) ?? 
+        var role = await _roleRepository.GetRoleByIdAsync(roleId) ??
                 throw new KeyNotFoundException($"Role with ID '{roleId}' not found.");
 
         return _mapper.Map<RoleSummaryDto>(role);
@@ -63,7 +63,7 @@ public class RoleService(
             throw new ArgumentException("User ID cannot be empty.", nameof(userId));
         }
 
-        var roles = await _roleRepository.GetRolesForUserAsync(userId) ?? 
+        var roles = await _roleRepository.GetRolesForUserAsync(userId) ??
                 throw new KeyNotFoundException($"No roles found for user with ID '{userId}'.");
         return _mapper.Map<IEnumerable<RoleSummaryDto>>(roles);
     }

@@ -48,5 +48,5 @@ public interface IAppointmentRepository
     /// <typeparam name="TProjection">The type of the projection.</typeparam>
     /// <param name="id">The unique identifier of the appointment.</param>
     /// <returns>A task that returns the projected appointment.</returns>
-    Task<TProjection> GetAppointmentByIdQueryAsync<TProjection>(Guid id);
+    Task<TProjection?> GetAppointmentByIdQueryAsync<TProjection>(Guid id);
 }

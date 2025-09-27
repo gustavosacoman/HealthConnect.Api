@@ -8,7 +8,7 @@ using HealthConnect.Domain.Enum;
 public record AppointmentUpdatingDto
 {
     /// <summary>
-    /// Additional notes for the appointment.
+    /// Gets additional notes for the appointment.
     /// </summary>
     public string? Notes { get; init; }
 

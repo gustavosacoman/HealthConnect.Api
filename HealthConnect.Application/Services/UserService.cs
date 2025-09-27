@@ -37,31 +37,31 @@ public class UserService(
     private readonly IDoctorCRMRepository _doctorCRMRepository = doctorCRMRepository;
 
     /// <inheritdoc/>
-    public async Task<UserSummaryDto> GetUserByIdAsync(Guid Id)
+    public async Task<UserSummaryDto> GetUserByIdAsync(Guid id)
     {
-        if (Id == Guid.Empty)
+        if (id == Guid.Empty)
         {
-            throw new ArgumentException("User ID cannot be empty.", nameof(Id));
+            throw new ArgumentException("User ID cannot be empty.", nameof(id));
         }
 
-        var user = await _userRepository.GetUserByIdAsync(Id);
+        var user = await _userRepository.GetUserByIdAsync(id);
 
         return _mapper.Map<UserSummaryDto>(user)
-            ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
+            ?? throw new KeyNotFoundException($"User with ID {id} not found.");
     }
 
     /// <inheritdoc/>
-    public async Task<UserSummaryDto> GetUserByEmailAsync(string Email)
+    public async Task<UserSummaryDto> GetUserByEmailAsync(string email)
     {
-        if (string.IsNullOrWhiteSpace(Email))
+        if (string.IsNullOrWhiteSpace(email))
         {
-            throw new ArgumentException("Email cannot be null or empty.", nameof(Email));
+            throw new ArgumentException("Email cannot be null or empty.", nameof(email));
         }
 
-        var user = await _userRepository.GetUserByEmailAsync(Email);
+        var user = await _userRepository.GetUserByEmailAsync(email);
 
         return _mapper.Map<UserSummaryDto>(user)
-            ?? throw new KeyNotFoundException($"User with email {Email} not found.");
+            ?? throw new KeyNotFoundException($"User with email {email} not found.");
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ public class UserService(
 
         var user = await _userRepository.GetDoctorByEmailAsync(email);
 
-        return _mapper.Map<DoctorDetailDto>(user.Doctor)
+        return _mapper.Map<DoctorDetailDto>(user!.Doctor)
             ?? throw new KeyNotFoundException($"No doctor profile found for user with email {email}.");
     }
 
@@ -104,7 +104,7 @@ public class UserService(
             throw new KeyNotFoundException($"Speciality with name {data.Speciality} not found.");
         }
 
-        var doctorRole = await _roleRepository.GetRoleByNameAsync("Doctor") ?? 
+        var doctorRole = await _roleRepository.GetRoleByNameAsync("Doctor") ??
              throw new KeyNotFoundException("Role 'Doctor' not found in the system.");
 
         var salt = _passwordHasher.GenerateSalt();
@@ -223,11 +223,11 @@ public class UserService(
     }
 
     /// <inheritdoc/>
-    public async Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data)
+    public async Task<UserSummaryDto> UpdateUserAsync(Guid id, UserUpdatingDto data)
     {
-        if (Id == Guid.Empty)
+        if (id == Guid.Empty)
         {
-            throw new ArgumentException("User ID cannot be empty.", nameof(Id));
+            throw new ArgumentException("User ID cannot be empty.", nameof(id));
         }
 
         if (data == null)
@@ -235,8 +235,8 @@ public class UserService(
             throw new ArgumentNullException(nameof(data), "User data cannot be null.");
         }
 
-        var user = await _userRepository.GetUserByIdAsync(Id)
-            ?? throw new KeyNotFoundException($"User with ID {Id} not found.");
+        var user = await _userRepository.GetUserByIdAsync(id)
+            ?? throw new KeyNotFoundException($"User with ID {id} not found.");
 
         user.Name = data.Name ?? user.Name;
         user.Phone = data.Phone ?? user.Phone;
