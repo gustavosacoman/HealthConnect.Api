@@ -148,36 +148,35 @@ public class UserControllerTests
             CRM = "654381",
             CRMState = "PR",
             Biography = "Experienced general practitioner with a passion for patient care.",
-            SpecialityId = Guid.Parse("123e4567-e89b-12d3-a456-426614174888"),
+            Speciality= "Cardiology",
         };
 
         var response = await _client.PostAsJsonAsync("/api/v1/user/doctor", newUser);
         
-
-        var responseSpeciality = await _client.GetAsync($"/api/v1/speciality/{newUser.SpecialityId}");
         var responseCrm = await _client.GetAsync($"/api/v1/doctorcrm/by-code?crmNumber={newUser.CRM}&state={newUser.CRMState}");
         response.EnsureSuccessStatusCode();
-        responseSpeciality.EnsureSuccessStatusCode();
+        
         responseCrm.EnsureSuccessStatusCode();
 
         
         var doctor = await response.Content.ReadFromJsonAsync<DoctorDetailDto>();
-        var speciality = await responseSpeciality.Content.ReadFromJsonAsync<SpecialitySummaryDto>();
         var crm = await responseCrm.Content.ReadFromJsonAsync<DoctorCRMSummaryDto>();
 
         var expectedRoles = new List<string> { "doctor" };
+        var specialityDetail = doctor.Specialities.First();
+
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(doctor);
         Assert.Equal(newUser.Name, doctor.Name);
         Assert.Equal(newUser.Email, doctor.Email);
-        Assert.Equal(newUser.RQE, doctor.RQE);
+        Assert.Equal(newUser.RQE, specialityDetail.RqeNumber);
         Assert.Equal(newUser.CRMState, crm.State);
         Assert.Equal(newUser.CRM, crm.CRMNumber);
         Assert.Equal(newUser.BirthDate, doctor.BirthDate);
         Assert.Equal(newUser.Phone, doctor.Phone);
         Assert.Equal(newUser.Biography, doctor.Biography);
-        Assert.Equal(speciality.Name, doctor.Speciality);
+        Assert.Equal(newUser.Speciality, specialityDetail.SpecialityName);
         Assert.Equal(newUser.CPF, doctor.CPF);
         Assert.Equal(expectedRoles, doctor.Roles);
 

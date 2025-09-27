@@ -114,10 +114,11 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         response.EnsureSuccessStatusCode();
 
         var doctorSummaryDto = await response.Content.ReadFromJsonAsync<DoctorSummaryDto>();
+        var specialityDetail = doctorSummaryDto.Specialities.First();
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
-        Assert.Equal(rqe, doctorSummaryDto.RQE);
+        Assert.Equal(rqe, specialityDetail.RqeNumber);
     }
 
     [Fact]

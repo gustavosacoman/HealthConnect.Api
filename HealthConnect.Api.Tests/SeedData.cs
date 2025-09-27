@@ -117,8 +117,6 @@ public static class SeedData
                 Id = Guid.NewGuid(),
                 UserId = users[0].Id,
                 RQE = "RQE654321",
-                Speciality = specialities[0],
-                SpecialityId = specialities[0].Id,
                 User = users[0]
             },
             new Doctor
@@ -126,8 +124,6 @@ public static class SeedData
                 Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174001"),
                 UserId = users[1].Id,
                 RQE = "RQE987654",
-                Speciality = specialities[0],
-                SpecialityId = specialities[0].Id,
                 User = users[1]
 
             },
@@ -135,10 +131,7 @@ public static class SeedData
             {
                 Id = Guid.Parse("123e4567-e89b-12d3-a456-426614174010"),
                 UserId = users[2].Id,
-                
                 RQE = "RQE210987",
-                Speciality = specialities[0],
-                SpecialityId = specialities[0].Id,
                 User = users[2]
             },
 
@@ -224,6 +217,31 @@ public static class SeedData
             }
         };
 
+        var doctorSpeciality = new List<DoctorSpeciality>
+        { 
+            new DoctorSpeciality
+            {
+                DoctorId = doctors[0].Id,
+                SpecialityId = specialities[0].Id,
+                RqeNumber = "546084"
+                
+            },
+            new DoctorSpeciality
+            {
+                DoctorId = doctors[1].Id,
+                SpecialityId = specialities[1].Id,
+                RqeNumber = "987654"
+
+            },
+            new DoctorSpeciality
+            {
+                DoctorId = doctors[2].Id,
+                SpecialityId = specialities[2].Id,
+                RqeNumber = "987655"
+
+            },
+        };
+
         var userRoles = new List<UserRole>
         {
             new UserRole { UserId = users[0].Id, RoleId = Roles[1].Id },
@@ -249,6 +267,7 @@ public static class SeedData
         context.UserRoles.AddRange(userRoles);
         context.Doctors.AddRange(doctors);
         context.DoctorCRMs.AddRange(CRMs);
+        context.DoctorSpecialities.AddRange(doctorSpeciality);
         context.Clients.AddRange(clients);
         context.Availabilities.AddRange(availabilities);
         context.Appointments.AddRange(appointments);
