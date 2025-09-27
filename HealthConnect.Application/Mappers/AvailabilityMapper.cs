@@ -22,8 +22,8 @@ public class AvailabilityMapper : Profile
             .ForMember(desc => desc.DoctorId, opt => opt.MapFrom(src => src.DoctorId))
             .ForMember(desc => desc.SlotDateTime, opt => opt.MapFrom(src => src.SlotDateTime))
             .ForMember(desc => desc.DurationMinutes, opt => opt.MapFrom(src => src.DurationMinutes))
-            .ForMember(desc => desc.Name, opt => opt.MapFrom(src => src.Doctor.User.Name))
-            .ForMember(dest => dest.Specialities, opt => opt.MapFrom(src => src.Doctor.DoctorSpecialities.Select(ds => new DoctorSpecialityDetailDto
+            .ForMember(desc => desc.Name, opt => opt.MapFrom(src => src.Doctor!.User.Name))
+            .ForMember(dest => dest.Specialities, opt => opt.MapFrom(src => src.Doctor!.DoctorSpecialities.Select(ds => new DoctorSpecialityDetailDto
             {
                 SpecialityName = ds.Speciality.Name,
                 RqeNumber = ds.RqeNumber,
