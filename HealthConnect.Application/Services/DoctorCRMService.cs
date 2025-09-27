@@ -23,6 +23,7 @@ public class DoctorCRMService(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
+    /// <inheritdoc/>
     public async Task CreateCRMAsync(DoctorCRMRegistrationDto doctorCRMDto)
     {
         var exist = await _doctorCRMRepository.GetCRMByCodeAndState(doctorCRMDto.CRMNumber, doctorCRMDto.State);
@@ -34,7 +35,7 @@ public class DoctorCRMService(
         }
 
         var doctor = await _doctorRepository.GetDoctorById(doctorCRMDto.DoctorId) 
-            ??  throw new KeyNotFoundException($"No doctor found with id {doctorCRMDto.DoctorId}");
+            ?? throw new KeyNotFoundException($"No doctor found with id {doctorCRMDto.DoctorId}");
 
         var newDoctorCRM = new DoctorCRM
         {
@@ -49,12 +50,14 @@ public class DoctorCRMService(
         await _unitOfWork.SaveChangesAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorCRMSummaryDto> GetCRMByCodeAndState(string crmNumber, string state)
     {
         if (string.IsNullOrWhiteSpace(crmNumber))
         {
             throw new ArgumentException("CRM number must be provided", nameof(crmNumber));
         }
+
         if (string.IsNullOrWhiteSpace(state))
         {
             throw new ArgumentException("State must be provided", nameof(state));
@@ -66,6 +69,7 @@ public class DoctorCRMService(
         return _mapper.Map<DoctorCRMSummaryDto>(crm);
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorCRMSummaryDto> GetCRMByIdAsync(Guid id)
     {
         var crm = await _doctorCRMRepository.GetByIdAsync(id) ??
@@ -73,6 +77,7 @@ public class DoctorCRMService(
         return _mapper.Map<DoctorCRMSummaryDto>(crm);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<DoctorCRMSummaryDto>> GetAllCRMAsync()
     {
         var queriable = _doctorCRMRepository.GetAllCRMAsync();
