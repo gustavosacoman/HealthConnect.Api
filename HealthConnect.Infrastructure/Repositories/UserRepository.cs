@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 /// <summary>
 /// Repository for managing User entities.
 /// </summary>
-public class UserRepository(AppDbContext appDbContext) : IUserRepository
+public class UserRepository(
+    AppDbContext appDbContext)
+    : IUserRepository
 {
     private readonly AppDbContext _appDbContext = appDbContext;
 
@@ -23,12 +25,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
         await _appDbContext.Users.AddAsync(User);
     }
 
-    /// <summary>
-    /// Asynchronously retrieves a collection of all registered users.
-    /// </summary>
-    /// <returns>
-    /// A Task that, upon completion, contains an IEnumerable<User> collection with all users.
-    /// </returns>
+    /// <inheritdoc/>
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _appDbContext.Users
@@ -37,14 +34,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Asynchronously finds a user by their email address.
-    /// </summary>
-    /// <param name="Email">The email address of the user to search for.</param>
-    /// <returns>
-    /// A Task that, upon completion, contains the User object corresponding to the provided email,
-    /// or <c>null</c> if no user is found.
-    /// </returns>
+    /// <inheritdoc/>
     public async Task<User?> GetUserByEmailAsync(string Email)
     {
         return await _appDbContext.Users.Include(u => u.Doctor)
@@ -53,14 +43,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .FirstOrDefaultAsync(u => u.Email == Email);
     }
 
-    /// <summary>
-    /// Asynchronously finds a user by their unique identifier (ID).
-    /// </summary>
-    /// <param name="Id">The Guid of the user to search for.</param>
-    /// <returns>
-    /// A Task that, upon completion, contains the User object corresponding to the provided ID,
-    /// or <c>null</c> if no user is found.
-    /// </returns>
+    /// <inheritdoc/>
     public async Task<User?> GetUserByIdAsync(Guid Id)
     {
         return await _appDbContext.Users
@@ -69,6 +52,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == Id);
     }
 
+    /// <inheritdoc/>
     public async Task<User?> GetDoctorByEmailAsync(string email)
     {
         return await _appDbContext.Users
@@ -78,17 +62,20 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email && u.Doctor != null);
     }
 
+    /// <inheritdoc/>
     public async Task AddUserRoleLinkAsync(UserRole userRole)
     {
         await _appDbContext.UserRoles.AddAsync(userRole);
     }
 
-    public async Task RemoveRoleLinkAsync(UserRole userRole)
+    /// <inheritdoc/>
+    public void RemoveRoleLinkAsync(UserRole userRole)
     {
         _appDbContext.UserRoles.Remove(userRole);
     }
 
-    public async Task<UserRole> GetUserRoleLink(Guid userId, Guid roleId)
+    /// <inheritdoc/>
+    public async Task<UserRole?> GetUserRoleLink(Guid userId, Guid roleId)
     {
         return await _appDbContext.UserRoles
             .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
