@@ -18,6 +18,7 @@ public static class DbInitializer
     /// Initializes the database with default roles, specialities, and users if they do not exist.
     /// </summary>
     /// <param name="serviceProvider">The service provider for dependency injection.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous initialization operation.</returns>
     public static async Task InitializeAsync(IServiceProvider serviceProvider)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
@@ -97,6 +98,7 @@ public static class DbInitializer
             };
             await userService.CreateDoctorAsync(doctor);
         }
+
         if (!await context.Users.AnyAsync(u => u.Email == maryEmail))
         {
             var doctor = new DoctorRegistrationDto
@@ -116,6 +118,7 @@ public static class DbInitializer
             };
             await userService.CreateDoctorAsync(doctor);
         }
+
         if (!await context.Users.AnyAsync(u => u.Email == davidEmail))
         {
             var doctor = new DoctorRegistrationDto
