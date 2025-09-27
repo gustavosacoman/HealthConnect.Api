@@ -141,7 +141,7 @@ public class UserService(
             Biography = data.Biography,
         };
 
-        var existRqe = await _specialityRepository.GetDoctorSpecialityByRqe(data.RQENumber);
+        var existRqe = await _specialityRepository.GetDoctorSpecialityByRqe(data.RQE);
 
         if (existRqe != null)
         {
