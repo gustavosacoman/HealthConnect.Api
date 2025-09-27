@@ -1,4 +1,6 @@
-﻿namespace HealthConnect.Application.Dtos.Client;
+﻿using HealthConnect.Domain.Enum;
+
+namespace HealthConnect.Application.Dtos.Client;
 
 public class ClientRegistrationDto
 {
@@ -13,5 +15,7 @@ public class ClientRegistrationDto
     required public string CPF { get; init; }
 
     required public DateOnly BirthDate { get; init; }
+
+    required public Sex Sex { get; init; }
 
 }

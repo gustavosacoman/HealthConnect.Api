@@ -9,6 +9,8 @@ public record ClientDetailDto
 
     public string Email { get; init; }
 
+    public string Sex { get; init; }
+
     public string CPF { get; init; }
 
     public string Phone { get; init; }

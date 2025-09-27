@@ -14,6 +14,8 @@ public record DoctorSummaryDto
 
     public string? Biography { get; init; }
 
+    public string Sex { get; init; }
+
     public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
 
     public IReadOnlyCollection<DoctorCrmDetailDto> CRMs { get; init; }

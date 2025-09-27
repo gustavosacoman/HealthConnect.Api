@@ -8,6 +8,8 @@ public record ClientSummaryDto
 
     public string Name { get; init; }
 
+    public string Sex { get; init; }
+
     public string Email { get; init; }
 
     public IReadOnlyCollection<string> Roles { get; init; }

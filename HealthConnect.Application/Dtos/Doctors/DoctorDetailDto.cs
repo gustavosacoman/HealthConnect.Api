@@ -11,6 +11,8 @@ public class DoctorDetailDto
 
     required public IReadOnlyCollection<DoctorCrmDetailDto> CRMs { get; init; }
 
+    public string Sex { get; init; }
+
     /// <summary>
     /// Gets the biography of the doctor.
     /// </summary>
