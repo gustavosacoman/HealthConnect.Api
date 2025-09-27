@@ -34,7 +34,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
         return _mapper.Map<ClientSummaryDto>(user);
     }
 
-    public async Task<ClientSummaryDto> GetClientByUserIdAsync(Guid userId)
+    public async Task<ClientDetailDto> GetClientByUserIdAsync(Guid userId)
     {
         if (userId == Guid.Empty)
         {
@@ -44,7 +44,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
         var user = await _clientRepository.GetClientByUserIdAsync(userId) ??
             throw new KeyNotFoundException($"Client with User ID {userId} not found.");
 
-        return _mapper.Map<ClientSummaryDto>(user);
+        return _mapper.Map<ClientDetailDto>(user);
     }
 
     public async Task<ClientDetailDto> GetClientDetailByIdAsync(Guid id)
