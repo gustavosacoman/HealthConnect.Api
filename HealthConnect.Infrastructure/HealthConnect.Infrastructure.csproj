@@ -4,11 +4,12 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -22,6 +23,14 @@
   <ItemGroup>
     <ProjectReference Include="..\HealthConnect.Application\HealthConnect.Application.csproj" />
     <ProjectReference Include="..\HealthConnect.Domain\HealthConnect.Domain.csproj" />
+	
   </ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Migrations\**\*.cs">
+			<CompilerGenerated>true</CompilerGenerated>
+		</Compile>
+	</ItemGroup>
+
 
 </Project>
