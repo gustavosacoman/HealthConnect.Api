@@ -3,8 +3,15 @@
 using FluentValidation;
 using HealthConnect.Application.Dtos.Doctors;
 
+/// <summary>
+/// Validator for <see cref="DoctorRegistrationDto"/>. Ensures all required fields are present and valid according to business rules.
+/// </summary>
 public class DoctorRegistrationDtoValidator : AbstractValidator<DoctorRegistrationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DoctorRegistrationDtoValidator"/> class.
+    /// Sets up validation rules for doctor registration.
+    /// </summary>
     public DoctorRegistrationDtoValidator()
     {
         RuleFor(x => x.Name)

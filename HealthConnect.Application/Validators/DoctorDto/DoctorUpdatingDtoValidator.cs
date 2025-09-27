@@ -3,8 +3,14 @@
 using FluentValidation;
 using HealthConnect.Application.Dtos.Doctors;
 
+/// <summary>
+/// Validator for <see cref="DoctorUpdatingDto"/>. Ensures CRM, Biography, and RQE fields meet length requirements.
+/// </summary>
 public class DoctorUpdatingDtoValidator : AbstractValidator<DoctorUpdatingDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DoctorUpdatingDtoValidator"/> class.
+    /// </summary>
     public DoctorUpdatingDtoValidator()
     {
         RuleFor(x => x.CRM)

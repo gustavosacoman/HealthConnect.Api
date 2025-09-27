@@ -3,8 +3,16 @@
 using FluentValidation;
 using HealthConnect.Application.Dtos.Client;
 
+/// <summary>
+/// Validator for <see cref="ClientRegistrationDto"/>.
+/// Ensures that all required fields are present and conform to expected formats and constraints.
+/// </summary>
 public class ClientRegistrationDtoValidator : AbstractValidator<ClientRegistrationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClientRegistrationDtoValidator"/> class.
+    /// Defines validation rules for client registration data.
+    /// </summary>
     public ClientRegistrationDtoValidator()
     {
         RuleFor(x => x.Name)
