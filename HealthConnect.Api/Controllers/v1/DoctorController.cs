@@ -59,6 +59,16 @@ public class DoctorController(IDoctorService doctorService) : ControllerBase
         return Ok(doctors);
     }
 
+    [HttpGet("detail/by-userid/{userId:guid}")]
+    [ProducesResponseType(typeof(DoctorSummaryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
+    public async Task<IActionResult> GetDoctorByUserId(Guid userId)
+    {
+        var doctor = await _doctorService.GetDoctoDetailByUserIdAsync(userId);
+        return Ok(doctor);
+    }
+
     [HttpPatch]
     [ProducesResponseType(typeof(DoctorSummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
