@@ -21,4 +21,6 @@ public interface IDoctorRepository
 
     public Task<DoctorSpeciality> GetDoctorSpecialityLink(Guid doctorId, Guid specialityId);
 
+    public Task<Doctor?> GetDoctorByUserId(Guid userId);
+
 }
