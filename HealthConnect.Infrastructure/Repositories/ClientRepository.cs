@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 /// <summary>
 /// Repository for managing patients.
 /// </summary>
-public class ClientRepository(AppDbContext appDbContext) : IClientRepository
+public class ClientRepository(AppDbContext appDbContext)
+    : IClientRepository
 {
     private readonly AppDbContext _appDbContex = appDbContext;
 
@@ -25,13 +26,13 @@ public class ClientRepository(AppDbContext appDbContext) : IClientRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Client?> GetClientByIdAsync(Guid Id)
+    public async Task<Client?> GetClientByIdAsync(Guid id)
     {
         return await _appDbContex.Clients
             .Include(c => c.User)
             .ThenInclude(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(c => c.Id == Id);
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     /// <inheritdoc/>

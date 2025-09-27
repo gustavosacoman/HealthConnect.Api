@@ -49,10 +49,9 @@ public class AvailabilityRepository(
     {
         return await _appDbContext.Availabilities
             .Include(a => a.Doctor)
-                .ThenInclude(d => d.DoctorSpecialities)
+                .ThenInclude(d => d!.DoctorSpecialities)
                 .ThenInclude(ds => ds.Speciality)
             .FirstOrDefaultAsync(a => a.Id == id);
-
     }
 
     /// <inheritdoc/>
@@ -68,7 +67,7 @@ public class AvailabilityRepository(
         return _appDbContext.Availabilities.Where(a => a.DoctorId == doctorId && a.SlotDateTime == slotDateTime)
             .OrderBy(a => a.SlotDateTime)
             .Include(a => a.Doctor)
-                .ThenInclude(d => d.DoctorSpecialities)
+                .ThenInclude(d => d!.DoctorSpecialities)
             .FirstOrDefaultAsync();
     }
 }

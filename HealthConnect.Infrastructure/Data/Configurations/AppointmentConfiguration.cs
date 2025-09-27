@@ -35,6 +35,5 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 
         builder.Property(a => a.Notes)
             .HasMaxLength(1000);
-
     }
 }

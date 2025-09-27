@@ -39,14 +39,12 @@ public class AppointmentRepository(
     }
 
     /// <inheritdoc/>
-    public async Task<TProjection> GetAppointmentByIdQueryAsync<TProjection>(Guid id)
+    public async Task<TProjection?> GetAppointmentByIdQueryAsync<TProjection>(Guid id)
     {
-#pragma warning disable CS8603
         return await _appDbConxtext.Appointments
             .Where(a => a.Id == id)
             .ProjectTo<TProjection>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
-#pragma warning restore CS8603
     }
 
     /// <inheritdoc/>

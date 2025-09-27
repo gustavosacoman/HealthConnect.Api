@@ -38,7 +38,7 @@ public class DoctorRepository(
     {
         return await _appDbContext.Doctors
             .Include(d => d.User)
-                .ThenInclude(U => U.UserRoles)
+                .ThenInclude(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
             .Include(d => d.DoctorCRMs)
             .Include(d => d.DoctorSpecialities)
@@ -51,7 +51,7 @@ public class DoctorRepository(
     {
         return await _appDbContext.Doctors
             .Include(d => d.User)
-                .ThenInclude(U => U.UserRoles)
+                .ThenInclude(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
             .Include(d => d.DoctorCRMs)
             .Include(d => d.DoctorSpecialities)
@@ -90,5 +90,4 @@ public class DoctorRepository(
         return await _appDbContext.DoctorSpecialities
             .FirstOrDefaultAsync(ds => ds.SpecialityId == specialityId && ds.DoctorId == doctorId);
     }
-
 }

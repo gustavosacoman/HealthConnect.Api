@@ -106,7 +106,6 @@ public class AppDbContext : DbContext
             {
                 entry.Property(p => p.CreatedAt).CurrentValue = timestamp;
                 entry.Property(p => p.UpdatedAt).CurrentValue = timestamp;
-
             }
             else if (entry.State == EntityState.Modified)
             {
