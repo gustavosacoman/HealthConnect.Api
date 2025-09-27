@@ -13,13 +13,16 @@ public class AppointmentService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAvailabilityRepository availabilityRepository,
-    IClientRepository clientRepository) : IAppointmentService
+    IClientRepository clientRepository,
+    IDoctorRepository doctorRepository)
+    : IAppointmentService
 {
     private readonly IAppointmentRepository _appointmentRepository = appointmentRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IAvailabilityRepository _availabilityRepository = availabilityRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
     public async Task<AppointmentDetailDto> CreateAppointmentAsync(Guid clientId, AppointmentRegistrationDto appointment)
     {
@@ -39,16 +42,21 @@ public class AppointmentService(
         var client = await _clientRepository.GetClientByIdAsync(clientId) ??
                      throw new KeyNotFoundException("Client not found.");
 
+        var doctor = await _doctorRepository.GetDoctorById(availability.DoctorId) ??
+                     throw new KeyNotFoundException("Doctor not found.");
+
         var newAppointment = new Appointment
         {
             Id = Guid.NewGuid(),
             ClientId = client.Id,
             DoctorId = availability.DoctorId,
+            Client = client,
             AvailabilityId = availability.Id,
             AppointmentDateTime = availability.SlotDateTime,
             AppointmentStatus = AppointmentStatus.Scheduled,
             Notes = appointment.Notes,
-
+            Doctor = doctor,
+            Availability = availability,
         };
 
         await _appointmentRepository.CreateAppointmentAsync(newAppointment);
