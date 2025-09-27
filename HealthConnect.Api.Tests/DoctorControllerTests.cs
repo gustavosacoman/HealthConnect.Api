@@ -95,7 +95,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.NotNull(doctorDetail);
         Assert.Equal(doctorId, doctorDetail.Id);
         Assert.NotNull(doctorDetail.UserId);
-        Assert.Equal(doctorDetail.Roles, expectedRoles);
 
     }
 

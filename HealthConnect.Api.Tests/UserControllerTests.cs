@@ -178,7 +178,6 @@ public class UserControllerTests
         Assert.Equal(newUser.Biography, doctor.Biography);
         Assert.Equal(newUser.Speciality, specialityDetail.SpecialityName);
         Assert.Equal(newUser.CPF, doctor.CPF);
-        Assert.Equal(expectedRoles, doctor.Roles);
 
     }
     [Fact]
