@@ -136,7 +136,7 @@ public class DoctorCRMControllerTests : IClassFixture<CustomWebAppFactory>
 
         Assert.Equal(System.Net.HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(response.Headers.Location);
-        Assert.Equal(newCRM.CRMNumber, createdCRM.CRMNumber);
+        Assert.Equal(newCRM.CRMNumber, createdCRM!.CRMNumber);
         Assert.Equal(newCRM.State, createdCRM.State);
     }
 }

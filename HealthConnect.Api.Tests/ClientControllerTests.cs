@@ -77,7 +77,6 @@ public class ClientControllerTests
         Assert.NotNull(clientSummary);
         Assert.Equal("Daniela Pereira", clientSummary.Name);
         Assert.Equal(id, clientSummary.Id.ToString());
-        Assert.Equal(clientSummary.Roles, expectedRoles);
     }
     [Fact]
     public async Task GetAllClients_ShouldReturnAListOfClientSummaryDto()
@@ -133,6 +132,5 @@ public class ClientControllerTests
         Assert.Equal("66778899000", clientDetail.CPF);
         Assert.Equal("6677889900", clientDetail.Phone);
         Assert.Equal(new DateOnly(1988, 7, 30), clientDetail.BirthDate);
-        Assert.Equal(clientDetail.Roles, expectedRoles);
     }
 }

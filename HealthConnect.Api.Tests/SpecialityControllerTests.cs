@@ -80,7 +80,10 @@ public class SpecialityControllerTests : IClassFixture<CustomWebAppFactory>
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-        var newSpeciality = new SpecialityRegistrationDto("Test Speciality");
+        var newSpeciality = new SpecialityRegistrationDto
+        {
+            Name = "Test Speciality"
+        };
 
         var response = await _client.PostAsJsonAsync("/api/v1/speciality", newSpeciality);
         response.EnsureSuccessStatusCode();

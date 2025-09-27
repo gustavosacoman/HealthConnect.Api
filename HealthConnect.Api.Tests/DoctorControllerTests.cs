@@ -1,6 +1,5 @@
 ﻿using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Dtos.Doctors;
-using HealthConnect.Application.Interfaces;
 using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,7 +93,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorDetail);
         Assert.Equal(doctorId, doctorDetail.Id);
-        Assert.NotNull(doctorDetail.UserId);
 
     }
 
@@ -112,7 +110,7 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         response.EnsureSuccessStatusCode();
 
         var doctorSummaryDto = await response.Content.ReadFromJsonAsync<DoctorSummaryDto>();
-        var specialityDetail = doctorSummaryDto.Specialities.First();
+        var specialityDetail = doctorSummaryDto!.Specialities.First();
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctorSummaryDto);
@@ -136,29 +134,6 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(doctors);
         Assert.Equal(3, doctors.Count());
-    }
-
-    public async Task UpdateDoctor_ShouldReturnAnUpdatedDoctorSummaryDto()
-    {
-        var token = await AuthenticateAndGetTokenAsync();
-        _client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-        var doctorId = Guid.Parse("123e4567-e89b-12d3-a456-426614174001");
-
-        var updateData = new DoctorUpdatingDto
-        {
-            Biography = "Updated biography",
-        };
-        var response = await _client.PatchAsJsonAsync($"/api/v1/doctor?id={doctorId}", updateData);
-
-        response.EnsureSuccessStatusCode();
-
-        var updatedDoctor = await response.Content.ReadFromJsonAsync<DoctorSummaryDto>();
-
-        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-        Assert.NotNull(updatedDoctor);
-        Assert.Equal("Updated biography", updatedDoctor.Biography);
     }
 
     [Fact]

@@ -46,7 +46,7 @@ public class AppointmentControllerTest : IClassFixture<CustomWebAppFactory>
         var response = await _client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
         response.EnsureSuccessStatusCode();
         var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
-        return loginResponse.Token;
+        return loginResponse!.Token;
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class AppointmentControllerTest : IClassFixture<CustomWebAppFactory>
             await appointmentAfterUpdateResponse.Content.ReadFromJsonAsync<AppointmentDetailDto>();
 
         Assert.Equal(System.Net.HttpStatusCode.NoContent, response.StatusCode);
-        Assert.NotEqual(appointmentBeforeUpdate.Notes, appointmentAfterUpdate.Notes);
+        Assert.NotEqual(appointmentBeforeUpdate!.Notes, appointmentAfterUpdate!.Notes);
         Assert.Equal("Updated notes", appointmentAfterUpdate.Notes);
         Assert.NotEqual(appointmentBeforeUpdate.Status, appointmentAfterUpdate.Status);
     }

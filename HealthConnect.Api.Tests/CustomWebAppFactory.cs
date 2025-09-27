@@ -28,7 +28,7 @@ public class CustomWebAppFactory : WebApplicationFactory<Program>
                 ["Jwt:Key"] = "MySecretKeyForTestsWith34BytesThatNoOneCanSee",
                 ["Jwt:Issuer"] = "IssuerTest",
                 ["Jwt:Audience"] = "AudienceTest",
-            });
+            }!);
         });
 
         builder.ConfigureServices(services =>
