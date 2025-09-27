@@ -1,6 +1,7 @@
 ﻿using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Services;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -46,6 +47,7 @@ public class AuthServiceTest
             Email = userEmail,
             Phone = "1234567890",
             CPF = "12345678901",
+            Sex = Sex.Male,
             HashedPassword = "a_real_hashed_password_from_db",
             Salt = "One Salt",
             BirthDate = new DateOnly(1990, 1, 1)

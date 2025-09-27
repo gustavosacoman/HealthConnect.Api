@@ -8,6 +8,7 @@ using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -147,6 +148,7 @@ public class UserControllerTests
             RQE = "RQE123456",
             CRM = "654381",
             CRMState = "PR",
+            Sex = Sex.Male,
             Biography = "Experienced general practitioner with a passion for patient care.",
             Speciality= "Cardiology",
         };
@@ -178,6 +180,7 @@ public class UserControllerTests
         Assert.Equal(newUser.Biography, doctor.Biography);
         Assert.Equal(newUser.Speciality, specialityDetail.SpecialityName);
         Assert.Equal(newUser.CPF, doctor.CPF);
+        Assert.Equal(newUser.Sex.ToString(), doctor.Sex);
 
     }
     [Fact]
@@ -194,6 +197,7 @@ public class UserControllerTests
             Phone = "4112345678",
             Password = "Password123!@",
             CPF = "32165498700",
+            Sex = Sex.Male,
             BirthDate = new DateOnly(1995, 6, 15),
         };
 
@@ -213,6 +217,7 @@ public class UserControllerTests
         Assert.Equal(newUser.Phone, client.Phone);
         Assert.Equal(newUser.BirthDate, client.BirthDate);
         Assert.Equal(expectedRoles, client.Roles);
+        Assert.Equal(newUser.Sex.ToString(), client.Sex);
     }
 
     [Fact]

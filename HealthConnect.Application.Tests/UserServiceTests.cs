@@ -3,6 +3,7 @@ using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Services;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 using Moq;
 
@@ -60,6 +61,7 @@ public class UserServiceTests
             CPF = "12345678901",
             HashedPassword = "hashed_password",
             Salt = "One Salt",
+            Sex = Sex.Male,
             BirthDate = new DateOnly(1990, 1, 1)
         };
         var expectedDto = new UserSummaryDto 
@@ -101,6 +103,7 @@ public class UserServiceTests
             CPF = "12345678901",
             HashedPassword = "hashed_password",
             Salt = "One Salt",
+            Sex = Sex.Female,
             BirthDate = new DateOnly(1990, 1, 1)
         };
         var expectedDto = new UserSummaryDto
@@ -142,6 +145,7 @@ public class UserServiceTests
                 CPF = "12345678901",
                 BirthDate = new DateOnly(1990, 1, 1),
                 HashedPassword = "hashed_password",
+                Sex = Sex.Male,
                 Salt = "salt",
             },
             new User
@@ -153,6 +157,7 @@ public class UserServiceTests
                 CPF = "12345678901",
                 BirthDate = new DateOnly(1990, 1, 1),
                 HashedPassword = "hashed_password",
+                Sex = Sex.Female,
                 Salt = "salt",
             },
             new User
@@ -164,6 +169,7 @@ public class UserServiceTests
                 CPF = "12345678901",
                 BirthDate = new DateOnly(1990, 1, 1),
                 HashedPassword = "hashed_password",
+                Sex = Sex.Male,
                 Salt = "salt",
             },
 
@@ -209,6 +215,7 @@ public class UserServiceTests
             HashedPassword = "old_hashed_password",
             Salt = "old_salt",
             Phone = "1234567890",
+            Sex = Sex.Female,
             CPF = "12345678901",
             BirthDate = new DateOnly(1990, 1, 1)
         };
@@ -253,6 +260,7 @@ public class UserServiceTests
             Email = userEmail,
             Phone = "1234567890",
             CPF = "12345678901",
+            Sex = Sex.Male,
             BirthDate = new DateOnly(1990, 1, 1),
             HashedPassword = "hashed_password",
             Salt = "salt",

@@ -1,4 +1,5 @@
 ﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Domain.Models.Specialities;
@@ -50,6 +51,7 @@ public static class SeedData
                 HashedPassword = "hashed_password_1",
                 Salt = "a random_salt_value",
                 CPF = "12345678901",
+                Sex = Sex.Female,
                 Phone = "1234567890",
                 BirthDate = new DateOnly(1990, 1, 1)
             },
@@ -61,6 +63,7 @@ public static class SeedData
                 HashedPassword = hashedPassword,
                 Salt = salt,
                 CPF = "10987654321",
+                Sex = Sex.Male,
                 Phone = "0987654321",
                 BirthDate = new DateOnly(1985, 5, 15)
             },
@@ -72,6 +75,7 @@ public static class SeedData
                 HashedPassword = "hashed_password_3",
                 Salt = "yet another random_salt_value",
                 CPF = "11223344556",
+                Sex = Sex.Female,
                 Phone = "1122334455",
                 BirthDate = new DateOnly(1992, 3, 20)
             },
@@ -83,6 +87,7 @@ public static class SeedData
                 HashedPassword = "hashed_password_4",
                 Salt = "some_random_salt_value",
                 CPF = "66778899000",
+                Sex = Sex.Female,
                 Phone = "6677889900",
                 BirthDate = new DateOnly(1988, 7, 30)
             },
@@ -94,6 +99,7 @@ public static class SeedData
                 HashedPassword = "hashed_password_5",
                 Salt = "different_random_salt_value",
                 CPF = "44556677889",
+                Sex = Sex.Male,
                 Phone = "4455667788",
                 BirthDate = new DateOnly(1995, 11, 25)
             },
@@ -105,6 +111,7 @@ public static class SeedData
                 HashedPassword = "hashed_password_6",
                 Salt = "unique_random_salt_value",
                 CPF = "99887766554",
+                Sex = Sex.Female,
                 Phone = "9988776655",
                 BirthDate = new DateOnly(1991, 9, 10)
             }
