@@ -73,3 +73,7 @@ csharp_style_expression_bodied_local_functions = false:silent
 dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1309.severity = none
+
+# Rules for auto-generated EF Core Migrations
+[*/Migrations/*.cs]
+generated_code = true
