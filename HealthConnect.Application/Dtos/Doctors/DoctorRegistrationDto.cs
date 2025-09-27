@@ -15,8 +15,6 @@ public record DoctorRegistrationDto
 
     required public string Speciality { get; init; }
 
-    required public string RQENumber { get; init; }
-
     required public DateOnly BirthDate { get; init; }
 
     required public string RQE { get; init; }

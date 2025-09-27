@@ -42,7 +42,6 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
         return Ok(appointments);
     }
 
-
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
