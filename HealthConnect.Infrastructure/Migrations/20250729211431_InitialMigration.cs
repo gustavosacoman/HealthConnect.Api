@@ -5,8 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace HealthConnect.Infrastructure.Migrations
 {
+    /// <summary>
+    /// Represents the initial migration for setting up the database schema.
+    /// </summary>
     [ExcludeFromCodeCoverage]
-    /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
