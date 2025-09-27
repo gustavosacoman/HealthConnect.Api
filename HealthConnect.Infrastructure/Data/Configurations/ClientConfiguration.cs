@@ -1,11 +1,18 @@
-﻿using HealthConnect.Domain.Models;
+﻿namespace HealthConnect.Infrastructure.Data.Configurations;
+
+using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HealthConnect.Infrastructure.Data.Configurations;
-
+/// <summary>
+/// Entity Framework configuration for the <see cref="Client"/> entity.
+/// </summary>
 public class ClientConfiguration : IEntityTypeConfiguration<Client>
 {
+    /// <summary>
+    /// Configures the <see cref="Client"/> entity type.
+    /// </summary>
+    /// <param name="builder">The builder to be used to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<Client> builder)
     {
         builder.ToTable("Clients");

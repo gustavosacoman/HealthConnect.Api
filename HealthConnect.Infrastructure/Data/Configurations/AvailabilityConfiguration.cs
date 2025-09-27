@@ -1,12 +1,18 @@
-﻿using HealthConnect.Domain.Models;
+﻿namespace HealthConnect.Infrastructure.Data.Configurations;
+
+using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HealthConnect.Infrastructure.Data.Configurations;
-
+/// <summary>
+/// Entity Framework configuration for the <see cref="Availability"/> entity.
+/// </summary>
 public class AvailabilityConfiguration : IEntityTypeConfiguration<Availability>
 {
+    /// <summary>
+    /// Configures the <see cref="Availability"/> entity type.
+    /// </summary>
+    /// <param name="builder">The builder to be used to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<Availability> builder)
     {
         builder.ToTable("Avaiabilities");

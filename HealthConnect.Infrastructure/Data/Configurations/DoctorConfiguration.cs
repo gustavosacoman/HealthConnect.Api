@@ -4,8 +4,15 @@ using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+/// <summary>
+/// Entity Framework configuration for the <see cref="Doctor"/> entity.
+/// </summary>
 public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 {
+    /// <summary>
+    /// Configures the <see cref="Doctor"/> entity type.
+    /// </summary>
+    /// <param name="builder">The builder to be used to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<Doctor> builder)
     {
         builder.ToTable("Doctors");
@@ -24,9 +31,8 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(d => d.Biography)
             .HasMaxLength(3500);
 
-        //builder.Property(d => d.ProfilePicture)
-        //    .HasMaxLength(400);
-
+        // builder.Property(d => d.ProfilePicture)
+        // .HasMaxLength(400);
         builder.HasQueryFilter(d => d.DeletedAt == null);
 
         builder.HasOne(d => d.User)

@@ -1,11 +1,18 @@
-﻿using HealthConnect.Domain.Models.Roles;
+﻿namespace HealthConnect.Infrastructure.Data.Configurations;
+
+using HealthConnect.Domain.Models.Roles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HealthConnect.Infrastructure.Data.Configurations;
-
+/// <summary>
+/// Configures the <see cref="Role"/> entity for Entity Framework Core.
+/// </summary>
 public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
+    /// <summary>
+    /// Configures the <see cref="Role"/> entity type.
+    /// </summary>
+    /// <param name="builder">The builder to be used to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("Roles");
