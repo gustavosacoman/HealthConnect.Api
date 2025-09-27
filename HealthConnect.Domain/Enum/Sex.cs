@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HealthConnect.Domain.Enum;
 
-namespace HealthConnect.Domain.Enum;
-
+/// <summary>
+/// Specifies the biological sex.
+/// </summary>
 public enum Sex
 {
+    /// <summary>
+    /// Male sex.
+    /// </summary>
     Male,
+
+    /// <summary>
+    /// Female sex.
+    /// </summary>
     Female,
 }
