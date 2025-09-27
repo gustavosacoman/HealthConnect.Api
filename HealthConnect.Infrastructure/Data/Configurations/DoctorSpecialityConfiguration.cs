@@ -12,7 +12,7 @@ public class DoctorSpecialityConfiguration : IEntityTypeConfiguration<DoctorSpec
 
         builder.Property(ds => ds.RqeNumber)
                .IsRequired()
-               .HasMaxLength(25);
+               .HasMaxLength(9);
 
         builder.HasIndex(ds => ds.RqeNumber)
             .IsUnique();
