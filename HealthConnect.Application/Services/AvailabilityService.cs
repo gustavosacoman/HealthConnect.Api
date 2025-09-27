@@ -1,24 +1,28 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using HealthConnect.Application.Dtos.Availability;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models;
 
-namespace HealthConnect.Application.Services;
-
+/// <summary>
+/// Provides handling of availability business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class AvailabilityService
     (IAvailabilityRepository availabilityRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,
-    IDoctorRepository doctorRepository) : IAvailabilityService
+    IDoctorRepository doctorRepository)
+    : IAvailabilityService
 {
     private readonly IAvailabilityRepository _availabilityRepository = availabilityRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
+    /// <inheritdoc/>
     public async Task<AvailabilitySummaryDto> CreateAvailabilityAsync(AvailabilityRegistrationDto availability)
     {
         var doctor = await _doctorRepository.GetDoctorById(availability.DoctorId) ??
@@ -33,7 +37,6 @@ public class AvailabilityService
                 availability.SlotDateTime.Minute,
                 0,
                 availability.SlotDateTime.Kind);
-;
         var newSlotEnd = cleanDatePrecion.AddMinutes(availability.DurationMinutes);
 
         var hasConflit = await _availabilityRepository.HasOverlappingAvailabilityAsync(
@@ -68,35 +71,38 @@ public class AvailabilityService
         return _mapper.Map<AvailabilitySummaryDto>(newAvailability);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AvailabilitySummaryDto>> GetAllAvailabilitiesPerDoctorAsync(Guid doctorId)
     {
         if (doctorId == Guid.Empty)
         {
             throw new ArgumentNullException("Invalid doctor ID");
         }
+
         if (await _doctorRepository.GetDoctorById(doctorId) is null)
         {
             throw new ArgumentNullException("Doctor not found");
         }
 
         return await _availabilityRepository
-            .GetAllAvailabilityPerDoctor<AvailabilitySummaryDto>
-            (doctorId);
+            .GetAllAvailabilityPerDoctor<AvailabilitySummaryDto>(doctorId);
     }
 
+    /// <inheritdoc/>
     public async Task<AvailabilitySummaryDto> GetAvailabilityByIdAsync(Guid availabilityId)
     {
-
         if (availabilityId == Guid.Empty)
         {
             throw new ArgumentNullException("Invalid availability ID");
         }
+
         return await _availabilityRepository
             .GetAvailabilityByIdAsync(availabilityId) is Availability availability
             ? _mapper.Map<AvailabilitySummaryDto>(availability)
             : throw new ArgumentNullException("Availability not found");
     }
 
+    /// <inheritdoc/>
     public async Task DeleteAvailabilityAsync(Guid availabilityId)
     {
         if (availabilityId == Guid.Empty)
@@ -111,5 +117,4 @@ public class AvailabilityService
         await _availabilityRepository.DeleteAvailability(availability);
         await _unitOfWork.SaveChangesAsync();
     }
-
 }

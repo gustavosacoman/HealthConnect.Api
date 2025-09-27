@@ -16,7 +16,8 @@ public class DoctorCRMService(
     IDoctorCRMRepository doctorCRMRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,
-    IDoctorRepository doctorRepository) : IDoctorCRMService
+    IDoctorRepository doctorRepository)
+    : IDoctorCRMService
 {
     private readonly IDoctorCRMRepository _doctorCRMRepository = doctorCRMRepository;
     private readonly IMapper _mapper = mapper;

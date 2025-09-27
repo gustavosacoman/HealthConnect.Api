@@ -10,7 +10,10 @@ using Microsoft.EntityFrameworkCore;
 /// <summary>
 /// Provides handling of patients business rules for retrieval, creation, update, and deletion.
 /// </summary>
-public class ClientService(IClientRepository clientRepository, IMapper mapper ) : IClientService
+public class ClientService(
+    IClientRepository clientRepository,
+    IMapper mapper)
+    : IClientService
 {
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IMapper _mapper = mapper;
