@@ -1,8 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using HealthConnect.Api;
 using HealthConnect.Api.Middleweres;
 using HealthConnect.Application;
 using HealthConnect.Infrastructure;
-using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,7 @@ if (!app.Environment.IsEnvironment("Testing"))
 {
     await app.SeedDatabaseAsync();
 }
+
 app.Run();
 
 /// <summary>

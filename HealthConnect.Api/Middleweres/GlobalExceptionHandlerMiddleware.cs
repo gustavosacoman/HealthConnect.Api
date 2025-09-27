@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿namespace HealthConnect.Api.Middleweres;
+
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
-namespace HealthConnect.Api.Middleweres;
-
+/// <summary>
+/// MIddelware to handle global exceptions and return appropriate HTTP responses.
+/// </summary>
+/// <param name="next">next to pass to anohter middleware and continue the pipeline. </param>
+/// <param name="logger">logger to made a log cause.</param>
 public class GlobalExceptionHandlerMiddleware(
     RequestDelegate next,
     ILogger<GlobalExceptionHandlerMiddleware> logger)
@@ -11,6 +16,11 @@ public class GlobalExceptionHandlerMiddleware(
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
 
+    /// <summary>
+    /// InvokeAsync method to handle exceptions globally.
+    /// </summary>
+    /// <param name="context">context shows what is comming.</param>
+    /// <returns>return void.</returns>
     public async Task InvokeAsync(HttpContext context)
     {
         try
