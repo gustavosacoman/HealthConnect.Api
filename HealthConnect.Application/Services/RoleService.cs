@@ -7,15 +7,20 @@ using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Models.Roles;
 
+/// <summary>
+/// Provides handling of role business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class RoleService(
     IRoleRepository roleRepository,
     IMapper mapper,
-    IUnitOfWork unitOfWork) : IRoleService
+    IUnitOfWork unitOfWork)
+    : IRoleService
 {
     private readonly IRoleRepository _roleRepository = roleRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    /// <inheritdoc/>
     public async Task<RoleSummaryDto> GetRoleByNameAsync(string roleName)
     {
         if (string.IsNullOrWhiteSpace(roleName))
@@ -29,12 +34,14 @@ public class RoleService(
         return _mapper.Map<RoleSummaryDto>(role);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<RoleSummaryDto>> GetAllRolesAsync()
     {
         var roles = await _roleRepository.GetAllRolesAsync();
         return _mapper.Map<IEnumerable<RoleSummaryDto>>(roles);
     }
 
+    /// <inheritdoc/>
     public async Task<RoleSummaryDto> GetRoleByIdAsync(Guid roleId)
     {
         if (roleId == Guid.Empty)
@@ -48,6 +55,7 @@ public class RoleService(
         return _mapper.Map<RoleSummaryDto>(role);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<RoleSummaryDto>> GetRolesForUserAsync(Guid userId)
     {
         if (userId == Guid.Empty)
@@ -60,6 +68,7 @@ public class RoleService(
         return _mapper.Map<IEnumerable<RoleSummaryDto>>(roles);
     }
 
+    /// <inheritdoc/>
     public async Task CreateRoleAsync(RoleRegistrationDto roleRegistration)
     {
         if (string.IsNullOrWhiteSpace(roleRegistration.Name))
