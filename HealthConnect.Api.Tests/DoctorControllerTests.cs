@@ -108,7 +108,7 @@ public class DoctorControllerTests : IClassFixture<CustomWebAppFactory>
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-        var rqe = "RQE987654";
+        var rqe = "987654";
         var response = await _client.GetAsync($"/api/v1/doctor/by-rqe/{rqe}");
 
         response.EnsureSuccessStatusCode();
