@@ -7,27 +7,39 @@ using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-public class AppointmentRepository(AppDbContext appDbContext, IMapper mapper) : IAppointmentRepository
+/// <summary>
+/// Repository for managing Appointment entities in the database.
+/// </summary>
+/// <param name="appDbContext">Attribute to access the database.</param>
+/// <param name="mapper">attribute to mapper configratuion.</param>
+public class AppointmentRepository(
+    AppDbContext appDbContext,
+    IMapper mapper)
+    : IAppointmentRepository
 {
     private readonly AppDbContext _appDbConxtext = appDbContext;
     private readonly IMapper _mapper = mapper;
 
+    /// <inheritdoc/>
     public async Task CreateAppointmentAsync(Appointment appointment)
     {
        await _appDbConxtext.Appointments.AddAsync(appointment);
     }
 
+    /// <inheritdoc/>
     public Task<Appointment?> GetAppointmentByClientId(Guid clientId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Appointment> GetAppointmentByIdAsync(Guid id)
+    /// <inheritdoc/>
+    public async Task<Appointment?> GetAppointmentByIdAsync(Guid id)
     {
         return await _appDbConxtext.Appointments.FindAsync(id);
     }
 
-    public async Task<TProjection> GetAppointmentByIdQueryAsync<TProjection>(Guid id)
+    /// <inheritdoc/>
+    public async Task<TProjection?> GetAppointmentByIdQueryAsync<TProjection>(Guid id)
     {
         return await _appDbConxtext.Appointments
             .Where(a => a.Id == id)
@@ -35,12 +47,14 @@ public class AppointmentRepository(AppDbContext appDbContext, IMapper mapper) : 
             .FirstOrDefaultAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Appointment>> GetAppointmentsByClientIdAsync(Guid clientId)
     {
         return await _appDbConxtext.Appointments
             .Where(a => a.ClientId == clientId).ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(Guid doctorId)
     {
         return await _appDbConxtext.Appointments

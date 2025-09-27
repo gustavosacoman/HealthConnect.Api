@@ -1,11 +1,17 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Mappers;
+
+using AutoMapper;
 using HealthConnect.Application.Dtos.Appointment;
 using HealthConnect.Domain.Models;
 
-namespace HealthConnect.Application.Mappers;
-
+/// <summary>
+/// AutoMapper profile for mapping <see cref="Appointment"/> domain models to <see cref="AppointmentDetailDto"/> DTOs.
+/// </summary>
 public class AppointmentMapper : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppointmentMapper"/> class and configures mapping rules.
+    /// </summary>
     public AppointmentMapper()
     {
         CreateMap<Appointment, AppointmentDetailDto>()

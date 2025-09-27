@@ -9,26 +9,23 @@ using Microsoft.EntityFrameworkCore;
 /// <summary>
 /// Repository for managing User entities.
 /// </summary>
-public class UserRepository(AppDbContext appDbContext) : IUserRepository
+public class UserRepository(
+    AppDbContext appDbContext)
+    : IUserRepository
 {
     private readonly AppDbContext _appDbContext = appDbContext;
 
     /// <summary>
     /// Asynchronously adds a new user to the database.
     /// </summary>
-    /// <param name="User">The User object to be created.</param>
+    /// <param name="user">The User object to be created.</param>
     /// <returns>A Task that represents the asynchronous add operation.</returns>
-    public async Task CreateUserAsync(User User)
+    public async Task CreateUserAsync(User user)
     {
-        await _appDbContext.Users.AddAsync(User);
+        await _appDbContext.Users.AddAsync(user);
     }
 
-    /// <summary>
-    /// Asynchronously retrieves a collection of all registered users.
-    /// </summary>
-    /// <returns>
-    /// A Task that, upon completion, contains an IEnumerable<User> collection with all users.
-    /// </returns>
+    /// <inheritdoc/>
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _appDbContext.Users
@@ -37,38 +34,25 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Asynchronously finds a user by their email address.
-    /// </summary>
-    /// <param name="Email">The email address of the user to search for.</param>
-    /// <returns>
-    /// A Task that, upon completion, contains the User object corresponding to the provided email,
-    /// or <c>null</c> if no user is found.
-    /// </returns>
-    public async Task<User?> GetUserByEmailAsync(string Email)
+    /// <inheritdoc/>
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _appDbContext.Users.Include(u => u.Doctor)
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.Email == Email);
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    /// <summary>
-    /// Asynchronously finds a user by their unique identifier (ID).
-    /// </summary>
-    /// <param name="Id">The Guid of the user to search for.</param>
-    /// <returns>
-    /// A Task that, upon completion, contains the User object corresponding to the provided ID,
-    /// or <c>null</c> if no user is found.
-    /// </returns>
-    public async Task<User?> GetUserByIdAsync(Guid Id)
+    /// <inheritdoc/>
+    public async Task<User?> GetUserByIdAsync(Guid id)
     {
         return await _appDbContext.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.Id == Id);
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    /// <inheritdoc/>
     public async Task<User?> GetDoctorByEmailAsync(string email)
     {
         return await _appDbContext.Users
@@ -78,17 +62,20 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email && u.Doctor != null);
     }
 
+    /// <inheritdoc/>
     public async Task AddUserRoleLinkAsync(UserRole userRole)
     {
         await _appDbContext.UserRoles.AddAsync(userRole);
     }
 
-    public async Task RemoveRoleLinkAsync(UserRole userRole)
+    /// <inheritdoc/>
+    public void RemoveRoleLinkAsync(UserRole userRole)
     {
         _appDbContext.UserRoles.Remove(userRole);
     }
 
-    public async Task<UserRole> GetUserRoleLink(Guid userId, Guid roleId)
+    /// <inheritdoc/>
+    public async Task<UserRole?> GetUserRoleLink(Guid userId, Guid roleId)
     {
         return await _appDbContext.UserRoles
             .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);

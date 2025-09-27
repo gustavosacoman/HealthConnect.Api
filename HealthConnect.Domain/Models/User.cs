@@ -19,8 +19,6 @@ public class User : IAuditable, ISoftDeletable
     /// </summary>
     required public string Name { get; set; }
 
-    required public Sex Sex { get; set; }
-
     /// <summary>
     /// Gets or sets the email address of the user.
     /// </summary>
@@ -35,6 +33,11 @@ public class User : IAuditable, ISoftDeletable
     /// Gets or sets the phone number of the user.
     /// </summary>
     public string? Phone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the sex of the user.
+    /// </summary>
+    required public Sex Sex { get; set; }
 
     /// <summary>
     /// Gets or sets the hashed password of the user.
@@ -56,9 +59,15 @@ public class User : IAuditable, ISoftDeletable
     /// </summary>
     public virtual Doctor? Doctor { get; set; }
 
+    /// <summary>
+    /// Gets or sets the associated client information for the user, if applicable.
+    /// </summary>
     public virtual Client? Client { get; set; }
 
-    public ICollection<UserRole> UserRoles { get; set; }
+    /// <summary>
+    /// Gets or sets the collection of user roles associated with the user.
+    /// </summary>
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
     /// <summary>
     /// Gets or sets the date and time when the user was created.

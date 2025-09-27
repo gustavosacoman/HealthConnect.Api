@@ -17,28 +17,49 @@ public interface IUserRepository
     /// <summary>
     /// Retrieves a user by their unique identifier.
     /// </summary>
-    /// <param name="Id">The unique identifier of the user.</param>
+    /// <param name="id">The unique identifier of the user.</param>
     /// <returns>The <see cref="User"/> entity if found; otherwise, <c>null</c>.</returns>
-    Task<User?> GetUserByIdAsync(Guid Id);
+    Task<User?> GetUserByIdAsync(Guid id);
 
     /// <summary>
     /// Retrieves a user by their email address.
     /// </summary>
-    /// <param name="Email">The email address of the user.</param>
+    /// <param name="email">The email address of the user.</param>
     /// <returns>The <see cref="User"/> entity if found; otherwise, <c>null</c>.</returns>
-    Task<User?> GetUserByEmailAsync(string Email);
+    Task<User?> GetUserByEmailAsync(string email);
 
     /// <summary>
     /// Creates a new user.
     /// </summary>
-    /// <param name="User">The <see cref="User"/> entity to create.</param>
-    Task CreateUserAsync(User User);
+    /// <param name="user">The <see cref="User"/> entity to create.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    Task CreateUserAsync(User user);
 
+    /// <summary>
+    /// Retrieves a doctor by their email address.
+    /// </summary>
+    /// <param name="email">The email address of the doctor.</param>
+    /// <returns>The <see cref="User"/> entity if found; otherwise, <c>null</c>.</returns>
     Task<User?> GetDoctorByEmailAsync(string email);
 
-    Task RemoveRoleLinkAsync(UserRole userRole);
+    /// <summary>
+    /// Removes a link between a user and a role.
+    /// </summary>
+    /// <param name="userRole">The <see cref="UserRole"/> link to remove.</param>
+    void RemoveRoleLinkAsync(UserRole userRole);
 
+    /// <summary>
+    /// Adds a link between a user and a role.
+    /// </summary>
+    /// <param name="userRole">The <see cref="UserRole"/> link to add.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     Task AddUserRoleLinkAsync(UserRole userRole);
 
-    Task<UserRole> GetUserRoleLink(Guid userId, Guid roleId);
+    /// <summary>
+    /// Retrieves the link between a user and a role.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    /// <returns>The <see cref="UserRole"/> link if found.</returns>
+    Task<UserRole?> GetUserRoleLink(Guid userId, Guid roleId);
 }

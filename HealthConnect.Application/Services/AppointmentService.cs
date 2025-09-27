@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using HealthConnect.Application.Dtos.Appointment;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
@@ -6,21 +8,26 @@ using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 
-namespace HealthConnect.Application.Services;
-
+/// <summary>
+/// Provides handling of appoitments business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class AppointmentService(
     IAppointmentRepository appointmentRepository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAvailabilityRepository availabilityRepository,
-    IClientRepository clientRepository) : IAppointmentService
+    IClientRepository clientRepository,
+    IDoctorRepository doctorRepository)
+    : IAppointmentService
 {
     private readonly IAppointmentRepository _appointmentRepository = appointmentRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IAvailabilityRepository _availabilityRepository = availabilityRepository;
     private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly IDoctorRepository _doctorRepository = doctorRepository;
 
+    /// <inheritdoc/>
     public async Task<AppointmentDetailDto> CreateAppointmentAsync(Guid clientId, AppointmentRegistrationDto appointment)
     {
         var availability = await _availabilityRepository.GetAvailabilityByIdAsync(appointment.AvailabilityId) ??
@@ -39,16 +46,21 @@ public class AppointmentService(
         var client = await _clientRepository.GetClientByIdAsync(clientId) ??
                      throw new KeyNotFoundException("Client not found.");
 
+        var doctor = await _doctorRepository.GetDoctorById(availability.DoctorId) ??
+                     throw new KeyNotFoundException("Doctor not found.");
+
         var newAppointment = new Appointment
         {
             Id = Guid.NewGuid(),
             ClientId = client.Id,
             DoctorId = availability.DoctorId,
+            Client = client,
             AvailabilityId = availability.Id,
             AppointmentDateTime = availability.SlotDateTime,
             AppointmentStatus = AppointmentStatus.Scheduled,
             Notes = appointment.Notes,
-
+            Doctor = doctor,
+            Availability = availability,
         };
 
         await _appointmentRepository.CreateAppointmentAsync(newAppointment);
@@ -58,22 +70,24 @@ public class AppointmentService(
 
         var getAppointment = await _appointmentRepository.GetAppointmentByIdQueryAsync<AppointmentDetailDto>(newAppointment.Id);
 
-        return getAppointment;
-
+        return getAppointment!;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByClientIdAsync(Guid clientId)
     {
         var appointments = await _appointmentRepository.GetAppointmentsByClientIdAsync(clientId);
         return _mapper.Map<IEnumerable<AppointmentDetailDto>>(appointments);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByDoctorIdAsync(Guid doctorId)
     {
         var appointments = await _appointmentRepository.GetAppointmentsByDoctorIdAsync(doctorId);
         return _mapper.Map<IEnumerable<AppointmentDetailDto>>(appointments);
     }
 
+    /// <inheritdoc/>
     public async Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id)
     {
         var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
@@ -81,12 +95,14 @@ public class AppointmentService(
         {
             throw new KeyNotFoundException("Appointment not found.");
         }
+
         return _mapper.Map<AppointmentDetailDto>(existingAppointment);
     }
 
-    public async Task UpdateAppointmentId(Guid Id, AppointmentUpdatingDto appointment)
+    /// <inheritdoc/>
+    public async Task UpdateAppointmentId(Guid id, AppointmentUpdatingDto appointment)
     {
-        var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(Id);
+        var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
         if (existingAppointment == null)
         {
             throw new KeyNotFoundException("Appointment not found.");
@@ -97,5 +113,4 @@ public class AppointmentService(
         existingAppointment.UpdatedAt = DateTime.UtcNow;
         await _unitOfWork.SaveChangesAsync();
     }
-
 }

@@ -1,16 +1,18 @@
-﻿using HealthConnect.Domain.Models;
+﻿namespace HealthConnect.Infrastructure.Data.Configurations;
+
+using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Infrastructure.Data.Configurations;
-
+/// <summary>
+/// Entity Framework configuration for the <see cref="DoctorCRM"/> entity.
+/// </summary>
 public class DoctorCRMConfiguration : IEntityTypeConfiguration<DoctorCRM>
 {
+    /// <summary>
+    /// Configures the <see cref="DoctorCRM"/> entity type.
+    /// </summary>
+    /// <param name="builder">The builder to be used to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<DoctorCRM> builder)
     {
         builder.ToTable("DoctorCRMs");

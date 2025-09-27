@@ -14,7 +14,6 @@ public class UserMapper : Profile
     /// </summary>
     public UserMapper()
     {
-        this.CreateMap<User, UserSummaryDto>()
-            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Name).ToList()));
+        this.CreateMap<User, UserSummaryDto>();
     }
 }

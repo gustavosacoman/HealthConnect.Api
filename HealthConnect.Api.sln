@@ -20,6 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthConnect.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E42EB4F-9CCC-440E-978A-0F737B1C0FE3}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		coverage.runsettings = coverage.runsettings
 		docker-compose.yml = docker-compose.yml
 		.github\workflows\dotnet-ci.yml = .github\workflows\dotnet-ci.yml

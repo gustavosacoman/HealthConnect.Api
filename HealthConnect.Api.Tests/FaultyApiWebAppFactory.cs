@@ -15,7 +15,7 @@ namespace HealthConnect.Api.Tests;
 public class FaultyApiWebAppFactory : WebApplicationFactory<Program>
 
 {
-    public Action<IApplicationBuilder> ConfigurePipeline { get; set; }
+    public Action<IApplicationBuilder>? ConfigurePipeline { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

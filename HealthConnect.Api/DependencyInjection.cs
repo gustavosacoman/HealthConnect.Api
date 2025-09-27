@@ -1,6 +1,5 @@
 ﻿namespace HealthConnect.Api;
 
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -28,7 +26,6 @@ public static class DependencyInjection
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-
         services.AddRouting(options =>
         {
             options.LowercaseUrls = true;
@@ -116,15 +113,14 @@ public static class DependencyInjection
     {
         using (var scope = app.Services.CreateScope())
         {
-            var DbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            if (DbContext.Database.IsRelational())
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            if (dbContext.Database.IsRelational())
             {
-                DbContext.Database.Migrate();
+                dbContext.Database.Migrate();
             }
         }
 
         app.UseForwardedHeaders();
-        // app.UseHttpsRedirection();
         app.UseRouting();
         app.UseCors("AllowWebApp");
         app.UseAuthentication();
@@ -136,9 +132,15 @@ public static class DependencyInjection
         return app;
     }
 
+    /// <summary>
+    /// Adds JWT authentication configuration to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to add authentication services to.</param>
+    /// <param name="configuration">The application configuration containing JWT settings.</param>
+    /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddJWTConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(options =>
+        _ = services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -153,7 +155,7 @@ public static class DependencyInjection
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                    Encoding.UTF8.GetBytes(configuration["Jwt:Key"] !)),
             };
         });
         return services;

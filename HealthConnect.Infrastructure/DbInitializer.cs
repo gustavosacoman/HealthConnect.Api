@@ -3,17 +3,22 @@ using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Dtos.Role;
 using HealthConnect.Application.Dtos.Speciality;
 using HealthConnect.Application.Dtos.Users;
-using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Enum;
-using HealthConnect.Domain.Models;
-using HealthConnect.Domain.Models.Roles;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Provides methods to initialize the database with default data such as roles, specialities, and users.
+/// </summary>
 public static class DbInitializer
 {
+    /// <summary>
+    /// Initializes the database with default roles, specialities, and users if they do not exist.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider for dependency injection.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous initialization operation.</returns>
     public static async Task InitializeAsync(IServiceProvider serviceProvider)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
@@ -29,26 +34,26 @@ public static class DbInitializer
         var davidEmail = "david@admin.com";
 
         var names = new List<string>
-        {
-            "Cardiologista",
-            "Dermatologista",
-            "Neurologista",
-            "Pediatra",
-            "Psiquiatra",
-            "Ortopedista",
-            "Ginecologista",
-            "Oftalmologista",
-            "Endocrinologista",
-            "Urologista",
-            "Otorrinolaringologista",
-        };
+            {
+                "Cardiologista",
+                "Dermatologista",
+                "Neurologista",
+                "Pediatra",
+                "Psiquiatra",
+                "Ortopedista",
+                "Ginecologista",
+                "Oftalmologista",
+                "Endocrinologista",
+                "Urologista",
+                "Otorrinolaringologista",
+            };
 
         var rolesList = new List<RoleRegistrationDto>
-        {
-            new RoleRegistrationDto { Name = "admin" },
-            new RoleRegistrationDto { Name = "doctor" },
-            new RoleRegistrationDto { Name = "patient" },
-        };
+            {
+                new RoleRegistrationDto { Name = "admin" },
+                new RoleRegistrationDto { Name = "doctor" },
+                new RoleRegistrationDto { Name = "patient" },
+            };
 
         foreach (var role in rolesList)
         {
@@ -64,7 +69,7 @@ public static class DbInitializer
 
             if (specialits == null)
             {
-                var newSpecialist = new SpecialityRegistrationDto(name);
+                var newSpecialist = new SpecialityRegistrationDto { Name = name };
 
                 await specialityService.CreateSpeciality(newSpecialist);
                 await context.SaveChangesAsync();
@@ -93,6 +98,7 @@ public static class DbInitializer
             };
             await userService.CreateDoctorAsync(doctor);
         }
+
         if (!await context.Users.AnyAsync(u => u.Email == maryEmail))
         {
             var doctor = new DoctorRegistrationDto
@@ -112,6 +118,7 @@ public static class DbInitializer
             };
             await userService.CreateDoctorAsync(doctor);
         }
+
         if (!await context.Users.AnyAsync(u => u.Email == davidEmail))
         {
             var doctor = new DoctorRegistrationDto
@@ -153,7 +160,7 @@ public static class DbInitializer
             var adminRole = await roleService.GetRoleByNameAsync("admin");
             if (adminRole != null)
             {
-                await userService.AddRoleLinkToUserAsync(new UserRoleRequestDto { Email = doctorEmail, RoleName = "admin"});
+                await userService.AddRoleLinkToUserAsync(new UserRoleRequestDto { Email = doctorEmail, RoleName = "admin" });
             }
         }
     }

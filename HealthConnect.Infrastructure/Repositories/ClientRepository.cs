@@ -1,33 +1,42 @@
-﻿using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
+﻿namespace HealthConnect.Infrastructure.Repositories;
+
+using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthConnect.Infrastructure.Repositories;
-public class ClientRepository(AppDbContext appDbContext) : IClientRepository
+/// <summary>
+/// Repository for managing patients.
+/// </summary>
+public class ClientRepository(AppDbContext appDbContext)
+    : IClientRepository
 {
     private readonly AppDbContext _appDbContex = appDbContext;
 
+    /// <inheritdoc/>
     public async Task CreateClientAsync(Client client)
     {
         await _appDbContex.Clients.AddAsync(client);
     }
 
+    /// <inheritdoc/>
     public IQueryable<Client> GetAllClientsAsync()
     {
         return _appDbContex.Clients.AsNoTracking();
     }
 
-    public async Task<Client> GetClientByIdAsync(Guid Id)
+    /// <inheritdoc/>
+    public async Task<Client?> GetClientByIdAsync(Guid id)
     {
         return await _appDbContex.Clients
             .Include(c => c.User)
             .ThenInclude(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(c => c.Id == Id);
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<Client> GetClientByUserIdAsync(Guid userId)
+    /// <inheritdoc/>
+    public async Task<Client?> GetClientByUserIdAsync(Guid userId)
     {
         return await _appDbContex.Clients
             .Include(c => c.User)

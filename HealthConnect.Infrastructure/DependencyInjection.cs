@@ -42,19 +42,33 @@ public static class DependencyInjection
         return services;
     }
 
+    /// <summary>
+    /// Adds repository services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to add repository services to.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+
         services.AddTransient<IPasswordHasher, CryptoHelper>();
+
         services.AddScoped<IClientRepository, ClientRepository>();
+
         services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
+
         services.AddScoped<IDoctorRepository, DoctorRepository>();
+
         services.AddScoped<IDoctorCRMRepository, DoctorCRMRepository>();
+
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
         services.AddScoped<ISpecialityRepository, SpecialityRepository>();
+
         services.AddScoped<IRoleRepository, RoleRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         return services;
     }
-
 }

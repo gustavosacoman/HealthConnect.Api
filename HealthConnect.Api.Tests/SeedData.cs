@@ -230,34 +230,40 @@ public static class SeedData
             {
                 DoctorId = doctors[0].Id,
                 SpecialityId = specialities[0].Id,
-                RqeNumber = "546084"
-                
+                RqeNumber = "546084",
+                Doctor = doctors[0],
+                Speciality = specialities[0]
+
             },
             new DoctorSpeciality
             {
                 DoctorId = doctors[1].Id,
                 SpecialityId = specialities[1].Id,
-                RqeNumber = "987654"
+                RqeNumber = "987654",
+                Doctor = doctors[1],
+                Speciality = specialities[1]
 
             },
             new DoctorSpeciality
             {
                 DoctorId = doctors[2].Id,
                 SpecialityId = specialities[2].Id,
-                RqeNumber = "987655"
+                RqeNumber = "987655",
+                Doctor = doctors[2],
+                Speciality = specialities[2]
 
             },
         };
 
         var userRoles = new List<UserRole>
         {
-            new UserRole { UserId = users[0].Id, RoleId = Roles[1].Id },
-            new UserRole { UserId = users[1].Id, RoleId = Roles[1].Id }, 
-            new UserRole { UserId = users[1].Id, RoleId = Roles[0].Id }, 
-            new UserRole { UserId = users[2].Id, RoleId = Roles[1].Id },
-            new UserRole { UserId = users[3].Id, RoleId = Roles[2].Id },
-            new UserRole { UserId = users[4].Id, RoleId = Roles[2].Id },
-            new UserRole { UserId = users[5].Id, RoleId = Roles[2].Id } 
+            new UserRole { Role = Roles[1], User = users[0] },
+            new UserRole {Role = Roles[1], User = users[1]}, 
+            new UserRole {Role = Roles[0], User = users[1]}, 
+            new UserRole {Role = Roles[1], User = users[2]},
+            new UserRole {Role = Roles[2], User = users[3]},
+            new UserRole {Role = Roles[2], User = users[4]},
+            new UserRole {Role = Roles[2], User = users[5]} 
         };
 
         var CRMs = new List<DoctorCRM> 

@@ -1,7 +1,17 @@
 ﻿namespace HealthConnect.Application.Dtos.Speciality;
 
+/// <summary>
+/// Represents a summary of a medical speciality.
+/// </summary>
 public record SpecialitySummaryDto
 {
+    /// <summary>
+    /// Gets the unique identifier of the speciality.
+    /// </summary>
     public Guid Id { get; init; }
-    public string Name { get; init; }
+
+    /// <summary>
+    /// Gets the name of the speciality.
+    /// </summary>
+    required public string Name { get; init; }
 }

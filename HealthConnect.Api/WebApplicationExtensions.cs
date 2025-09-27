@@ -1,7 +1,15 @@
-﻿using HealthConnect.Infrastructure; // Para ter acesso ao DbInitializer
+﻿using System;
 
+/// <summary>
+/// Provides extension methods for the <see cref="WebApplication"/> class.
+/// </summary>
 public static class WebApplicationExtensions
 {
+    /// <summary>
+    /// Seeds the database using the <see cref="DbInitializer"/>.
+    /// </summary>
+    /// <param name="app">The <see cref="WebApplication"/> instance.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public static async Task SeedDatabaseAsync(this WebApplication app)
     {
         using (var scope = app.Services.CreateScope())

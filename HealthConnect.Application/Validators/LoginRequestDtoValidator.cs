@@ -1,15 +1,17 @@
-﻿using FluentValidation;
+﻿namespace HealthConnect.Application.Validators;
+
+using FluentValidation;
 using HealthConnect.Application.Dtos.Auth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealthConnect.Application.Validators;
-
+/// <summary>
+/// Validator for <see cref="LoginRequestDto"/>.
+/// </summary>
 public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoginRequestDtoValidator"/> class.
+    /// Defines validation rules for <see cref="LoginRequestDto"/>.
+    /// </summary>
     public LoginRequestDtoValidator()
     {
         RuleFor(x => x.Email)

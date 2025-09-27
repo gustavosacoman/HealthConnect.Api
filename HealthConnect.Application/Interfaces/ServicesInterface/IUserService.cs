@@ -36,14 +36,20 @@ public interface IUserService
     /// <returns>The summary information of the created doctor user.</returns>
     Task<DoctorDetailDto> CreateDoctorAsync(DoctorRegistrationDto data);
 
+    /// <summary>
+    /// Creates a new client user with the provided registration data.
+    /// </summary>
+    /// <param name="data">The registration data for the client.</param>
+    /// <returns>The detail information of the created client user.</returns>
     Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data);
+
     /// <summary>
     /// Updates an existing user.
     /// </summary>
-    /// <param name="Id">The unique identifier of the user to update.</param>
+    /// <param name="id">The unique identifier of the user to update.</param>
     /// <param name="data">The updated user data.</param>
     /// <returns>The summary information of the updated user.</returns>
-    Task<UserSummaryDto> UpdateUserAsync(Guid Id, UserUpdatingDto data);
+    Task<UserSummaryDto> UpdateUserAsync(Guid id, UserUpdatingDto data);
 
     /// <summary>
     /// Deletes a user by their email address.
@@ -52,7 +58,24 @@ public interface IUserService
     /// <returns>A task representing the asynchronous operation.</returns>
     Task DeleteUserAsync(string email);
 
+    /// <summary>
+    /// Adds a role link to a user.
+    /// </summary>
+    /// <param name="userRoleRequestDto">The request containing the user's email and the role name to link.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task AddRoleLinkToUserAsync(UserRoleRequestDto userRoleRequestDto);
 
+    /// <summary>
+    /// Removes a role link from a user.
+    /// </summary>
+    /// <param name="userRoleRequestDto">The request containing the user's email and the role name to unlink.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task RemoveRoleLinkFromUserAsync(UserRoleRequestDto userRoleRequestDto);
+
+    /// <summary>
+    /// Gets a doctor user by their email address.
+    /// </summary>
+    /// <param name="email">The email address of the doctor user.</param>
+    /// <returns>The detail information of the doctor user.</returns>
+    public Task<DoctorDetailDto> GetDoctorByEmailAsync(string email);
 }

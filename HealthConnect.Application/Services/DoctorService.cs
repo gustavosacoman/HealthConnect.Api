@@ -1,26 +1,28 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.Doctors;
-using HealthConnect.Application.Dtos.Users;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
-using HealthConnect.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-
-namespace HealthConnect.Application.Services;
-
+/// <summary>
+/// Provides handling of doctors business rules for retrieval, creation, update, and deletion.
+/// </summary>
 public class DoctorService(
     IDoctorRepository doctorRepository,
     IMapper mapper,
-    IUnitOfWork unitOfWork) : IDoctorService
+    IUnitOfWork unitOfWork)
+    : IDoctorService
 {
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<DoctorSummaryDto>> GetAllDoctorsAsync()
     {
         var queryable = _doctorRepository.GetAllDoctors();
@@ -32,6 +34,7 @@ public class DoctorService(
         return await projectedQuery.ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorSummaryDto> GetDoctorByRQEAsync(string rqe)
     {
         if (string.IsNullOrWhiteSpace(rqe))
@@ -45,6 +48,7 @@ public class DoctorService(
         return _mapper.Map<DoctorSummaryDto>(doctor);
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorDetailDto> GetDoctorByIdDetailAsync(Guid id)
     {
        if (id == Guid.Empty)
@@ -52,10 +56,10 @@ public class DoctorService(
             throw new NullReferenceException("ID cannot be empty.");
         }
 
-       var doctor = await  _doctorRepository.GetDoctorById(id)
+       var doctor = await _doctorRepository.GetDoctorById(id)
             ?? throw new KeyNotFoundException($"Doctor with ID {id} not found.");
 
-       if (doctor.UserId == null)
+       if (doctor.UserId == Guid.Empty)
         {
             throw new InvalidOperationException($"Doctor with ID {id} does not have an associated user.");
         }
@@ -63,6 +67,7 @@ public class DoctorService(
        return _mapper.Map<DoctorDetailDto>(doctor);
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorSummaryDto> GetDoctorByIdAsync(Guid id)
     {
         if (id == Guid.Empty)
@@ -73,7 +78,7 @@ public class DoctorService(
         var doctor = await _doctorRepository.GetDoctorById(id)
              ?? throw new KeyNotFoundException($"Doctor with ID {id} not found.");
 
-        if (doctor.UserId == null)
+        if (doctor.UserId == Guid.Empty)
         {
             throw new InvalidOperationException($"Doctor with ID {id} does not have an associated user.");
         }
@@ -81,6 +86,7 @@ public class DoctorService(
         return _mapper.Map<DoctorSummaryDto>(doctor);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<DoctorDetailDto>> GetAllDoctorsBySpecialityAsync(Guid specialityId)
     {
         if (specialityId == Guid.Empty)
@@ -98,6 +104,7 @@ public class DoctorService(
         return await doctors.ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorDetailDto> GetDoctoDetailByUserIdAsync(Guid userId)
     {
         if (userId == Guid.Empty)
@@ -110,6 +117,7 @@ public class DoctorService(
         return _mapper.Map<DoctorDetailDto>(doctor);
     }
 
+    /// <inheritdoc/>
     public async Task<DoctorSummaryDto> UpdateDoctorAsync(Guid id, DoctorUpdatingDto doctorUpdatingDto)
     {
         if (id == Guid.Empty)

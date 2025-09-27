@@ -1,15 +1,46 @@
-﻿using HealthConnect.Application.Dtos.Appointment;
+﻿namespace HealthConnect.Application.Interfaces.ServicesInterface;
 
-namespace HealthConnect.Application.Interfaces.ServicesInterface;
+using HealthConnect.Application.Dtos.Appointment;
 
+/// <summary>
+/// Provides appointment management services.
+/// </summary>
 public interface IAppointmentService
 {
-    public Task<AppointmentDetailDto> CreateAppointmentAsync(Guid clientId, AppointmentRegistrationDto appointment);
+    /// <summary>
+    /// Creates a new appointment for the specified client.
+    /// </summary>
+    /// <param name="clientId">The unique identifier of the client.</param>
+    /// <param name="appointment">The appointment registration details.</param>
+    /// <returns>The details of the created appointment.</returns>
+    Task<AppointmentDetailDto> CreateAppointmentAsync(Guid clientId, AppointmentRegistrationDto appointment);
 
-    public Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByClientIdAsync(Guid clientId);
+    /// <summary>
+    /// Retrieves all appointments for the specified client.
+    /// </summary>
+    /// <param name="clientId">The unique identifier of the client.</param>
+    /// <returns>A collection of appointment details.</returns>
+    Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByClientIdAsync(Guid clientId);
 
-    public Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByDoctorIdAsync(Guid doctorId);
+    /// <summary>
+    /// Retrieves all appointments for the specified doctor.
+    /// </summary>
+    /// <param name="doctorId">The unique identifier of the doctor.</param>
+    /// <returns>A collection of appointment details.</returns>
+    Task<IEnumerable<AppointmentDetailDto>> GetAppointmentsByDoctorIdAsync(Guid doctorId);
 
-    public Task UpdateAppointmentId(Guid Id, AppointmentUpdatingDto appointment);
-    public Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id);
+    /// <summary>
+    /// Updates the appointment with the specified identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the appointment.</param>
+    /// <param name="appointment">The appointment update details.</param>
+    /// <returns>The <see cref="Task"/> representing the asynchronous operation.</returns>
+    Task UpdateAppointmentId(Guid id, AppointmentUpdatingDto appointment);
+
+    /// <summary>
+    /// Retrieves the details of an appointment by its identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the appointment.</param>
+    /// <returns>The details of the appointment.</returns>
+    Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id);
 }

@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 /// <summary>
 /// Provides a unit of work implementation for managing database transactions.
 /// </summary>
-public class UnitOfWork(AppDbContext context) : IUnitOfWork
+public class UnitOfWork(AppDbContext context)
+    : IUnitOfWork
 {
     private readonly AppDbContext _appDbContext = context;
 
@@ -24,6 +25,7 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
     /// <summary>
     /// Disposes the database context asynchronously.
     /// </summary>
+    /// <returns>A <see cref="ValueTask"/> that represents the asynchronous dispose operation.</returns>
     public async ValueTask DisposeAsync()
     {
         await _appDbContext.DisposeAsync();

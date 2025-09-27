@@ -1,16 +1,24 @@
-﻿using AutoMapper;
+﻿namespace HealthConnect.Application.Services;
+
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.Client;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthConnect.Application.Services;
-public class ClientService(IClientRepository clientRepository, IMapper mapper ) : IClientService
+/// <summary>
+/// Provides handling of patients business rules for retrieval, creation, update, and deletion.
+/// </summary>
+public class ClientService(
+    IClientRepository clientRepository,
+    IMapper mapper)
+    : IClientService
 {
     private readonly IClientRepository _clientRepository = clientRepository;
     private readonly IMapper _mapper = mapper;
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<ClientSummaryDto>> GetAllClientsAsync()
     {
         var queriable = _clientRepository.GetAllClientsAsync();
@@ -21,6 +29,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
         return await clients.ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<ClientSummaryDto> GetClientByIdAsync(Guid clientId)
     {
         if (clientId == Guid.Empty)
@@ -34,6 +43,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
         return _mapper.Map<ClientSummaryDto>(user);
     }
 
+    /// <inheritdoc/>
     public async Task<ClientDetailDto> GetClientByUserIdAsync(Guid userId)
     {
         if (userId == Guid.Empty)
@@ -47,6 +57,7 @@ public class ClientService(IClientRepository clientRepository, IMapper mapper ) 
         return _mapper.Map<ClientDetailDto>(user);
     }
 
+    /// <inheritdoc/>
     public async Task<ClientDetailDto> GetClientDetailByIdAsync(Guid id)
     {
         if (id == Guid.Empty)
