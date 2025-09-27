@@ -1,4 +1,5 @@
 ﻿using HealthConnect.Application.Interfaces;
+using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using HealthConnect.Infrastructure.Repositories;
@@ -30,6 +31,7 @@ public class UserRepositoriesTests : IDisposable
             CPF = "12345678901",
             Phone = "123456789",
             HashedPassword = "password123",
+            Sex = Sex.Female,
             Salt = "randomSalt",
             BirthDate = new DateOnly(1990, 1, 1),
         };

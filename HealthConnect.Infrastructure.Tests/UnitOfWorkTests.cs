@@ -1,4 +1,5 @@
-﻿using HealthConnect.Domain.Models;
+﻿using HealthConnect.Domain.Enum;
+using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +33,7 @@ public class UnitOfWorkTests
             Phone = "123456789",
             HashedPassword = "password123",
             Salt = "randomSalt",
+            Sex = Sex.Male,
             BirthDate = new DateOnly(1990, 1, 1),
 
         };

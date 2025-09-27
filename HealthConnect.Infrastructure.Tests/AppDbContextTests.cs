@@ -1,4 +1,5 @@
-﻿using HealthConnect.Domain.Models;
+﻿using HealthConnect.Domain.Enum;
+using HealthConnect.Domain.Models;
 using HealthConnect.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public class AppDbContextTests
             Email = "teste.user@gmail.com",
             CPF = "12345678901",
             Phone = "123456789",
+            Sex = Sex.Male,
             HashedPassword = "password123",
             Salt = "randomSalt",
             BirthDate = new DateOnly(1990, 1, 1),
