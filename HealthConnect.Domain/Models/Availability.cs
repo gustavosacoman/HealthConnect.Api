@@ -24,6 +24,16 @@ public class Availability : IAuditable, ISoftDeletable
     public Doctor? Doctor { get; set; }
 
     /// <summary>
+    /// Gets or sets the doctor office associated with this availability.
+    /// </summary>
+    public DoctorOffice? DoctorOffice { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier of the doctor office associated with this availability.
+    /// </summary>
+    public Guid DoctorOfficeId { get; set; }
+
+    /// <summary>
     /// Gets or sets the date and time of the availability slot.
     /// </summary>
     required public DateTime SlotDateTime { get; set; }
