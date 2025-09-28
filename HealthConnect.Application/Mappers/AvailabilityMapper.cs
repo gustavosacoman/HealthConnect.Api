@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using HealthConnect.Application.Dtos.Availability;
+using HealthConnect.Application.Dtos.DoctorOffice;
 using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Domain.Models;
 
@@ -27,6 +28,20 @@ public class AvailabilityMapper : Profile
             {
                 SpecialityName = ds.Speciality.Name,
                 RqeNumber = ds.RqeNumber,
-            }).ToList()));
+            }).ToList()))
+            .ForMember(dest => dest.DoctorOffice, opt => opt.MapFrom(src => src.DoctorOffice != null ? new DoctorOfficeSummaryDto
+            {
+                Id = src.DoctorOffice.Id,
+                Street = src.DoctorOffice.Street,
+                Number = src.DoctorOffice.Number,
+                Complement = src.DoctorOffice.Complement,
+                State = src.DoctorOffice.State,
+                ZipCode = src.DoctorOffice.ZipCode,
+                Phone = src.DoctorOffice.Phone,
+                SecretaryPhone = src.DoctorOffice.SecretaryPhone,
+                SecretaryEmail = src.DoctorOffice.SecretaryEmail,
+                IsPrimary = src.DoctorOffice.IsPrimary,
+            }
+            : null));
     }
 }

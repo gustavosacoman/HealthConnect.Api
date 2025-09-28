@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HealthConnect.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928190945_AddDoctorOfficeWihtoutConnectionAvaiability")]
-    partial class AddDoctorOfficeWihtoutConnectionAvaiability
+    [Migration("20250928201258_AddDoctorOffice")]
+    partial class AddDoctorOffice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,9 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("DoctorOfficeId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("DurationMinutes")
                         .HasColumnType("integer");
 
@@ -101,6 +104,8 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("DoctorOfficeId");
 
                     b.ToTable("Avaiabilities", (string)null);
                 });
@@ -270,7 +275,7 @@ namespace HealthConnect.Infrastructure.Migrations
 
                     b.HasIndex("DoctorId", "IsPrimary")
                         .IsUnique()
-                        .HasFilter("[IsPrimary] = true");
+                        .HasFilter("\"IsPrimary\" = true");
 
                     b.ToTable("DoctorOffices", (string)null);
                 });
@@ -486,7 +491,13 @@ namespace HealthConnect.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HealthConnect.Domain.Models.DoctorOffice", "DoctorOffice")
+                        .WithMany("Availabilities")
+                        .HasForeignKey("DoctorOfficeId");
+
                     b.Navigation("Doctor");
+
+                    b.Navigation("DoctorOffice");
                 });
 
             modelBuilder.Entity("HealthConnect.Domain.Models.Client", b =>
@@ -580,6 +591,11 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.Navigation("DoctorOffices");
 
                     b.Navigation("DoctorSpecialities");
+                });
+
+            modelBuilder.Entity("HealthConnect.Domain.Models.DoctorOffice", b =>
+                {
+                    b.Navigation("Availabilities");
                 });
 
             modelBuilder.Entity("HealthConnect.Domain.Models.Roles.Role", b =>

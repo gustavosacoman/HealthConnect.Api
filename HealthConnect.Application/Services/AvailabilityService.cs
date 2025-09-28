@@ -14,13 +14,15 @@ public class AvailabilityService
     (IAvailabilityRepository availabilityRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,
-    IDoctorRepository doctorRepository)
+    IDoctorRepository doctorRepository,
+    IDoctorOfficeRepository doctorOfficeRepository)
     : IAvailabilityService
 {
     private readonly IAvailabilityRepository _availabilityRepository = availabilityRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IDoctorRepository _doctorRepository = doctorRepository;
+    private readonly IDoctorOfficeRepository _doctorOfficeRepository = doctorOfficeRepository;
 
     /// <inheritdoc/>
     public async Task<AvailabilitySummaryDto> CreateAvailabilityAsync(AvailabilityRegistrationDto availability)
@@ -56,6 +58,19 @@ public class AvailabilityService
                 " with an existing availability.");
         }
 
+        if (availability.DurationMinutes <= 0)
+        {
+            throw new InvalidOperationException("Duration must be greater than zero.");
+        }
+
+        DoctorOffice? doctorOffice = null;
+
+        if (availability.DoctorOfficeId.HasValue && availability.DoctorOfficeId.Value != Guid.Empty)
+        {
+            doctorOffice = await _doctorOfficeRepository.GetDoctorOfficeByIdAsync(availability.DoctorOfficeId.Value)
+                ?? throw new KeyNotFoundException("The specified Doctor office was not found.");
+        }
+
         var newAvailability = new Availability
         {
             Id = Guid.NewGuid(),
@@ -64,6 +79,7 @@ public class AvailabilityService
             SlotDateTime = cleanDatePrecion,
             DurationMinutes = availability.DurationMinutes,
             IsBooked = false,
+            DoctorOffice = doctorOffice,
         };
 
         await _availabilityRepository.CreateAvailabilityAsync(newAvailability);

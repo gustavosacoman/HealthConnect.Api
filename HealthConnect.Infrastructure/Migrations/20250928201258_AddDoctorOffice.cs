@@ -6,11 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthConnect.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDoctorOfficeWihtoutConnectionAvaiability : Migration
+    public partial class AddDoctorOffice : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<Guid>(
+                name: "DoctorOfficeId",
+                table: "Avaiabilities",
+                type: "uuid",
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "DoctorOffices",
                 columns: table => new
@@ -42,18 +48,42 @@ namespace HealthConnect.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Avaiabilities_DoctorOfficeId",
+                table: "Avaiabilities",
+                column: "DoctorOfficeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DoctorOffices_DoctorId_IsPrimary",
                 table: "DoctorOffices",
                 columns: new[] { "DoctorId", "IsPrimary" },
                 unique: true,
-                filter: "[IsPrimary] = true");
+                filter: "\"IsPrimary\" = true");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Avaiabilities_DoctorOffices_DoctorOfficeId",
+                table: "Avaiabilities",
+                column: "DoctorOfficeId",
+                principalTable: "DoctorOffices",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Avaiabilities_DoctorOffices_DoctorOfficeId",
+                table: "Avaiabilities");
+
             migrationBuilder.DropTable(
                 name: "DoctorOffices");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Avaiabilities_DoctorOfficeId",
+                table: "Avaiabilities");
+
+            migrationBuilder.DropColumn(
+                name: "DoctorOfficeId",
+                table: "Avaiabilities");
         }
     }
 }
