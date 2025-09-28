@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Application.Dtos.Availability;
 
+using HealthConnect.Application.Dtos.DoctorOffice;
 using HealthConnect.Application.Dtos.Doctors;
 
 /// <summary>
@@ -23,14 +24,14 @@ public record AvailabilitySummaryDto
     required public string Name { get; init; }
 
     /// <summary>
-    /// Gets the primary specialty of the doctor.
-    /// </summary>
-    required public string Specialty { get; init; }
-
-    /// <summary>
     /// Gets the collection of specialty details for the doctor.
     /// </summary>
     required public IReadOnlyCollection<DoctorSpecialityDetailDto> Specialities { get; init; }
+
+    /// <summary>
+    /// Gets or init the summary of the doctor's office associated with this availability slot.
+    /// </summary>
+    public DoctorOfficeSummaryDto? DoctorOffice { get; init; }
 
     /// <summary>
     /// Gets the date and time of the availability slot.

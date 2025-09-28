@@ -19,4 +19,9 @@ public record AvailabilityRegistrationDto
     /// Gets the duration of the slot in minutes.
     /// </summary>
     required public int DurationMinutes { get; init; }
+
+    /// <summary>
+    /// Gets the unique identifier of the doctor's office where the availability slot is scheduled.
+    /// </summary>
+    public Guid? DoctorOfficeId { get; init; }
 }
