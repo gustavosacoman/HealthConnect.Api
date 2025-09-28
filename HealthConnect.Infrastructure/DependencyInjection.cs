@@ -69,6 +69,8 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddScoped<IDoctorOfficeRepository, DoctorOfficeRepository>();
+
         return services;
     }
 }
