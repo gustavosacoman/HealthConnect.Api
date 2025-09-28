@@ -34,5 +34,9 @@ public class AvailabilityConfiguration : IEntityTypeConfiguration<Availability>
         builder.HasOne(a => a.Doctor)
             .WithMany(d => d.Availabilities)
             .HasForeignKey(a => a.DoctorId);
+
+        builder.HasOne(a => a.DoctorOffice)
+            .WithMany(of =>  of.Availabilities)
+            .HasForeignKey(of => of.DoctorOfficeId);
     }
 }
