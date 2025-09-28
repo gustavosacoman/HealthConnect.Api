@@ -51,6 +51,11 @@ public class Doctor : IAuditable, ISoftDeletable
     required public Guid UserId { get; set; }
 
     /// <summary>
+    /// Gets or sets the collection of doctor offices associated with the doctor.
+    /// </summary>
+    public ICollection<DoctorOffice> DoctorOffices { get; set; } = new List<DoctorOffice>();
+
+    /// <summary>
     /// Gets or sets the date and time when the doctor was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }

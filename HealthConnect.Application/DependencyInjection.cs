@@ -33,6 +33,7 @@ public static class DependencyInjection
         services.AddScoped<ISpecialityService, SpecialityService>();
         services.AddScoped<IDoctorCRMService, DoctorCRMService>();
         services.AddScoped<IDoctorService, DoctorService>();
+        services.AddScoped<IDoctorOfficeService, DoctorOfficeService>();
         return services;
     }
 
@@ -53,6 +54,7 @@ public static class DependencyInjection
             cfg.AddProfile<AppointmentMapper>();
             cfg.AddProfile<SpecialityMapper>();
             cfg.AddProfile<RoleMapper>();
+            cfg.AddProfile<DoctorOfficeMapper>();
         });
         return services;
     }

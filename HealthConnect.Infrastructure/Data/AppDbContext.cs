@@ -71,6 +71,11 @@ public class AppDbContext : DbContext
     public DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
 
     /// <summary>
+    /// Gets or sets the doctor offices in the database.
+    /// </summary>
+    public DbSet<DoctorOffice> DoctorOffices { get; set; }
+
+    /// <summary>
     /// Saves all changes made in this context to the database asynchronously and calls the updateAuditableFields.
     /// </summary>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
