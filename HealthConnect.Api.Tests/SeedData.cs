@@ -273,6 +273,36 @@ public static class SeedData
             new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "654321", State = "PR", Doctor = doctors[1], DoctorId = doctors[1].Id },
             new DoctorCRM { Id = Guid.NewGuid(), CRMNumber = "789012", State = "PR", Doctor = doctors[2], DoctorId = doctors[1].Id },
         };
+
+        var doctorOffice = new List<DoctorOffice>
+        {
+            new DoctorOffice
+            {
+                Id = Guid.Parse("423e4567-e89b-12d3-a456-426614174555"),
+                DoctorId = doctors[1].Id,
+                Street = "Main St",
+                Number = 123,
+                Complement = "Suite 1",
+                State = "PR",
+                ZipCode = "12345-678",
+                Phone = "123-456-7890",
+                Doctor = doctors[1],
+                IsPrimary = true
+            },
+            new DoctorOffice
+            {
+                Id = Guid.NewGuid(),
+                DoctorId = doctors[1].Id,
+                Street = "Second St",
+                Number = 456,
+                Complement = "Suite 2",
+                State = "PR",
+                ZipCode = "23456-789",
+                Phone = "234-567-8901",
+                Doctor = doctors[1],
+                IsPrimary = false
+            }
+        };
         
         context.Roles.AddRange(Roles);
         context.Specialities.AddRange(specialities);
@@ -284,6 +314,7 @@ public static class SeedData
         context.Clients.AddRange(clients);
         context.Availabilities.AddRange(availabilities);
         context.Appointments.AddRange(appointments);
+        context.DoctorOffices.AddRange(doctorOffice);
         context.SaveChanges();
     }
 }
