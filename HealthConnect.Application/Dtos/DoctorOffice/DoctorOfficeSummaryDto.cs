@@ -54,4 +54,9 @@ public record DoctorOfficeSummaryDto
     /// Gets the secretary's email address, if any.
     /// </summary>
     public string? SecretaryEmail { get; init; }
+
+    /// <summary>
+    /// Gets a value indicating whether this office is the primary office for the doctor.
+    /// </summary>
+    required public bool IsPrimary { get; init; }
 }
