@@ -207,71 +207,6 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.ToTable("DoctorCRMs", (string)null);
                 });
 
-            modelBuilder.Entity("HealthConnect.Domain.Models.DoctorOffice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Complement")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsPrimary")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
-
-                    b.Property<string>("SecretaryEmail")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("SecretaryPhone")
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId", "IsPrimary")
-                        .IsUnique()
-                        .HasFilter("[IsPrimary] = true");
-
-                    b.ToTable("DoctorOffices", (string)null);
-                });
-
             modelBuilder.Entity("HealthConnect.Domain.Models.Roles.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -519,17 +454,6 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.Navigation("Doctor");
                 });
 
-            modelBuilder.Entity("HealthConnect.Domain.Models.DoctorOffice", b =>
-                {
-                    b.HasOne("HealthConnect.Domain.Models.Doctor", "Doctor")
-                        .WithMany("DoctorOffices")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-                });
-
             modelBuilder.Entity("HealthConnect.Domain.Models.Roles.UserRole", b =>
                 {
                     b.HasOne("HealthConnect.Domain.Models.Roles.Role", "Role")
@@ -573,8 +497,6 @@ namespace HealthConnect.Infrastructure.Migrations
                     b.Navigation("Availabilities");
 
                     b.Navigation("DoctorCRMs");
-
-                    b.Navigation("DoctorOffices");
 
                     b.Navigation("DoctorSpecialities");
                 });
