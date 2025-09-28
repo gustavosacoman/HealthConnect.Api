@@ -47,7 +47,7 @@ public class DoctorOfficeConfiguration : IEntityTypeConfiguration<DoctorOffice>
         builder.Property(of => of.SecretaryEmail)
             .HasMaxLength(100);
 
-        builder.HasIndex(of => new { of.DoctorId, of.IsPrimary})
+        builder.HasIndex(of => new { of.DoctorId, of.IsPrimary })
             .IsUnique()
             .HasFilter("[IsPrimary] = true");
 
