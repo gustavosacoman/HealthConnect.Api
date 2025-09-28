@@ -47,5 +47,5 @@ public interface IDoctorOfficeService
     /// </summary>
     /// <param name="doctorOfficeRegistration">The registration details for the new doctor office.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task CreateDoctorOfficeAsync(DoctorOfficeRegistrationDto doctorOfficeRegistration);
+    Task<DoctorOfficeSummaryDto> CreateDoctorOfficeAsync(DoctorOfficeRegistrationDto doctorOfficeRegistration);
 }

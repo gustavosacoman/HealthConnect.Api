@@ -57,7 +57,7 @@ public class DoctorOfficeService(
     }
 
     /// <inheritdoc/>
-    public async Task CreateDoctorOfficeAsync(DoctorOfficeRegistrationDto doctorOfficeRegistration)
+    public async Task<DoctorOfficeSummaryDto> CreateDoctorOfficeAsync(DoctorOfficeRegistrationDto doctorOfficeRegistration)
     {
         if (doctorOfficeRegistration.IsPrimary)
         {
@@ -73,6 +73,7 @@ public class DoctorOfficeService(
 
         var doctorOffice = new DoctorOffice
         {
+            Id = Guid.NewGuid(),
             DoctorId = doctorOfficeRegistration.DoctorId,
             Street = doctorOfficeRegistration.Street,
             Number = doctorOfficeRegistration.Number,
@@ -88,5 +89,7 @@ public class DoctorOfficeService(
 
         await _doctorOfficeRepository.CreateDoctorOfficeAsync(doctorOffice);
         await _unitOfWork.SaveChangesAsync();
+
+        return _mapper.Map<DoctorOfficeSummaryDto>(doctorOffice);
     }
 }
