@@ -83,8 +83,8 @@ public class DoctorOffice
     /// </summary>
     public DateTime? DeletedAt { get; set; }
 
-    /// <summary>
-    /// Gets or sets the collection of availabilities for this doctor office.
-    /// </summary>
-    public ICollection<Availability> Availabilities { get; set; } = new List<Availability>();
+    ///// <summary>
+    ///// Gets or sets the collection of availabilities for this doctor office.
+    ///// </summary>
+    // public ICollection<Availability> Availabilities { get; set; } = new List<Availability>();
 }
