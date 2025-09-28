@@ -49,7 +49,7 @@ public class DoctorOfficeConfiguration : IEntityTypeConfiguration<DoctorOffice>
 
         builder.HasIndex(of => new { of.DoctorId, of.IsPrimary })
             .IsUnique()
-            .HasFilter("[IsPrimary] = true");
+            .HasFilter("\"IsPrimary\" = true");
 
         builder.HasOne(of => of.Doctor)
             .WithMany(d => d.DoctorOffices)
