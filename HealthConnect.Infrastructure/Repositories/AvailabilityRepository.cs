@@ -51,6 +51,7 @@ public class AvailabilityRepository(
             .Include(a => a.Doctor)
                 .ThenInclude(d => d!.DoctorSpecialities)
                 .ThenInclude(ds => ds.Speciality)
+            .Include(a => a.DoctorOffice)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
