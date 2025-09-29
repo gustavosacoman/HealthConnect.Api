@@ -78,6 +78,8 @@ public class DoctorOfficeService(
             Street = doctorOfficeRegistration.Street,
             Number = doctorOfficeRegistration.Number,
             Complement = doctorOfficeRegistration.Complement,
+            Neighborhood = doctorOfficeRegistration.Neighborhood,
+            City = doctorOfficeRegistration.City,
             State = doctorOfficeRegistration.State,
             ZipCode = doctorOfficeRegistration.ZipCode,
             Phone = doctorOfficeRegistration.Phone,
