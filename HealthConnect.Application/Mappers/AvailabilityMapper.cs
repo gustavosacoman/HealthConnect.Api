@@ -41,6 +41,8 @@ public class AvailabilityMapper : Profile
                 SecretaryPhone = src.DoctorOffice.SecretaryPhone,
                 SecretaryEmail = src.DoctorOffice.SecretaryEmail,
                 IsPrimary = src.DoctorOffice.IsPrimary,
+                City = src.DoctorOffice.City,
+                Neighborhood = src.DoctorOffice.Neighborhood,
             }
             : null));
     }

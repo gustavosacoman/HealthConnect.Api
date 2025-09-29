@@ -26,6 +26,16 @@ public record DoctorOfficeRegistrationDto
     public string? Complement { get; init; }
 
     /// <summary>
+    /// Gets the neighborhood where the doctor's office is located.
+    /// </summary>
+    required public string Neighborhood { get; init; }
+
+    /// <summary>
+    /// Gets the city where the doctor's office is located.
+    /// </summary>
+    required public string City { get; init; }
+
+    /// <summary>
     /// Gets the state where the doctor's office is located.
     /// </summary>
     required public string State { get; init; }

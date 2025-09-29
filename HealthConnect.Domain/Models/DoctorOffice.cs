@@ -34,6 +34,16 @@ public class DoctorOffice
     public string? Complement { get; set; }
 
     /// <summary>
+    /// Gets or sets the neighborhood where the doctor office is located.
+    /// </summary>
+    required public string Neighborhood { get; set; }
+
+    /// <summary>
+    /// Gets or sets the city where the doctor office is located.
+    /// </summary>
+    required public string City { get; set; }
+
+    /// <summary>
     /// Gets or sets the state where the doctor office is located.
     /// </summary>
     required public string State { get; set; }
