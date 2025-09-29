@@ -51,6 +51,14 @@ public class DoctorOfficeConfiguration : IEntityTypeConfiguration<DoctorOffice>
             .IsUnique()
             .HasFilter("\"IsPrimary\" = true");
 
+        builder.Property(of => of.City)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(of => of.Neighborhood)
+            .HasMaxLength(100)
+            .IsRequired();
+
         builder.HasOne(of => of.Doctor)
             .WithMany(d => d.DoctorOffices)
             .HasForeignKey(of => of.DoctorId);
