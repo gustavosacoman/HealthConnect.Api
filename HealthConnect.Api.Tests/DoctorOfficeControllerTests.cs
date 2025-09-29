@@ -118,11 +118,14 @@ public class DoctorOfficeControllerTests : IClassFixture<CustomWebAppFactory>
             Street = "New Street",
             Number = 100,
             Complement = "Suite 200",
+            Neighborhood = "Downtown",
+            City = "New York",
             State = "NY",
             ZipCode = "10001",
             Phone = "555-0000",
             SecretaryPhone = "555-1111",
             SecretaryEmail = "teste@email.com",
+            IsPrimary = false,
         };
 
         var response = await _client.PostAsJsonAsync($"/api/v1/doctoroffice", newOffice);
