@@ -37,7 +37,9 @@ public class UserRepository(
     /// <inheritdoc/>
     public async Task<User?> GetUserByEmailAsync(string email)
     {
-        return await _appDbContext.Users.Include(u => u.Doctor)
+        return await _appDbContext.Users
+            .Include(u => u.Doctor)
+            .Include(u => u.Client)
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(u => u.Email == email);
