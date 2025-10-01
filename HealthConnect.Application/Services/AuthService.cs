@@ -1,5 +1,6 @@
 ﻿namespace HealthConnect.Application.Services;
 
+using AutoMapper;
 using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
@@ -54,17 +55,34 @@ public class AuthService(
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
 
-        var userRoles = await _roleRepository.GetRolesForUserAsync(user.Id);
+        var userRoleNames = user.UserRoles.Select(ur => ur.Role.Name);
 
-        var token = GenerateToken(user, userRoles);
+        Guid? profileId = null;
+
+        if (userRoleNames.Any(name => name.Equals("doctor", StringComparison.OrdinalIgnoreCase)))
+        {
+            if (user.Doctor == null)
+            {
+                throw new InvalidOperationException($"User {user.Email} has 'doctor' role but no associated doctor profile found.");
+            }
+
+            profileId = user.Doctor.Id;
+        }
+        else if (user.Client != null)
+        {
+            profileId = user.Client.Id;
+        }
+
+        var token = GenerateToken(user, user.UserRoles.Select(ur => ur.Role), profileId);
 
         return new LoginResponseDto
         {
             Token = token,
         };
+
     }
 
-    private string GenerateToken(User user, IEnumerable<Role> roles)
+    private string GenerateToken(User user, IEnumerable<Role> roles, Guid? profileId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -79,6 +97,11 @@ public class AuthService(
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
+
+        if (profileId != Guid.Empty)
+        {
+            claims.Add(new Claim("profileId", profileId.ToString()));
+        }
 
         foreach (var role in roles)
         {
