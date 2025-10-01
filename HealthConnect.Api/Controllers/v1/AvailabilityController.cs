@@ -145,4 +145,38 @@ public class AvailabilityController(IAvailabilityService availabilityService)
         await _availabilityService.DeleteAvailabilityAsync(availabilityId);
         return NoContent();
     }
+
+    /// <summary>
+    /// Creates multiple new availability slots for a doctor in a single request.
+    /// </summary>
+    /// <param name="availabilities">A list of availability slots to be created.</param>
+    /// <returns>A list of the created availability slots with their detailed information.</returns>
+    /// <remarks>
+    /// Sample request:
+    ///     POST /api/v1/availability/bulk
+    ///     [
+    ///       {
+    ///         "doctorId": "123e4567-e89b-12d3-a456-426614174000",
+    ///         "slotDateTime": "2024-12-25T14:00:00Z",
+    ///         "durationMinutes": 30
+    ///       },
+    ///       {
+    ///         "doctorId": "123e4567-e89b-12d3-a456-426614174000",
+    ///         "slotDateTime": "2024-12-25T14:30:00Z",
+    ///         "durationMinutes": 30
+    ///       }
+    ///     ]
+    /// </remarks>
+    /// <response code="201">All availability slots were created successfully.</response>
+    /// <response code="400">Invalid request data, one of the slots conflicts, or a business rule was violated.</response>
+    [HttpPost("bulk")]
+    [ProducesResponseType(typeof(IEnumerable<AvailabilitySummaryDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
+    public async Task<IActionResult> CreateMultipleAvailabilities([FromBody] IEnumerable<AvailabilityRegistrationDto> availabilities)
+    {
+        var createdAvailabilities = await _availabilityService.CreateMultipleAvailabilitiesAsync(availabilities);
+
+        return Created(nameof(CreateMultipleAvailabilities), createdAvailabilities);
+    }
 }

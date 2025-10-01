@@ -34,4 +34,12 @@ public interface IAvailabilityService
     /// <param name="availabilityId">The unique identifier of the availability slot to delete.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task DeleteAvailabilityAsync(Guid availabilityId);
+
+
+    /// <summary>
+    /// Creates multiple availability slots for a doctor.
+    /// </summary>
+    /// <param name="availabilities">A collection of availability registration details to create.</param>
+    /// <returns>A collection of created <see cref="AvailabilitySummaryDto"/> objects.</returns>
+    Task<IEnumerable<AvailabilitySummaryDto>> CreateMultipleAvailabilitiesAsync(IEnumerable<AvailabilityRegistrationDto> availabilities);
 }

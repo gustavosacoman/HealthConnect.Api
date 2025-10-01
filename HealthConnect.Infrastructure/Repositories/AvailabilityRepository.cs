@@ -71,4 +71,10 @@ public class AvailabilityRepository(
                 .ThenInclude(d => d!.DoctorSpecialities)
             .FirstOrDefaultAsync();
     }
+
+    /// <inheritdoc/>
+    public async Task CreateMultipleAvailabilitiesAsync(IEnumerable<Availability> availabilities)
+    {
+        await _appDbContext.Availabilities.AddRangeAsync(availabilities);
+    }
 }
