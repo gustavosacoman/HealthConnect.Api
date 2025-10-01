@@ -46,7 +46,7 @@ public class AppointmentController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [HttpPost("{clientId:guid}")]
-    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Doctor}")]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Patient}")]
     public async Task<IActionResult> CreateAppointmentAsync(
         [FromRoute] Guid clientId,
         [FromBody] AppointmentRegistrationDto appointment)
