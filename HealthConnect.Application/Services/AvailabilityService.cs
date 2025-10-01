@@ -133,4 +133,70 @@ public class AvailabilityService
         await _availabilityRepository.DeleteAvailability(availability);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<AvailabilitySummaryDto>> CreateMultipleAvailabilitiesAsync(IEnumerable<AvailabilityRegistrationDto> availabilities)
+    {
+        var doctorId = availabilities.First().DoctorId;
+        if (availabilities.Any(a => a.DoctorId != doctorId))
+        {
+            throw new InvalidOperationException("All availability slots in a bulk request must belong to the same doctor.");
+        }
+
+        var doctor = await _doctorRepository.GetDoctorById(doctorId) ??
+            throw new ArgumentNullException("Doctor not found");
+
+        var newAvailabilityEntities = new List<Availability>();
+
+        foreach (var availabilityDto in availabilities)
+        {
+            var cleanDatePrecion =
+            new DateTime(
+                availabilityDto.SlotDateTime.Year,
+                availabilityDto.SlotDateTime.Month,
+                availabilityDto.SlotDateTime.Day,
+                availabilityDto.SlotDateTime.Hour,
+                availabilityDto.SlotDateTime.Minute,
+                0,
+                availabilityDto.SlotDateTime.Kind);
+            var newSlotEnd = cleanDatePrecion.AddMinutes(availabilityDto.DurationMinutes);
+
+            if (cleanDatePrecion < DateTime.UtcNow)
+            {
+                throw new InvalidOperationException($"The proposed time slot {cleanDatePrecion} is in the past.");
+            }
+            if (availabilityDto.DurationMinutes <= 0)
+            {
+                throw new InvalidOperationException("Duration must be greater than zero.");
+            }
+
+            var hasConflit = await _availabilityRepository.HasOverlappingAvailabilityAsync(
+                availabilityDto.DoctorId,
+                cleanDatePrecion,
+                newSlotEnd);
+
+            if (hasConflit)
+            {
+                throw new InvalidOperationException($"The proposed time slot {cleanDatePrecion} overlaps with an existing availability.");
+            }
+
+            var newAvailability = new Availability
+            {
+                Id = Guid.NewGuid(),
+                DoctorId = doctor.Id,
+                Doctor = doctor,
+                SlotDateTime = cleanDatePrecion,
+                DurationMinutes = availabilityDto.DurationMinutes,
+                IsBooked = false,
+            };
+
+            newAvailabilityEntities.Add(newAvailability);
+        }
+
+        await _availabilityRepository.CreateMultipleAvailabilitiesAsync(newAvailabilityEntities);
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return _mapper.Map<IEnumerable<AvailabilitySummaryDto>>(newAvailabilityEntities);
+    }
 }
