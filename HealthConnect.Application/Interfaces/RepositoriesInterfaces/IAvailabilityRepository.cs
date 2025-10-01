@@ -58,4 +58,12 @@ public interface IAvailabilityRepository
     /// <param name="availability">The availability to delete.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task DeleteAvailability(Availability availability);
+
+    /// <summary>
+    /// Creates multiple new availability slots.
+    /// </summary>
+    /// <param name="availabilities">The collection of availabilities to create.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task CreateMultipleAvailabilitiesAsync(IEnumerable<Availability> availabilities);
+
 }
