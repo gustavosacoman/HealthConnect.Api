@@ -43,4 +43,11 @@ public interface IAppointmentService
     /// <param name="id">The unique identifier of the appointment.</param>
     /// <returns>The details of the appointment.</returns>
     Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id);
+
+    /// <summary>
+    /// Retrieves a summary of appointments for the specified doctor.
+    /// </summary>
+    /// <param name="doctorId">The unique identifier of the doctor.</param>
+    /// <returns>A collection of appointment summaries.</returns>
+    Task<IEnumerable<AppointmentSummaryDto>> GetAppointmentSummaryByDoctorIdAsync(Guid doctorId);
 }
