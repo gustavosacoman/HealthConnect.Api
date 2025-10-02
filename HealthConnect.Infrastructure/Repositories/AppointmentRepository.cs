@@ -72,6 +72,12 @@ public class AppointmentRepository(
     public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(Guid doctorId)
     {
         return await _appDbConxtext.Appointments
-            .Where(a => a.DoctorId == doctorId).ToListAsync();
+        .Include(a => a.Doctor)
+            .ThenInclude(d => d.User)
+        .Include(a => a.Client)
+            .ThenInclude(c => c.User)
+        .Include(a => a.Availability)
+        .Where(a => a.DoctorId == doctorId)
+        .ToListAsync();
     }
 }
