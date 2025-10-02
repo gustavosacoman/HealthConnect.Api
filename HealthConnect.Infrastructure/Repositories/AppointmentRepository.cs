@@ -27,9 +27,12 @@ public class AppointmentRepository(
     }
 
     /// <inheritdoc/>
-    public Task<Appointment?> GetAppointmentByClientId(Guid clientId)
+    public async Task<Appointment?> GetAppointmentByClientId(Guid clientId)
     {
-        throw new NotImplementedException();
+        return await _appDbConxtext.Appointments
+            .Include(a => a.Client)
+            .Include(a => a.Doctor)
+            .FirstOrDefaultAsync(a => a.ClientId == clientId);
     }
 
     /// <inheritdoc/>
@@ -51,6 +54,11 @@ public class AppointmentRepository(
     public async Task<IEnumerable<Appointment>> GetAppointmentsByClientIdAsync(Guid clientId)
     {
         return await _appDbConxtext.Appointments
+            .Include(a => a.Doctor)
+            .ThenInclude(d => d.User)
+            .Include(a => a.Client)
+            .ThenInclude(c => c.User)
+            .Include(a => a.Availability)
             .Where(a => a.ClientId == clientId).ToListAsync();
     }
 

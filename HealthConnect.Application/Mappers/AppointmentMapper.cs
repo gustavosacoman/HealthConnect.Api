@@ -22,6 +22,7 @@ public class AppointmentMapper : Profile
             .ForMember(desc => desc.AppointmentDate, opt => opt.MapFrom(src => src.Availability.SlotDateTime))
             .ForMember(desc => desc.ClientName, opt => opt.MapFrom(src => src.Client.User.Name))
             .ForMember(desc => desc.DoctorName, opt => opt.MapFrom(src => src.Doctor.User.Name))
+            .ForMember(desc => desc.Duration, opt => opt.MapFrom(src => src.Availability.DurationMinutes))
             .ForMember(desc => desc.Status, opt => opt.MapFrom(src => src.AppointmentStatus.ToString()))
             .ForMember(desc => desc.Notes, opt => opt.MapFrom(src => src.Notes));
     }
