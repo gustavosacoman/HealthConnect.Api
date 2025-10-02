@@ -165,6 +165,7 @@ public class AvailabilityService
             {
                 throw new InvalidOperationException($"The proposed time slot {cleanDatePrecion} is in the past.");
             }
+
             if (availabilityDto.DurationMinutes <= 0)
             {
                 throw new InvalidOperationException("Duration must be greater than zero.");

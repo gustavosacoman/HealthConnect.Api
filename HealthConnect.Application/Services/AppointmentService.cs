@@ -1,12 +1,15 @@
 ﻿namespace HealthConnect.Application.Services;
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using HealthConnect.Application.Dtos.Appointment;
+using HealthConnect.Application.Dtos.Doctors;
 using HealthConnect.Application.Interfaces;
 using HealthConnect.Application.Interfaces.RepositoriesInterfaces;
 using HealthConnect.Application.Interfaces.ServicesInterface;
 using HealthConnect.Domain.Enum;
 using HealthConnect.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// Provides handling of appoitments business rules for retrieval, creation, update, and deletion.
@@ -97,6 +100,16 @@ public class AppointmentService(
         }
 
         return _mapper.Map<AppointmentDetailDto>(existingAppointment);
+    }
+
+    public async Task<IEnumerable<AppointmentSummaryDto>> GetAppointmentSummaryByDoctorIdAsync(Guid doctorId)
+    {
+        var queryable = _appointmentRepository.GetAppointmentByDoctorIdQueryAsync(doctorId);
+
+        var projectedQuery = queryable
+        .ProjectTo<AppointmentSummaryDto>(_mapper.ConfigurationProvider);
+
+        return await projectedQuery.ToListAsync();
     }
 
     /// <inheritdoc/>

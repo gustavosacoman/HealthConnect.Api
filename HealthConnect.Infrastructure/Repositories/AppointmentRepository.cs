@@ -51,6 +51,12 @@ public class AppointmentRepository(
     }
 
     /// <inheritdoc/>
+    public IQueryable<Appointment> GetAppointmentByDoctorIdQueryAsync(Guid doctorId)
+    {
+        return _appDbConxtext.Appointments.AsNoTracking();
+    }
+
+    /// <inheritdoc/>
     public async Task<IEnumerable<Appointment>> GetAppointmentsByClientIdAsync(Guid clientId)
     {
         return await _appDbConxtext.Appointments
