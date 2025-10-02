@@ -49,4 +49,11 @@ public interface IAppointmentRepository
     /// <param name="id">The unique identifier of the appointment.</param>
     /// <returns>A task that returns the projected appointment.</returns>
     Task<TProjection?> GetAppointmentByIdQueryAsync<TProjection>(Guid id);
+
+    /// <summary>
+    /// Gets a queryable collection of appointments for a specific doctor.
+    /// </summary>
+    /// <param name="doctorId">The unique identifier of the doctor.</param>
+    /// <returns>An <see cref="IQueryable{Appointment}"/> representing the appointments for the specified doctor.</returns>
+    IQueryable<Appointment> GetAppointmentByDoctorIdQueryAsync(Guid doctorId);
 }
