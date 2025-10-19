@@ -29,7 +29,7 @@ public class DoctorCRMService(
     {
         var exist = await _doctorCRMRepository.GetCRMByCodeAndState(doctorCRMDto.CRMNumber, doctorCRMDto.State);
 
-        if (exist != null)
+        if (exist is not null)
         {
             throw new ArgumentException($"The CRM {doctorCRMDto.CRMNumber}" +
                 $" with a state {doctorCRMDto.State} already exist in database");

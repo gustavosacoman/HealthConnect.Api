@@ -77,7 +77,7 @@ public class RoleService(
         }
 
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleRegistration.Name.ToLower());
-        if (existingRole != null)
+        if (existingRole is not null)
         {
             throw new InvalidOperationException($"Role with name '{roleRegistration.Name}' already exists.");
         }

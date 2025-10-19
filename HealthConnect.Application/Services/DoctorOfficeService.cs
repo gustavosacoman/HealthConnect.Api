@@ -62,7 +62,7 @@ public class DoctorOfficeService(
         if (doctorOfficeRegistration.IsPrimary)
         {
             var primaryOfficeExists = await _doctorOfficeRepository.GetPrimaryOfficeByDoctorIdAsync(doctorOfficeRegistration.DoctorId);
-            if (primaryOfficeExists != null)
+            if (primaryOfficeExists is not null)
             {
                 throw new InvalidOperationException("A primary office already exists for this doctor. Please set the existing primary office to non-primary before assigning a new one.");
             }

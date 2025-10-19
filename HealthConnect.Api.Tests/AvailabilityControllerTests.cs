@@ -1,6 +1,4 @@
-﻿
-
-using HealthConnect.Application.Dtos.Auth;
+﻿using HealthConnect.Application.Dtos.Auth;
 using HealthConnect.Application.Dtos.Availability;
 using HealthConnect.Infrastructure.Configurations;
 using HealthConnect.Infrastructure.Data;

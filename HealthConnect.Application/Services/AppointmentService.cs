@@ -94,7 +94,7 @@ public class AppointmentService(
     public async Task<AppointmentDetailDto> GetAppointmentByIdAsync(Guid id)
     {
         var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
-        if (existingAppointment == null)
+        if (existingAppointment is null)
         {
             throw new KeyNotFoundException("Appointment not found.");
         }
@@ -116,7 +116,7 @@ public class AppointmentService(
     public async Task UpdateAppointmentId(Guid id, AppointmentUpdatingDto appointment)
     {
         var existingAppointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
-        if (existingAppointment == null)
+        if (existingAppointment is null)
         {
             throw new KeyNotFoundException("Appointment not found.");
         }

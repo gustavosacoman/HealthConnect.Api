@@ -21,7 +21,7 @@ public class CryptoHelper : IPasswordHasher
             rng.GetBytes(salt);
         }
 
-        if (salt == null || salt.Length == 0)
+        if (salt is null || salt.Length == 0)
         {
             throw new InvalidOperationException("Failed to generate salt.");
         }
