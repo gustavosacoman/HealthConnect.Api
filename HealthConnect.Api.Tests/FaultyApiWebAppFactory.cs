@@ -26,7 +26,7 @@ public class FaultyApiWebAppFactory : WebApplicationFactory<Program>
             var descriptor = services.SingleOrDefault(
             d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
-            if (descriptor != null)
+            if (descriptor is not null)
             {
                 services.Remove(descriptor);
             }
@@ -40,7 +40,7 @@ public class FaultyApiWebAppFactory : WebApplicationFactory<Program>
 
         builder.Configure(app =>
         {
-            if (ConfigurePipeline != null)
+            if (ConfigurePipeline is not null)
             {
                 ConfigurePipeline(app);
             }

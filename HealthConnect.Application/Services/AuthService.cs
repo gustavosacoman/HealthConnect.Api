@@ -31,7 +31,7 @@ public class AuthService(
     /// <inheritdoc/>
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
     {
-        if (request == null)
+        if (request is null)
         {
             throw new NullReferenceException("Login request cannot be null.");
         }
@@ -43,7 +43,7 @@ public class AuthService(
 
         var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
-        if (user == null)
+        if (user is null)
         {
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
@@ -61,14 +61,14 @@ public class AuthService(
 
         if (userRoleNames.Any(name => name.Equals("doctor", StringComparison.OrdinalIgnoreCase)))
         {
-            if (user.Doctor == null)
+            if (user.Doctor is null)
             {
                 throw new InvalidOperationException($"User {user.Email} has 'doctor' role but no associated doctor profile found.");
             }
 
             profileId = user.Doctor.Id;
         }
-        else if (user.Client != null)
+        else if (user.Client is not null)
         {
             profileId = user.Client.Id;
         }

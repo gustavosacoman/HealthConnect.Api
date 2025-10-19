@@ -24,7 +24,7 @@ public class SpecialityService(
     public async Task<SpecialitySummaryDto> CreateSpeciality(SpecialityRegistrationDto specialityDto)
     {
         var existingSpeciality = await _specialityRepository.GetSpecialityByNameAsync(specialityDto.Name);
-        if (existingSpeciality != null)
+        if (existingSpeciality is not null)
         {
             throw new InvalidOperationException("Speciality with the same name already exists.");
         }

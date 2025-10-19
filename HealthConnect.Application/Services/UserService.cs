@@ -88,18 +88,18 @@ public class UserService(
     /// <inheritdoc/>
     public async Task<DoctorDetailDto> CreateDoctorAsync(DoctorRegistrationDto data)
     {
-        if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
+        if (await _userRepository.GetUserByEmailAsync(data.Email) is not null)
         {
             throw new InvalidOperationException($"User with email {data.Email} already exists.");
         }
 
-        if (await _doctorRepository.GetDoctorByRQE(data.RQE) != null)
+        if (await _doctorRepository.GetDoctorByRQE(data.RQE) is not null)
         {
             throw new InvalidOperationException($"Doctor with RQE {data.RQE} already exists.");
         }
 
         var speciality = await _specialityRepository.GetSpecialityByNameAsync(data.Speciality);
-        if (speciality == null)
+        if (speciality is null)
         {
             throw new KeyNotFoundException($"Speciality with name {data.Speciality} not found.");
         }
@@ -132,7 +132,7 @@ public class UserService(
 
         var existRqe = await _specialityRepository.GetDoctorSpecialityByRqe(data.RQE);
 
-        if (existRqe != null)
+        if (existRqe is not null)
         {
             throw new InvalidOperationException($"Doctor with RQE {data.RQE} is already linked to a speciality.");
         }
@@ -146,7 +146,7 @@ public class UserService(
 
         var existCRM = await _doctorCRMRepository.GetCRMByCodeAndState(data.CRM, data.CRMState);
 
-        if (existCRM != null)
+        if (existCRM is not null)
         {
             throw new InvalidOperationException($"CRM {data.CRM} for state {data.CRMState} is already registered.");
         }
@@ -179,7 +179,7 @@ public class UserService(
     /// <inheritdoc/>
     public async Task<ClientDetailDto> CreateClientAsync(ClientRegistrationDto data)
     {
-        if (await _userRepository.GetUserByEmailAsync(data.Email) != null)
+        if (await _userRepository.GetUserByEmailAsync(data.Email) is not null)
         {
             throw new InvalidOperationException($"User with email {data.Email} already exists.");
         }
@@ -230,7 +230,7 @@ public class UserService(
             throw new ArgumentException("User ID cannot be empty.", nameof(id));
         }
 
-        if (data == null)
+        if (data is null)
         {
             throw new ArgumentNullException(nameof(data), "User data cannot be null.");
         }
@@ -265,12 +265,12 @@ public class UserService(
 
         user.DeletedAt = DateTime.UtcNow;
 
-        if (user.Client != null)
+        if (user.Client is not null)
         {
             user.Client.DeletedAt = DateTime.UtcNow;
         }
 
-        if (user.Doctor != null)
+        if (user.Doctor is not null)
         {
             user.Doctor.DeletedAt = DateTime.UtcNow;
         }

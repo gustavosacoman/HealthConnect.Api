@@ -63,7 +63,7 @@ public class UserControllerTests
 
         var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
 
-        if (loginResponse?.Token == null)
+        if (loginResponse?.Token is null)
         {
             throw new InvalidOperationException("No possible to get the token");
 
